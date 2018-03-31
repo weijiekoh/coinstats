@@ -1,0 +1,22 @@
+@mixin no-select {
+    user-select:none;
+}
+
+@mixin pointer {
+    cursor:pointer;
+}
+
+@mixin icon {
+    @include pointer;
+    fill: $icon-color;
+
+    &:hover {
+        @include transition-ease-in;
+        fill: $icon-hover-color;
+    }
+}
+
+@mixin transition-ease-in($duration:0.25s) {
+    transition-timing-function: ease-in;
+    transition-duration: $duration;
+}

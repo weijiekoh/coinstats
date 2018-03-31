@@ -1,0 +1,53 @@
+// Import the IBM Plex font
+@import '../../node_modules/@ibm/type/css/ibm-type.min.css';
+
+// Import Bootstrap 4
+@import '../../node_modules/bootstrap/scss/bootstrap-reboot.scss';
+@import '../../node_modules/bootstrap/scss/bootstrap.scss';
+@import '../../node_modules/bootstrap/scss/bootstrap-grid.scss';
+
+// Imports specific to this project:
+@import './variables.scss';
+@import './buttons.scss';
+@import './utils.scss';
+
+body {
+    background-color: $main-bg;
+    color: $text;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: $link;
+    &:hover{
+        color: $link-hover;
+    }
+}
+
+.root-flex {
+    display:flex;
+}
+
+// Reset max-width imposed by the IBM Plex stylesheet
+.ibm, .ibm-type-c {
+    max-width: initial;
+}
+
+.container-fluid {
+    padding:0 !important;
+    margin-bottom:0;
+}
+
+
+@import './sidebar/index.scss';
+@import './content/index.scss';
+
+//@include media-breakpoint-down(xs) { ... }
+//@include media-breakpoint-down(sm) { ... }
+//@include media-breakpoint-down(md) { ... }
+//@include media-breakpoint-down(lg) { ... }
+//media-breakpoint-up
+//media-breakpoint-down
+//media-breakpoint-only
+//media-breakpoint-between

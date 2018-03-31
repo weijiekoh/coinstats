@@ -12,7 +12,7 @@ button, button.primary {
     border-color: transparent;
     border-style: $button-border-style;
     transition-timing-function: ease-in;
-    transition-duration: .255s;
+    transition-duration: .25s;
     color:$button-color;
 
     @include media-breakpoint-down(sm) {
