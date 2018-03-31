@@ -1,0 +1,47 @@
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
+@import 'styles/theme.scss';
+
+button, button.primary {
+    font-weight: $button-font-weight;
+    font-size: $button-font-size;
+    height: $button-height;
+    padding: $button-padding;
+    border-width: $button-border-width;
+    border-radius: $button-border-radius;
+    background-color: $button-bg-color;
+    border-color: transparent;
+    border-style: $button-border-style;
+    transition-timing-function: ease-in;
+    transition-duration: .255s;
+    color:$button-color;
+
+    @include media-breakpoint-down(sm) {
+        padding: $button-padding-sm;
+    }
+
+    &:focus {
+        border-color: $button-primary-focus-border-color;
+        outline-color: $button-primary-focus-outline-color;
+    }
+
+    &:hover {
+        cursor:pointer;
+        background-color: $button-primary-hover-bg-color;
+    }
+}
+
+button.secondary {
+    background-color: transparent;
+    color: $button-secondary-color;
+    border-color: $button-secondary-color;
+
+    &:focus {
+        border-color: $button-secondary-focus-border-color;
+        outline-color: $button-secondary-focus-outline-color;
+    }
+
+    &:hover{
+        color:$button-color;
+        background-color: $button-secondary-hover-bg-color;
+    }
+}

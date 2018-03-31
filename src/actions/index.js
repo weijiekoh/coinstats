@@ -1,6 +1,2 @@
-export const sayHello = () => {
-  return {
-    type: 'SAY_HELLO',
-    greeting: 'hello'
-  }
-}
+import { sayHello, fetchedGreeting, fetchingGreeting } from './hello'
+export { sayHello, fetchedGreeting, fetchingGreeting }

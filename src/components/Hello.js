@@ -1,11 +1,28 @@
 import React from 'react'
 
-const Hello = ({ greeting, sayHello }) => {
+const Hello = props => {
   return (
     <div>
-      <p>Greeter</p>
-      <button onClick={sayHello}>Say hello</button>
-      { greeting && <p>Greeting: {greeting}</p> }
+      <h1>Greeter</h1>
+      <button onClick={props.sayHello}>Say hello</button>
+
+      <br />
+      <br />
+
+      <button onClick={props.fetchGreeting}>Fetch greeting</button>
+      <br />
+
+      <br />
+      <br />
+
+      {props.isFetching &&
+        <p>Fetching...</p>
+      }
+      {!props.isFetching &&
+        <p>
+          Greeting: { props.greeting && props.greeting }
+        </p>
+      }
     </div>
   )
 }

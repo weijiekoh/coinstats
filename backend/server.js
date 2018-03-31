@@ -3,9 +3,11 @@ const logger = require('morgan')
 const express = require('express')
 const helmet = require('helmet')
 const routes = require('./routes')
+const compression = require('compression')
 
 const app = express()
 app.use(helmet())
+app.use(compression())
 
 const isProd = process.env.NODE_ENV === 'production'
 

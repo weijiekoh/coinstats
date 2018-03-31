@@ -1,0 +1,70 @@
+// This colour theme comes from the IBM Carbon Design System.
+// http://themes.carbondesignsystem.com
+$edited: false;
+$brand-01: #5aaafa; // light blue
+$brand-02: #7cc7ff; // very light blue
+$brand-03: #41d6c3; // light green/lime
+
+// dark shades of grey/blue
+$ui-01: #2d3f49;
+$ui-02: #20343e;
+$ui-03: #152935;
+$ui-04: #20343e;
+$ui-05: #8c9ba5; // grey
+$text-01: #ffffff;
+$text-02: #dfe6eb; // light grey
+$text-03: #8c9ba5; // medium grey
+
+$inverse-01: #152935;
+$field-01: rgba(255, 255, 255, .1);
+$support-01: #ff5050; // red
+$support-02: #8cd211; // green
+$support-03: #efc100; // yellow
+$support-04: #7cc7ff; // blue
+$nav-01: #1b2834;
+$nav-02: #1c496d;
+$use-layer: true;
+$input-border: 1px solid transparent;
+
+$button-color: $ui-02;
+$button-bg-color: $brand-01;
+$button-secondary-color: $ui-03;
+$button-primary-focus-border-color: $ui-02;
+$button-primary-focus-outline-color: $brand-02;
+$button-secondary-focus-border-color: $ui-02;
+$button-secondary-focus-outline-color: $brand-02;
+$button-primary-hover-bg-color: $brand-02;
+$button-secondary-color: $brand-01;
+$button-secondary-hover-bg-color: $brand-01;
+$button-font-weight: 700;
+$button-font-size: .875rem;
+$button-border-radius: 0;
+$button-height: 40px;
+$button-padding: 0 1rem;
+$button-padding-sm: 0 .5rem;
+$button-border-width: 2px;
+$button-border-style: solid;
+
+$accordion-flex-direction: row;
+$accordion-justify-content: flex-start;
+$accordion-arrow-margin: 0 0 0 .25rem;
+$accordion-title-margin: 0 0 0 1rem;
+$accordion-content-padding: 0 1rem 0 1.75rem;
+$checkbox-border-width: 2px;
+$snippet-background-color: $field-01;
+$content-switcher-border-radius: 8px;
+$content-switcher-option-border: 1px solid $brand-01;
+$data-table-heading-transform: uppercase;
+$data-table-heading-border-bottom: 1px solid $brand-01;
+$data-table-row-height: 2rem;
+$modal-border-top: $brand-01 4px solid;
+$modal-footer-background-color: $ui-03;
+$progress-indicator-bar-width: 1px inset transparent;
+$progress-indicator-stroke-width: 5;
+$progress-indicator-line-offset: .625rem;
+$radio-border-width: 2px;
+$structured-list-padding: 2rem;
+$structured-list-text-transform: uppercase;
+$input-label-weight: 700;
+$card-text-align: center;
+$card-flex-align: center;

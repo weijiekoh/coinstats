@@ -5,9 +5,11 @@ import HelloContainer from '../containers/HelloContainer'
 export default class App extends Component {
   render () {
     return (
-      <Switch>
-        <Route path='/' component={HelloContainer} />
-      </Switch>
+      <div className="ibm ibm-type-c container-fluid">
+        <Switch>
+          <Route path='/' component={HelloContainer} />
+        </Switch>
+      </div>
     )
   }
 }
