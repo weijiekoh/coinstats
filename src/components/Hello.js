@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const Hello = props => {
   return (
@@ -25,6 +26,12 @@ const Hello = props => {
       }
     </div>
   )
+}
+
+Hello.propTypes = {
+  greeting: PropTypes.string,
+  sayHello: PropTypes.func.isRequired,
+  fetchGreeting: PropTypes.func.isRequired
 }
 
 export default Hello

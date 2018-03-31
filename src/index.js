@@ -13,7 +13,11 @@ import { BrowserRouter } from 'react-router-dom'
 
 import reducer from './reducers'
 
-const store = createStore(reducer, applyMiddleware(thunkMiddleware))
+const store = createStore(
+  reducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+  applyMiddleware(thunkMiddleware)
+)
 
 const Root = ({ store }) => (
   <Provider store={store}>
