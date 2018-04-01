@@ -1,13 +1,14 @@
-@import '../../../node_modules/bootstrap/scss/bootstrap-grid.scss';
+@import '../../node_modules/bootstrap/scss/bootstrap-grid.scss';
 
 .content {
     margin:0;
     padding-left:20px;
     padding-right:10px;
+    padding-top:20px;
     flex-grow:1;
 
     @include media-breakpoint-down(sm) {
         padding-left:10px;
-        margin-top:50px;
+        padding-top:70px;
     }
 }

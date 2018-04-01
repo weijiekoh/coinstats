@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 const DenomPicker = props => (
   <div className='denompicker form-group row align-items-center'>
     <div className='col-12 col-sm-4 col-md-12'>
-      <label htmlFor='denom'>Change base currency:</label>
+      <label htmlFor='denom'>Your base currency:</label>
     </div>
 
     <div className='col'>

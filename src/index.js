@@ -12,6 +12,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { Route } from 'react-router-dom'
 import SidebarContainer from './containers/SidebarContainer'
 import CoinStatsContainer from './containers/CoinStatsContainer'
+import ConverterContainer from './containers/ConverterContainer'
 
 import reducer from './reducers'
 
@@ -31,7 +32,8 @@ const Root = ({ store }) => (
           <Route path='/' component={SidebarContainer} />
 
           <div className='content'>
-            <Route path='/' component={CoinStatsContainer} />
+            <Route exact path='/' component={CoinStatsContainer} />
+            <Route exact path='/converter' component={ConverterContainer} />
           </div>
 
         </div>

@@ -1,7 +1,7 @@
-@import '../../../node_modules/bootstrap/scss/bootstrap-grid.scss';
+@import '../../node_modules/bootstrap/scss/bootstrap-grid.scss';
 @import './denomPicker.scss';
-@import '../variables.scss';
-@import '../utils.scss';
+@import './variables.scss';
+@import './utils.scss';
 
 .overlay {
     // Casts a translucent shade over the rest of the page so that the sidebar
@@ -57,14 +57,15 @@
             align-self:center;
             display:block;
             @include transition-ease-in;
+            background-color:$sidebar-link-bg;
 
-            &:nth-of-type(odd){
+            &:hover{
+                background-color:$sidebar-link-bg-hover;
+                @include transition-ease-in;
+            }
+
+            &.nohover {
                 background-color:$sidebar-link-bg;
-
-                &:hover{
-                    background-color:$sidebar-link-bg-hover;
-                    @include transition-ease-in;
-                }
             }
 
             a {
@@ -85,25 +86,8 @@
         width:100%;
         float:left;
 
-        .logo {
-            @include transition-ease-in;
-            &:hover {
-                @include transition-ease-in;
-                background-color:$sidebar-link-bg-hover;
-            }
-        }
-
         .logo, .menu-icon{
             @include no-select;
-            padding-top:20px;
-            padding-bottom:30px;
-        }
-
-        .logo img{
-            height:20px;
-            @include media-breakpoint-down(sm) {
-                height:15px;
-            }
         }
 
         .menu-icon {
@@ -113,10 +97,18 @@
             height:15px;
             margin:10px;
             margin-right:20px;
+            padding-top:5px;
+            opacity:1;
+            fill: $icon-color;
 
             @include media-breakpoint-down(sm) {
                 display:block;
-                float:right;
+                position:absolute;
+
+                &.close {
+                    margin-top:5px;
+                    right:0;
+                }
             }
         }
 
@@ -127,6 +119,31 @@
             font-size:1.25em;
             font-weight:bold;
             text-align:center;
+            padding-top:15px;
+            padding-bottom:30px;
+
+            @include media-breakpoint-down(sm) {
+                font-size:1em;
+                margin-left:0px;
+                padding-top:12px;
+                padding-bottom:15px;
+            }
+
+            @include media-breakpoint-up(md) {
+                @include transition-ease-in;
+                &:hover {
+                    @include transition-ease-in;
+                    background-color:$sidebar-link-bg-hover;
+                }
+            }
+
+            img{
+                height:25px;
+
+                @include media-breakpoint-down(sm) {
+                    height:20px;
+                }
+            }
 
             a, a:hover {
                 color:inherit;
@@ -138,11 +155,8 @@
                 color: $icon-hover-color;
             }
 
-            @include media-breakpoint-down(sm) {
-                font-size:1em;
-                margin-left:0px;
-            }
         }
+
     }
 
 }

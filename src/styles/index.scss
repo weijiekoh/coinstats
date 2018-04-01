@@ -67,8 +67,9 @@ a {
 }
 
 
-@import './sidebar/index.scss';
-@import './content/index.scss';
+@import './sidebar.scss';
+@import './content.scss';
+@import './coinstats.scss';
 
 //@include media-breakpoint-down(xs) { ... }
 //@include media-breakpoint-down(sm) { ... }

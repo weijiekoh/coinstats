@@ -1,0 +1,50 @@
+.coinstats {
+    table {
+        thead {
+            @include media-breakpoint-down(xs) {
+                display: none;
+            }
+        }
+
+        .mini {
+            @include media-breakpoint-up(sm) {
+                display: none;
+            }
+            @include media-breakpoint-down(xs) {
+                display: table-header-group;
+            }
+        }
+
+        @include media-breakpoint-down(sm) {
+            table-layout:fixed;
+
+            td {
+                padding:0.75em;
+            }
+        }
+
+        .coin {
+            width:300px;
+            white-space: nowrap;
+            text-overflow:ellipsis;
+            overflow: hidden;
+
+            @include media-breakpoint-down(sm) {
+                width:250px;
+            }
+
+            @include media-breakpoint-down(xs) {
+                width:80px;
+                .name{
+                    display:none;
+                }
+            }
+        }
+
+        thead {
+            tr th {
+                border-top-width:0;
+            }
+        }
+    }
+}
