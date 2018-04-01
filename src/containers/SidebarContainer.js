@@ -1,13 +1,16 @@
 import { connect } from 'react-redux'
-import { changeDenomination, toggle, closeMenu } from '../actions/sidebar'
+import { toggle, closeMenu } from '../actions/sidebar'
+import { changeDenom } from '../actions/denomPicker'
 import Sidebar from '../components/Sidebar'
 
 const mapStateToProps = (state, ownProps) => {
-  return state.sidebar
+  return {
+    ...state.sidebar,
+    denomPicker: state.denomPicker
+  }
 }
 
 const mapDispatchToProps = dispatch => {
-  console.log('mapDispatchToProps')
   window.onkeydown = e => {
     if (e.keyCode === 27) {
       dispatch(closeMenu())
@@ -15,9 +18,9 @@ const mapDispatchToProps = dispatch => {
   }
 
   return {
-    changeDenomination: () => dispatch(changeDenomination()),
     toggle: () => dispatch(toggle()),
-    closeMenu: () => dispatch(closeMenu())
+    closeMenu: () => dispatch(closeMenu()),
+    changeDenom: denom => dispatch(changeDenom(denom))
   }
 }
 

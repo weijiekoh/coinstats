@@ -1,4 +1,5 @@
 @import '../../../node_modules/bootstrap/scss/bootstrap-grid.scss';
+@import './denomPicker.scss';
 @import '../variables.scss';
 @import '../utils.scss';
 
@@ -19,7 +20,6 @@
 
 .sidebar {
     background-color: $sidebar-bg;
-    padding:0;
 
     &.show{
         box-shadow: 0 20px 30px 2px rgba(0,0,0,.4);
@@ -43,15 +43,41 @@
         height:initial;
     }
 
-
     .sidebar-content{
         float:left;
         width:100%;
-        margin-top:10px;
-        margin-bottom:10px;
 
         @include media-breakpoint-down(sm) {
             display:none;
+        }
+
+        .sidebar-section{
+            float:left;
+            width:100%;
+            align-self:center;
+            display:block;
+            @include transition-ease-in;
+
+            &:nth-of-type(odd){
+                background-color:$sidebar-link-bg;
+
+                &:hover{
+                    background-color:$sidebar-link-bg-hover;
+                    @include transition-ease-in;
+                }
+            }
+
+            a {
+                color: $text;
+                padding:$sidebar-padding;
+                display:block;
+
+                &:hover{
+                    text-decoration:none;
+                    //color: $link;
+                    //@include transition-ease-in;
+                }
+            }
         }
     }
 
@@ -59,17 +85,32 @@
         width:100%;
         float:left;
 
+        .logo {
+            @include transition-ease-in;
+            &:hover {
+                @include transition-ease-in;
+                background-color:$sidebar-link-bg-hover;
+            }
+        }
+
         .logo, .menu-icon{
             @include no-select;
-            height:15px;
-            margin-top:10px;
-            margin-bottom:10px;
+            padding-top:20px;
+            padding-bottom:30px;
+        }
+
+        .logo img{
+            height:20px;
+            @include media-breakpoint-down(sm) {
+                height:15px;
+            }
         }
 
         .menu-icon {
             @include icon;
             display:none;
-            width:10px;
+            width:15px;
+            height:15px;
             margin:10px;
             margin-right:20px;
 

@@ -1,10 +1,3 @@
-const changeDenomination = denomination => {
-  return {
-    type: 'CHANGE_DENOMINATION',
-    denomination
-  }
-}
-
 const toggle = () => {
   return {
     type: 'TOGGLE'
@@ -17,4 +10,4 @@ const closeMenu = () => {
   }
 }
 
-export { changeDenomination, toggle, closeMenu }
+export { toggle, closeMenu }

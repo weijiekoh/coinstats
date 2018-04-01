@@ -25,6 +25,30 @@ a {
     }
 }
 
+.form-group {
+	label{
+        margin-right:1em;
+        margin-top:8px;
+	}
+
+    select {
+        @include pointer;
+        padding: 0.5rem 1rem 0.5rem 1rem;
+
+        &, &:focus {
+            background-color: $select-bg;
+            border-color:none;
+            border:0;
+            border-radius:0;
+            color:$text;
+        }
+    }
+
+    option{
+        color:$option-color;
+    }
+}
+
 .root-flex {
     display:flex;
 }

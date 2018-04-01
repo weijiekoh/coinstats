@@ -1,50 +1,60 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+
 import menuSvg from './icons/menu.js'
 import closeSvg from './icons/close.js'
 
+import DenomPicker from '../components/DenomPicker'
 
 // The sidebar is a an actual sidebar on medium screens and larger, but acts as
 // a hamburger menu on small screens and smaller
 
-const Sidebar = props => {
-  return (
-    <div>
-      { props.showMenu && <div className='overlay' /> }
-      <div className= {props.showMenu ? 'sidebar show' : 'sidebar'}>
-        <div>
-          <div className='menu-header'>
-            <div className='menu-icon' onClick={props.toggle} >
-              { props.showMenu ? closeSvg : menuSvg }
-            </div>
+const Sidebar = props => (
+  <div>
+    { props.showMenu && <div className='overlay' /> }
 
-            <span className='logo'>
-              <Link to='/'>
-                CoinStats
-              </Link>
-            </span>
+    <div className= {props.showMenu ? 'sidebar show' : 'sidebar'}>
+      <div>
+        <div className='menu-header'>
+          <div className='menu-icon' onClick={props.toggle} >
+            { props.showMenu ? closeSvg : menuSvg }
           </div>
 
-          <div className='sidebar-content'>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
+          <div className='logo'>
+            <Link to='/'>
+              <img alt='CoinStats' src='../images/logo.png' />
+            </Link>
+          </div>
+        </div>
+
+        <div className='sidebar-content'>
+          <div className='sidebar-section'>
+            <Link to='/converter'>
+              <span>Convert cryptocurrencies</span>
+            </Link>
+          </div>
+
+          <div className='sidebar-section'>
+            <DenomPicker 
+              allDenoms={props.denomPicker.allDenoms}
+              denom={props.denomPicker.denom}
+              changeDenom={props.changeDenom} />
+          </div>
+
+          <div className='sidebar-section'>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  </div>
+)
 
 Sidebar.propTypes = {
-  showMenu: PropTypes.bool.isRequired
+  showMenu: PropTypes.bool.isRequired,
+  toggle: PropTypes.func.isRequired,
+  changeDenom: PropTypes.func.isRequired,
+  denomPicker: PropTypes.object.isRequired
 }
 
 export default Sidebar

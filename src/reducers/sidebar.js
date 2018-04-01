@@ -14,11 +14,6 @@ const sidebar = (state = initialState, action) => {
         showMenu: false
       })
 
-    case 'CHANGE_DENOMINATION':
-      return Object.assign({}, state, {
-        denomination: action.denomination
-      })
-
     default:
       return state
   }
