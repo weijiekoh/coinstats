@@ -2,12 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 const DenomPicker = props => (
-  <div className='denompicker form-group row'>
-    <div className='col-12 col-sm-3 col-md-12'>
+  <div className='denompicker form-group row align-items-center'>
+    <div className='col-12 col-sm-4 col-md-12'>
       <label htmlFor='denom'>Change base currency:</label>
     </div>
 
-    <div className='col-sm-6 col-12'>
+    <div className='col'>
       <select
         name='denom'
         className='form-control'
