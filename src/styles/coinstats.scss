@@ -32,7 +32,30 @@
         }
     }
 
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
     table {
+        tbody {
+            animation-name: fadeIn;
+            animation-duration: 0.25s;
+            transition-timing-function: ease-in;
+            border:0;
+        }
+        tbody:before {
+            content: " ";
+            display: block;
+            line-height: -1px;
+            color: transparent;
+        }
+
         table-layout:fixed;
 
         tr, td, th, thead {

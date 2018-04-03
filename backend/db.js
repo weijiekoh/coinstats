@@ -109,7 +109,7 @@ class CoinStatsDb {
             datetime: Date.now()
           }, { transaction })
         } catch (err) {
-          console.error('Could not add to price history')
+          console.error(err, 'Could not add to price history')
         }
       }))
       console.log('Updated coin data.')

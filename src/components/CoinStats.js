@@ -54,20 +54,22 @@ class CoinStats extends Component {
             </tbody>
           }
         </table>
-        { this.props.isFetchingCoins && 
-          <Spinner /> 
-        }
+
+        { this.props.isFetchingCoins && <Spinner /> }
       </div>
     )
   }
 
   renderControls () {
+    const start = this.props.coinStart + 1
+    const increment = this.props.coinStart + this.props.coinLimit 
+    const end = increment > this.props.totalCoins ?  this.props.totalCoins : increment
     return (
       <div className='controls'>
         <div className='page-size'>
           {this.props.totalCoins &&
             <span>
-              {this.props.coinStart + 1} - {this.props.coinStart + this.props.coinLimit} of {this.props.totalCoins}
+              {start} - {end} of {this.props.totalCoins}
             </span>
           }
         </div>
@@ -79,9 +81,13 @@ class CoinStats extends Component {
             :
             <span className='arrow'></span>
           }
-          <span 
-            onClick={this.props.nextArrowClick}
-            className='arrow'>{arrowRight}</span>
+          {increment > this.props.totalCoins ?
+            <span className='arrow'></span>
+            :
+            <span onClick={this.props.nextArrowClick} className='arrow'>
+              {arrowRight}
+            </span>
+          }
         </div>
       </div>
     )
