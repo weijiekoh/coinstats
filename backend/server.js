@@ -10,6 +10,9 @@ const CoinStatsDb = require('./db')
 const routes = require('./routes')
 const queryCmc = require('./queryCmc')
 
+// The maximum number of coins that /api/coins will return
+const MAXCOINLISTLEN = 100
+
 const ISPROD = process.env.NODE_ENV === 'production'
 
 // Default port, mainly for dev: 8080
@@ -18,7 +21,7 @@ const PORT = process.env.PORT || 8080
 // Default interval: 4 min
 const POLLCMCINTERVALSECS =
   (process.env.POLL_CMC_INTERVAL_SECS * 1000) ||
-  (4 * 60 * 1000) 
+  (4 * 60 * 1000)
 
 // Set up the database
 const dbFilepath = path.join(__dirname, '../', 'db.sqlite3')
@@ -39,7 +42,7 @@ const start = () => {
   }
 
   // Set up URL routing. See ./route.js
-  app.use('/api', routes(db))
+  app.use('/api', routes(db, MAXCOINLISTLEN))
 
   // Set up CoinMarketCap API polling.
   // Don't abuse the CMC API
@@ -47,7 +50,8 @@ const start = () => {
     'Error: the environment variable POLL_CMC_INTERVAL_SECS ' +
     'must be 5 or greater')
 
-  // Run once, then make it run every POLL_CMC_INTERVAL_SECS seconds
+  // Query the CMC API once, then schedule to do so every
+  // POLL_CMC_INTERVAL_SECS seconds
   queryCmc(db)
   const pollCmcInterval = setInterval(() => {
     queryCmc(db)

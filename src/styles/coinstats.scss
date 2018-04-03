@@ -2,6 +2,10 @@
 @import 'utils.scss';
 
 .coinstats {
+    .spinner{
+        margin-top:2em;
+        margin-bottom:2em;
+    }
     .controls {
         margin-bottom:10px;
         text-align: right;
@@ -18,6 +22,8 @@
 
             .arrow {
                 @include icon;
+                width:16px;
+                display:inline-block;
 
                 &:first-of-type {
                     margin-right:1em;

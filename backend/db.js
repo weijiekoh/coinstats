@@ -109,11 +109,23 @@ class CoinStatsDb {
             datetime: Date.now()
           }, { transaction })
         } catch (err) {
-          console.error(err)
+          console.error('Could not add to price history')
         }
       }))
       console.log('Updated coin data.')
     })
+  }
+
+  async getNumCoins () {
+    try {
+      const count = await this.Coin.count({
+        col: 'Coin.id'
+      })
+      return count
+    } catch (err) {
+      console.error('Could not count coins')
+      throw new UnableToCountCoinsException()
+    }
   }
 
   async getCoin (cmcId) {
@@ -131,7 +143,7 @@ class CoinStatsDb {
       return coin.dataValues
 
     } catch (err) {
-      console.error(err)
+      console.error('Could not get coin data')
       throw new UnableFetchCoinException()
     }
   }
@@ -149,7 +161,7 @@ class CoinStatsDb {
         return c.dataValues
       })
     } catch (err) {
-      console.error(err)
+      console.error('Could not get list of coins')
       throw new UnableFetchCoinsException()
     }
   }
@@ -160,19 +172,13 @@ class CoinStatsDb {
     }
 
     if (typeof earliestTimestamp !== 'undefined') {
-      let validTimestamp =
-        earliestTimestamp != null &&
-        isFinite(earliestTimestamp) &&
-        earliestTimestamp >= 0
-
-      let datetime = new Date(earliestTimestamp * 1000)
-      validTimestamp &= datetime.toString() !== 'Invalid Date'
-
-      if (validTimestamp) {
+      try {
+        let datetime = new Date(earliestTimestamp * 1000)
         where.datetime = {
           [Sequelize.Op.gte]: datetime
         }
-      } else {
+      } catch (err) {
+        console.error('Invalid timestamp provided')
         throw new InvalidTimestampException()
       }
     }
@@ -197,7 +203,7 @@ class CoinStatsDb {
         })
       })
     } catch (err) {
-      console.error(err)
+      console.error('Could not fetch price history')
       throw new UnableFetchCoinException()
     }
   }
@@ -216,6 +222,11 @@ function UnableFetchCoinException (message) {
 function UnableFetchCoinsException (message) {
   this.message = message || 'Error fetching coin data'
   this.name = 'UnableFetchCoinsException'
+}
+
+function UnableToCountCoinsException (message) {
+  this.message = message || 'Error counting coins'
+  this.name = 'UnableToCountCoinsException'
 }
 
 module.exports = CoinStatsDb

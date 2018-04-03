@@ -13,19 +13,31 @@ const millify = value => {
 }
 
 const formatPrice = value => {
+  if (value == null) {
+    return 'n/a'
+  }
   return roundTo(parseFloat(value), 2)
 }
 
 const formatVol = value => {
+  if (value == null) {
+    return 'n/a'
+  }
   return millify(Math.round(parseFloat(value)))
 }
 
 const formatMcap = value => {
+  if (value == null) {
+    return 'n/a'
+  }
   return millify(parseFloat(value, 3))
 }
 
 const formatPercentChange = value => {
-  return roundTo(parseFloat(value), 1)
+  if (value == null) {
+    return 'n/a'
+  }
+  return roundTo(parseFloat(value), 1).toString() + '%'
 }
 
 export { formatPrice, formatMcap, formatVol, formatPercentChange }

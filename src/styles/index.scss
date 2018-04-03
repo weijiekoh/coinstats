@@ -9,7 +9,13 @@
 // Imports specific to this project:
 @import './variables.scss';
 @import './buttons.scss';
+@import './spinner.scss';
 @import './utils.scss';
+
+html {
+    // Force scrollbar to appear
+    overflow-y: scroll;
+}
 
 body {
     background-color: $main-bg;
