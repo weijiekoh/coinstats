@@ -136,18 +136,18 @@ class CoinStatsDb {
     }
   }
 
-  async getCoins (start, limit) {
+  async getCoins (start, limit, sortParam, direction) {
     try {
       const coins = await this.Coin.findAll({
         offset: start,
-        limit: limit
+        limit: limit,
+        order: [[sortParam, direction]]
       })
 
       return coins.map(c => {
         delete c.dataValues.id
         return c.dataValues
       })
-
     } catch (err) {
       console.error(err)
       throw new UnableFetchCoinsException()
@@ -156,7 +156,7 @@ class CoinStatsDb {
 
   async getPriceHistory (cmcId, earliestTimestamp) {
     let where = {
-      where: { cmc_id: cmcId }
+      cmc_id: cmcId
     }
 
     if (typeof earliestTimestamp !== 'undefined') {
@@ -169,7 +169,7 @@ class CoinStatsDb {
       validTimestamp &= datetime.toString() !== 'Invalid Date'
 
       if (validTimestamp) {
-        where.where.datetime = {
+        where.datetime = {
           [Sequelize.Op.gte]: datetime
         }
       } else {
@@ -186,7 +186,10 @@ class CoinStatsDb {
     }
 
     try {
-      return this.PriceHistory.findAll(where).then(priceHistory => {
+      return this.PriceHistory.findAll({
+        where: where,
+        order: [['datetime', 'ASC']]
+      }).then(priceHistory => {
         return priceHistory.map(ph => {
           delete ph.dataValues.id
           delete ph.dataValues.id

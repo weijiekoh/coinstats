@@ -88,9 +88,8 @@ const start = () => {
 }
 
 // Start the server once the database connection is alive
-db.sequelize.authenticate().then(() => {
-  db.sequelize.sync().then(start)
-}).catch(err => {
-  console.error('Unable to connect to the database.\n', err)
-})
-
+db.sequelize.authenticate()
+  .then(start)
+  .catch(err => {
+    console.error('Unable to connect to the database.\n', err)
+  })

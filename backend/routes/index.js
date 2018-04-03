@@ -24,18 +24,40 @@ function makeRouter (db) {
   })
 
   // Return a list of coins
-  // @start: start from this index
-  // @limit: the number of items to return
-  // TODO: implement sorting
+  // @t: start from this index
+  // @m: the number of items to return
+  // @s: the sort parameter
+  // @d: the sort direction
   router.get('/coins/', async (req, res) => {
-    const start = parseInt(req.query.start, 10)
-    const limit = parseInt(req.query.limit, 10)
+    const start = parseInt(req.query.t, 10)
+    const limit = parseInt(req.query.m, 10)
+    const sortParam = parseInt(req.query.s, 10)
+    const direcParam = parseInt(req.query.d, 10)
+    const DESC = 0
+    const ASC = 1
+    // The order of this array matters!
+    const sortParams = [
+      'symbol',             // 0
+      'name',               // 1
+      'price_usd',          // 2
+      'price_btc',          // 3
+      'market_cap_usd',     // 4
+      'volume_usd_24h',     // 5
+      'available_supply',   // 6
+      'total_supply',       // 7
+      'max_supply',         // 8
+      'percent_change_1h',  // 9
+      'percent_change_24h', // 10
+      'percent_change_7d'   // 11
+    ]
 
     if (limit === 0) {
+      // No need to query the DB
       res.type('text/json')
       return res.send([])
     }
 
+    // Validate the start and limit query params
     const validStart = !isNaN(start) && start >= 0
     const validLimit = !isNaN(limit) && limit >= 0
 
@@ -45,8 +67,22 @@ function makeRouter (db) {
       return res.send('Invalid start/limit params')
     }
 
+    // Validate the sort and direction query params. @d must be either 0 or 1,
+    // and @s must be an element in sortParams.keys()
+
+    const validSort = !isNaN(sortParam) && sortParam < sortParams.length && sortParam > 0
+    const validDirec = [ASC, DESC].indexOf(direcParam) > -1
+
+    if (!(validSort && validDirec)) {
+      res.type('text/json')
+      res.statusCode = 500
+      return res.send('Invalid sort/direc params')
+    }
+
+    const direction = direcParam === ASC ? 'ASC' : 'DESC'
+
     try {
-      const coins = await db.getCoins(start, limit)
+      const coins = await db.getCoins(start, limit, sortParams[sortParam], direction)
       res.type('text/json')
       return res.send(coins)
     } catch (err) {
