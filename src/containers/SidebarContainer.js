@@ -15,7 +15,7 @@ const mapDispatchToProps = dispatch => {
 
   return {
     toggle: () => dispatch(toggle()),
-    closeMenu: () => dispatch(closeMenu()),
+    closeMenu: () => dispatch(closeMenu())
   }
 }
 

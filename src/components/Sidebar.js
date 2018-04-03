@@ -10,10 +10,8 @@ import closeSvg from './icons/close.js'
 
 const Sidebar = props => (
   <div>
-    { props.showMenu && 
-        <div className='overlay'
-          onClick={props.closeMenu}
-        /> 
+    { props.showMenu &&
+      <div className='overlay' onClick={props.closeMenu} />
     }
 
     <div className= {props.showMenu ? 'sidebar show' : 'sidebar'}>
@@ -30,7 +28,6 @@ const Sidebar = props => (
             </Link>
           </div>
         </div>
-
 
         <div className='sidebar-content'>
           <div className='sidebar-section'>

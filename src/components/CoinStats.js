@@ -15,26 +15,37 @@ class CoinStats extends Component {
     )
   }
 
+
   renderTable (coins) {
+    const sort = sortParam => {
+      return () => this.props.sortCoinsClick(sortParam)
+    }
+
+    const makeTh = (className, sortField, text) => (
+      <th className={className} onClick={sort(sortField)}>
+        {text}
+      </th>
+    )
+
     return (
       <div>
         <table className='table'>
           <thead className='mini'>
             <tr>
-              <th className='coin'>Coin</th>
-              <th>Mkt cap</th>
-              <th>24h vol</th>
-              <th>Price (USD)</th>
-              <th className='change'>24h chg</th>
+              {makeTh('coin', 'symbol', 'Symbol')}
+              {makeTh('', 'market_cap_usd', 'Mkt cap')}
+              {makeTh('', 'volume_usd_24h', '24h vol')}
+              {makeTh('', 'price_usd', 'Price (USD)')}
+              {makeTh('change', 'percent_change_24h', '24h chg')}
             </tr>
           </thead>
           <thead>
             <tr>
-              <th className='coin'>Coin</th>
-              <th>Market Cap</th>
-              <th>24h Volume</th>
-              <th>Price (USD)</th>
-              <th>24h change</th>
+              {makeTh('coin', 'symbol', 'Symbol')}
+              {makeTh('', 'market_cap_usd', 'Market cap')}
+              {makeTh('', 'volume_usd_24h', '24h Volume')}
+              {makeTh('', 'price_usd', 'Price (USD)')}
+              {makeTh('', 'percent_change_24h', '24h change')}
             </tr>
           </thead>
 
@@ -42,7 +53,8 @@ class CoinStats extends Component {
             <tbody>
               {coins.map((d, i) =>
                 <tr key={i}>
-                  <td className='coin'>
+                  <td title={d.name}
+                    className='coin'>
                     <span>{d.symbol}</span> <span className='name'>({d.name})</span>
                   </td>
                   <td className='mcap'>{formatMcap(d.market_cap_usd)}</td>
@@ -69,7 +81,13 @@ class CoinStats extends Component {
         <div className='page-size'>
           {this.props.totalCoins &&
             <span>
-              {start} - {end} of {this.props.totalCoins}
+              <span>
+                <span className='range'>{start} - {end}</span> of {this.props.totalCoins}
+              </span>
+              {/*
+              <div className='size-chooser'>
+              </div>
+              */}
             </span>
           }
         </div>

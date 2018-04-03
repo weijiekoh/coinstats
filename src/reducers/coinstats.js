@@ -16,23 +16,29 @@ const coinstats = (state = initialState, action) => {
         coinStart: state.coinStart - state.coinLimit,
         isFetchingCoins: true
       })
+
     case 'NEXT_ARROW_CLICK':
       return Object.assign({}, state, {
         coins: null,
         coinStart: state.coinStart + state.coinLimit,
         isFetchingCoins: true
       })
+
     case 'FETCHING_COINS':
       return Object.assign({}, state, {
         coins: null,
         isFetchingCoins: true
       })
+
     case 'FETCHED_COINS':
       return Object.assign({}, state, {
         coins: action.coins,
         totalCoins: action.totalCoins,
-        isFetchingCoins: false
+        isFetchingCoins: false,
+        sortDirection: action.sortDirection,
+        sortParam: action.sortParam
       })
+
     default:
       return state
   }

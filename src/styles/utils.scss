@@ -8,6 +8,17 @@
     cursor:pointer;
 }
 
+@mixin action_link {
+    @include pointer;
+    color: $text;
+    @include transition-ease-in;
+
+    &:hover {
+        @include transition-ease-in;
+        color: $link-hover;
+    }
+}
+
 @mixin icon {
     @include pointer;
     fill: $icon-color;

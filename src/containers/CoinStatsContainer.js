@@ -1,6 +1,12 @@
 import { connect } from 'react-redux'
 import CoinStats from '../components/CoinStats'
-import { fetchedCoins, fetchingCoins, prevArrowClick, nextArrowClick } from '../actions/coinstats'
+import { sortParams, sortDirections } from '../lib/shared'
+import {
+  fetchedCoins,
+  fetchingCoins,
+  prevArrowClick,
+  nextArrowClick 
+} from '../actions/coinstats'
 
 const fetchCoinsAsync = (start, limit, sort, direc) => {
   return async (dispatch, getState) => {
@@ -13,7 +19,7 @@ const fetchCoinsAsync = (start, limit, sort, direc) => {
     await dispatch(fetchingCoins())
 
     const data = await (await fetch(url)).json()
-    return dispatch(fetchedCoins(data))
+    return dispatch(fetchedCoins(data, sort, direc))
   }
 }
 
@@ -45,12 +51,30 @@ const handleNextArrowClickAsync = () => {
   }
 }
 
+const handleSortCoinsClickAsync = nextParamName => {
+  return async (dispatch, getState) => {
+    const { ASC, DESC } = sortDirections
+    const nextParam = sortParams.indexOf(nextParamName)
+    const currentParam = getState().coinstats.sortParam
+    const currentDirec = getState().coinstats.sortDirection
+
+    let nextDirec = ASC
+    if (currentParam === nextParam) {
+      nextDirec = currentDirec === DESC ? ASC : DESC
+    }
+
+    const limit = getState().coinstats.coinLimit
+    return dispatch(fetchCoinsAsync(0, limit, nextParam, nextDirec))
+  }
+}
+
 const mapDispatchToProps = dispatch => {
   return {
+    sortCoinsClick: (...params) => dispatch(handleSortCoinsClickAsync(...params)),
     nextArrowClick: () => dispatch(handleNextArrowClickAsync()),
     prevArrowClick: () => dispatch(handlePrevArrowClickAsync()),
     fetchCoins: (...params) => dispatch(fetchCoinsAsync(...params)),
-    fetchedCoins: coins => dispatch(fetchedCoins(coins))
+    fetchedCoins: (...params) => dispatch(fetchedCoins(...params))
   }
 }
 

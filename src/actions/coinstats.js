@@ -15,11 +15,13 @@ const fetchingCoins = () => {
     type: 'FETCHING_COINS'
   }
 }
-const fetchedCoins = data => {
+const fetchedCoins = (data, sort, direc) => {
   return {
     type: 'FETCHED_COINS',
     coins: data.coins,
-    totalCoins: data.totalCoins
+    totalCoins: data.totalCoins,
+    sortDirection: direc,
+    sortParam: sort
   }
 }
 

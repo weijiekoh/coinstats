@@ -13,10 +13,17 @@ const millify = value => {
 }
 
 const formatPrice = value => {
-  if (value == null) {
+  if (value == null || isNaN(value)) {
     return 'n/a'
   }
-  return roundTo(parseFloat(value), 2)
+  const price = parseFloat(value)
+
+  if (price < 0.01) {
+    return '< 0.01'
+  }
+
+  const result = roundTo(price, 2)
+  return result
 }
 
 const formatVol = value => {
