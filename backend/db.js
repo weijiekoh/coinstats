@@ -121,11 +121,36 @@ class CoinStatsDb {
       const coin = await this.Coin.findOne({
         where: { cmc_id: cmcId }
       })
+
+      // This doesn't work in spite of what the docs say, so delete each id
+      // field manually
+      // this.Coin.findAll({
+      //   attributes: { exclude: ['id'] }
+      // });
       delete coin.dataValues.id
       return coin.dataValues
+
     } catch (err) {
       console.error(err)
       throw new UnableFetchCoinException()
+    }
+  }
+
+  async getCoins (start, limit) {
+    try {
+      const coins = await this.Coin.findAll({
+        offset: start,
+        limit: limit
+      })
+
+      return coins.map(c => {
+        delete c.dataValues.id
+        return c.dataValues
+      })
+
+    } catch (err) {
+      console.error(err)
+      throw new UnableFetchCoinsException()
     }
   }
 
@@ -181,8 +206,13 @@ function InvalidTimestampException (message) {
 }
 
 function UnableFetchCoinException (message) {
-  this.message = message || 'Error fetching coin data'
+  this.message = message || 'Error fetching data for this coin'
   this.name = 'UnableFetchCoinException'
+}
+
+function UnableFetchCoinsException (message) {
+  this.message = message || 'Error fetching coin data'
+  this.name = 'UnableFetchCoinsException'
 }
 
 module.exports = CoinStatsDb
