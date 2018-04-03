@@ -116,18 +116,6 @@ class CoinStatsDb {
     })
   }
 
-  async getNumCoins () {
-    try {
-      const count = await this.Coin.count({
-        col: 'Coin.id'
-      })
-      return count
-    } catch (err) {
-      console.error('Could not count coins')
-      throw new UnableToCountCoinsException()
-    }
-  }
-
   async getCoin (cmcId) {
     try {
       const coin = await this.Coin.findOne({
@@ -148,18 +136,36 @@ class CoinStatsDb {
     }
   }
 
-  async getCoins (start, limit, sortParam, direction) {
+  async getCoins (start, limit, sortParam, direction, minPriceUsd, minVolUsd) {
     try {
+      let where = {}
+
+      if (minPriceUsd != null) {
+        where.price_usd = { [Sequelize.Op.gte]: minPriceUsd }
+      }
+
+      if (minVolUsd != null) {
+        where.volume_usd_24h = { [Sequelize.Op.gte]: minVolUsd }
+      }
+
       const coins = await this.Coin.findAll({
         offset: start,
         limit: limit,
-        order: [[sortParam, direction]]
+        order: [[sortParam, direction]],
+        where
       })
 
-      return coins.map(c => {
+      const totalCoins = await this.Coin.count({
+        col: 'Coin.id',
+        where
+      })
+
+      const c = coins.map(c => {
         delete c.dataValues.id
         return c.dataValues
       })
+
+      return { coins: c, totalCoins }
     } catch (err) {
       console.error('Could not get list of coins')
       throw new UnableFetchCoinsException()

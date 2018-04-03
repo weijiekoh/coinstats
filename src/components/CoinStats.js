@@ -2,19 +2,13 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import { formatPrice, formatMcap, formatVol, formatPercentChange } from '../lib/formatters'
-import { arrowLeft, arrowRight } from './icons/arrows'
+import { arrowLeft, arrowRight, caretDown, caretUp } from './icons/arrows'
 import Spinner from './Spinner'
 
 class CoinStats extends Component {
   componentDidMount () {
-    this.props.fetchCoins(
-      this.props.coinStart,
-      this.props.coinLimit,
-      this.props.sortParam,
-      this.props.sortDirection
-    )
+    this.props.initialFetch()
   }
-
 
   renderTable (coins) {
     const sort = sortParam => {
@@ -72,41 +66,86 @@ class CoinStats extends Component {
     )
   }
 
-  renderControls () {
+  renderControls (isAtBottom) {
     const start = this.props.coinStart + 1
-    const increment = this.props.coinStart + this.props.coinLimit 
-    const end = increment > this.props.totalCoins ?  this.props.totalCoins : increment
+    const increment = this.props.coinStart + this.props.coinLimit
+    const end = increment > this.props.totalCoins ? this.props.totalCoins : increment
+
+    const optAnimClass = this.props.showFilters ? 'opened' : 'closed'
+
     return (
-      <div className='controls'>
-        <div className='page-size'>
-          {this.props.totalCoins &&
-            <span>
-              <span>
-                <span className='range'>{start} - {end}</span> of {this.props.totalCoins}
-              </span>
-              {/*
+      <div className='parent'>
+        <div className='controls'>
+          {isAtBottom ?
+            <div className='filters' />
+            :
+            <div className='filters'>
+              {this.props.showFilters ?
+                <div onClick={this.props.closeFilterClick}>
+                  <span>Filters{caretUp}</span>
+                </div>
+                :
+                <div onClick={this.props.openFilterClick}>
+                  <span>Filters{caretDown}</span>
+                </div>
+              }
+            </div>
+          }
+
+          <div className='page-size'>
+            {this.props.totalCoins &&
+                <span>
+                  <span>
+                    <span className='range'>{start} - {end}</span> of {this.props.totalCoins}
+                  </span>
+                  {/*
               <div className='size-chooser'>
               </div>
               */}
             </span>
-          }
+            }
+          </div>
+          <div className='nav-arrows'>
+            {this.props.coinStart > 0 ?
+                <span onClick={this.props.prevArrowClick} className='arrow'>
+                  {arrowLeft}
+                </span>
+                :
+                <span className='arrow' />
+            }
+            {increment > this.props.totalCoins ?
+                <span className='arrow' />
+                :
+                <span onClick={this.props.nextArrowClick} className='arrow'>
+                  {arrowRight}
+                </span>
+            }
+          </div>
         </div>
-        <div className='nav-arrows'>
-          {this.props.coinStart > 0 ?
-            <span onClick={this.props.prevArrowClick} className='arrow'>
-              {arrowLeft}
-            </span>
-            :
-            <span className='arrow'></span>
-          }
-          {increment > this.props.totalCoins ?
-            <span className='arrow'></span>
-            :
-            <span onClick={this.props.nextArrowClick} className='arrow'>
-              {arrowRight}
-            </span>
-          }
-        </div>
+
+        {!isAtBottom &&
+          <div className={'opts ' + optAnimClass}>
+            <div className='opt'>
+              <label htmlFor='vol_checkbox'>
+                <input
+                  onChange={this.props.volFilterClick}
+                  id='vol_checkbox' type='checkbox'
+                  checked={this.props.showHighVolume}
+                  value={this.props.showHighVolume}
+                />
+                24h volume above 10K
+              </label>
+
+              <label htmlFor='price_checkbox'>
+                <input id='price_checkbox' type='checkbox'
+                  onChange={this.props.priceFilterClick}
+                  checked={this.props.showPriceAboveCent}
+                  value={this.props.showPriceAboveCent} />
+                Price above 0.01 USD
+              </label>
+            </div>
+          </div>
+        }
       </div>
     )
   }
@@ -114,13 +153,13 @@ class CoinStats extends Component {
   render () {
     return (
       <div className='coinstats'>
-        { this.props.totalCoins && this.renderControls() }
+        { this.props.totalCoins && this.renderControls(false) }
 
         { this.renderTable(this.props.coins) }
 
         { !this.props.isFetchingCoins &&
             this.props.totalCoins &&
-            this.renderControls() }
+            this.renderControls(true) }
 
       </div>
     )

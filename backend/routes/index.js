@@ -35,6 +35,25 @@ function makeRouter (db, maxCoinListLen) {
     const limit = parseInt(req.query.m, 10)
     const sortParam = parseInt(req.query.s, 10)
     const direcParam = parseInt(req.query.d, 10)
+    const mp = parseFloat(req.query.mp, 10)
+    const mv = parseFloat(req.query.mv, 10)
+
+    // Validate minPrice and minVol
+    if (!isNaN(mp) && mp < 0) {
+      res.type('text/json')
+      res.statusCode = 500
+      return res.send('Invalid min price param')
+    }
+
+    if (!isNaN(minVol) && minVol < 0) {
+      res.type('text/json')
+      res.statusCode = 500
+      return res.send('Invalid min vol param')
+    }
+
+    let minPrice = isNaN(mp) ? null : mp
+    let minVol = isNaN(mv) ? null : mv
+
     const { DESC, ASC } = sortDirections
 
     if (limit === 0) {
@@ -69,13 +88,14 @@ function makeRouter (db, maxCoinListLen) {
 
     try {
       // Get the coin data
-      const coins = await db.getCoins(start, limit, sortParams[sortParam], direction)
+      const result = await db.getCoins(
+        start, limit, sortParams[sortParam], direction, minPrice, minVol
+      )
 
       // Return the total number of coins available
-      const totalCoins = await db.getNumCoins()
 
       res.type('text/json')
-      return res.send({ coins, totalCoins })
+      return res.send(result)
     } catch (err) {
       res.type('text/plain')
       res.statusCode = 500
