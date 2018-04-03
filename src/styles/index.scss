@@ -20,6 +20,7 @@ body {
 
 a {
     color: $link;
+
     &:hover{
         color: $link-hover;
     }
@@ -30,9 +31,6 @@ a {
         margin-right:1em;
         margin-top:8px;
 	}
-
-    option{
-    }
 
     select {
         @include pointer;
@@ -66,16 +64,12 @@ a {
     margin-bottom:0;
 }
 
-
 @import './sidebar.scss';
 @import './content.scss';
 @import './coinstats.scss';
 
-//@include media-breakpoint-down(xs) { ... }
-//@include media-breakpoint-down(sm) { ... }
-//@include media-breakpoint-down(md) { ... }
-//@include media-breakpoint-down(lg) { ... }
-//media-breakpoint-up
-//media-breakpoint-down
-//media-breakpoint-only
-//media-breakpoint-between
+// Bootstrap media query mixins:
+//@include media-breakpoint-up(xs) { }
+//@include media-breakpoint-down(sm) { }
+//@include media-breakpoint-between(md) { }
+//@include media-breakpoint-only(lg) { }

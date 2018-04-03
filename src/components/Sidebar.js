@@ -5,14 +5,16 @@ import { Link } from 'react-router-dom'
 import menuSvg from './icons/menu.js'
 import closeSvg from './icons/close.js'
 
-import DenomPicker from '../components/DenomPicker'
-
 // The sidebar is a an actual sidebar on medium screens and larger, but acts as
 // a hamburger menu on small screens and smaller
 
 const Sidebar = props => (
   <div>
-    { props.showMenu && <div className='overlay' /> }
+    { props.showMenu && 
+        <div className='overlay'
+          onClick={props.closeMenu}
+        /> 
+    }
 
     <div className= {props.showMenu ? 'sidebar show' : 'sidebar'}>
       <div>
@@ -43,13 +45,6 @@ const Sidebar = props => (
             </Link>
           </div>
 
-          <div className='sidebar-section nohover'>
-            <DenomPicker 
-              allDenoms={props.denomPicker.allDenoms}
-              denom={props.denomPicker.denom}
-              changeDenom={props.changeDenom} />
-          </div>
-
           <div className='sidebar-section'>
           </div>
 
@@ -61,9 +56,7 @@ const Sidebar = props => (
 
 Sidebar.propTypes = {
   showMenu: PropTypes.bool.isRequired,
-  toggle: PropTypes.func.isRequired,
-  changeDenom: PropTypes.func.isRequired,
-  denomPicker: PropTypes.object.isRequired
+  toggle: PropTypes.func.isRequired
 }
 
 export default Sidebar

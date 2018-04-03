@@ -1,49 +1,94 @@
+const nodeCleanup = require('node-cleanup')
 const path = require('path')
 const logger = require('morgan')
 const express = require('express')
 const helmet = require('helmet')
-const routes = require('./routes')
 const compression = require('compression')
+const assert = require('assert').strict
 
-const app = express()
-app.use(helmet())
-app.use(compression())
+const CoinStatsDb = require('./db')
+const routes = require('./routes')
+const queryCmc = require('./queryCmc')
 
-const isProd = process.env.NODE_ENV === 'production'
+const ISPROD = process.env.NODE_ENV === 'production'
 
-// Set up logging
-if (isProd) {
-  app.use(logger('common'))
-} else {
-  app.use(logger('dev'))
-}
+// Default port, mainly for dev: 8080
+const PORT = process.env.PORT || 8080
 
-// Set up URL routing. See ./route.js
-app.use('/api', routes)
+// Default interval: 4 min
+const POLLCMCINTERVALSECS =
+  (process.env.POLL_CMC_INTERVAL_SECS * 1000) ||
+  (4 * 60 * 1000) 
 
-// Serve static files from the build/ directory
-const buildDir = path.join(__dirname, '../', 'build')
-app.use(express.static(buildDir))
+// Set up the database
+const dbFilepath = path.join(__dirname, '../', 'db.sqlite3')
+const sqliteConnStr = 'sqlite:' + dbFilepath
+const connStr = process.env.DATABASE_URL || sqliteConnStr
+const db = new CoinStatsDb(connStr, ISPROD)
 
-// Set up error handling
-if (isProd) {
-  app.use(function (err, req, res, next) {
-    res.type('text/plain')
-    res.status(err.status || 500).send('Internal server error')
+const start = () => {
+  const app = express()
+  app.use(helmet())
+  app.use(compression())
+
+  // Set up logging
+  if (ISPROD) {
+    app.use(logger('common'))
+  } else {
+    app.use(logger('dev'))
+  }
+
+  // Set up URL routing. See ./route.js
+  app.use('/api', routes(db))
+
+  // Set up CoinMarketCap API polling.
+  // Don't abuse the CMC API
+  assert(POLLCMCINTERVALSECS > 5000,
+    'Error: the environment variable POLL_CMC_INTERVAL_SECS ' +
+    'must be 5 or greater')
+
+  // Run once, then make it run every POLL_CMC_INTERVAL_SECS seconds
+  queryCmc(db)
+  const pollCmcInterval = setInterval(() => {
+    queryCmc(db)
+  }, POLLCMCINTERVALSECS)
+
+  // Clear the interval when the process exits
+  nodeCleanup((exitCode, signal) => {
+    clearInterval(pollCmcInterval)
+    if (!ISPROD) {
+      console.log('\nCleared CMC poll interval and exiting.')
+    }
   })
-} else {
-  app.use(function (err, req, res, next) {
-    res.type('text/plain')
-    res.status(err.status || 500).send(err.stack)
+
+  // Serve static files from the build/ directory
+  const buildDir = path.join(__dirname, '../', 'build')
+  app.use(express.static(buildDir))
+
+  // Set up error handling
+  if (ISPROD) {
+    app.use((err, req, res, next) => {
+      res.type('text/plain')
+      res.status(err.status || 500).send('Internal server error')
+    })
+  } else {
+    app.use((err, req, res, next) => {
+      res.type('text/plain')
+      res.status(err.status || 500).send(err.stack)
+    })
+  }
+
+  // Start the server
+  app.listen(PORT, () => {
+    if (!ISPROD) {
+      console.log('Backend running in dev mode: http://localhost:' +
+        PORT.toString())
+    }
   })
 }
 
-// Start the server
-const defaultPort = 8080
-const port = process.env.PORT || defaultPort
+// Start the server once the database connection is alive
+db.sequelize.authenticate().then(start).catch(err => {
+  console.error('Unable to connect to the database.\n', err)
+})
 
-if (process.env.DEV) {
-  console.log('Backend running in dev mode: http://localhost:' + port.toString())
-}
-
-app.listen(port)

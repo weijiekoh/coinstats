@@ -2,9 +2,7 @@ import { connect } from 'react-redux'
 import CoinStats from '../components/CoinStats'
 
 const mapStateToProps = (state, ownProps) => {
-  return Object.assign({}, state, {
-    denom: state.denomPicker.denom
-  })
+  return state.coinstats
 }
 
 const mapDispatchToProps = dispatch => {

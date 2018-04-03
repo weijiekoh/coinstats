@@ -1,5 +1,4 @@
 @import '../../node_modules/bootstrap/scss/bootstrap-grid.scss';
-@import './denomPicker.scss';
 @import './variables.scss';
 @import './utils.scss';
 
@@ -32,7 +31,7 @@
     @include media-breakpoint-up(md) {
         min-height:100vh;
         height:100%;
-        width:250px;
+        width:200px;
     }
 
     @include media-breakpoint-down(sm) {
@@ -52,6 +51,7 @@
         }
 
         .sidebar-section{
+            @include no-select;
             float:left;
             width:100%;
             align-self:center;
@@ -119,7 +119,7 @@
             font-size:1.25em;
             font-weight:bold;
             text-align:center;
-            padding-top:15px;
+            padding-top:30px;
             padding-bottom:30px;
 
             @include media-breakpoint-down(sm) {

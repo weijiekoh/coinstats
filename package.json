@@ -6,12 +6,15 @@
   "dependencies": {
     "@ibm/type": "^0.5.4",
     "bootstrap": "4.0.0",
+    "chance": "^1.0.13",
     "express": "^4.16.3",
     "helmet": "^3.12.0",
-    "millify": "^2.0.1",
     "morgan": "^1.9.0",
+    "node-cleanup": "^2.1.2",
     "node-sass-chokidar": "^1.2.2",
     "npm-run-all": "^4.1.2",
+    "pg": "^7.4.1",
+    "pg-hstore": "^2.3.2",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
     "react-redux": "^5.0.7",
@@ -19,22 +22,28 @@
     "react-scripts": "1.1.1",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
-    "round-to": "^2.0.0"
+    "round-to": "^2.0.0",
+    "sequelize": "^4.37.5",
+    "unitize": "^0.0.3"
   },
   "scripts": {
     "start-js": "react-scripts start",
+    "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
     "start": "npm-run-all -p watch-css start-js",
     "build-js": "react-scripts build",
-    "build": "npm-run-all -p build-css build-js",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "dev": "nodemon backend/server.js",
-    "run-prod": "NODE_ENV=production PORT=8000 node backend/server.js",
-    "prod": "run-s build run-prod",
     "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
-    "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive"
+    "build-frontend": "npm-run-all -p build-css build-js",
+    "build-backend": "rm -rf build/backend && mkdir -p build/backend && babel ./backend/ --out-dir build/backend/ --copy-files",
+    "run-prod": "NODE_ENV=production PORT=8000 node build/backend/server.js",
+
+    "prod": "run-s build-frontend build-backend run-prod",
+    "dev": "nodemon --exec babel-node -- backend/server.js",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.9.0",
@@ -42,6 +51,7 @@
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.0.1",
     "nodemon": "^1.17.2",
-    "redux-devtools": "^3.4.1"
+    "redux-devtools": "^3.4.1",
+    "sqlite3": "^4.0.0"
   }
 }

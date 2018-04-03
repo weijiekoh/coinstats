@@ -11,4 +11,8 @@
         padding-left:10px;
         padding-top:70px;
     }
+
+    @include media-breakpoint-down(xs) {
+        padding-top:60px;
+    }
 }
