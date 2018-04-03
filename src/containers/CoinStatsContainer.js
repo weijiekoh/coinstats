@@ -9,7 +9,10 @@ import {
   openFilterClick,
   closeFilterClick,
   priceFilterClick,
-  volFilterClick
+  volFilterClick,
+  resetPagination,
+  showCoinInfo,
+  hideCoinInfo
 } from '../actions/coinstats'
 
 const fetchCoinsAsync = (start, limit, sort, direc, minPrice, minVol) => {
@@ -70,6 +73,7 @@ const handleNextArrowClickAsync = () => {
 
 const handleSortCoinsClickAsync = nextParamName => {
   return async (dispatch, getState) => {
+    await dispatch(resetPagination())
     const state = getState().coinstats
     const { ASC, DESC } = sortDirections
     const nextParam = sortParams.indexOf(nextParamName)
@@ -102,7 +106,20 @@ const handleVolFilterClickAsync = () => {
   }
 }
 
+const handleResetPaginationAsync = () => {
+  return async (dispatch, getState) => {
+    await dispatch(resetPagination())
+    return dispatchFetchCoinsAsync(dispatch, getState)
+  }
+}
+
 const mapDispatchToProps = dispatch => {
+  window.onkeydown = e => {
+    if (e.keyCode === 27) {
+      dispatch(hideCoinInfo())
+    }
+  }
+
   return {
     sortCoinsClick: (...params) => dispatch(handleSortCoinsClickAsync(...params)),
     nextArrowClick: () => dispatch(handleNextArrowClickAsync()),
@@ -113,11 +130,16 @@ const mapDispatchToProps = dispatch => {
     closeFilterClick: () => dispatch(closeFilterClick()),
     priceFilterClick: () => dispatch(handlePriceFilterClickAsync()),
     volFilterClick: () => dispatch(handleVolFilterClickAsync()),
-    initialFetch: () => dispatch(initialFetch())
+    initialFetch: () => dispatch(initialFetch()),
+    resetPagination: () => dispatch(handleResetPaginationAsync()),
+    showCoinInfo: coin => dispatch(showCoinInfo(coin)),
+    hideCoinInfo: () => dispatch(hideCoinInfo())
   }
 }
 
-export default connect(
+const CoinStatsContainer = connect(
   mapStateToProps,
   mapDispatchToProps
 )(CoinStats)
+
+export default CoinStatsContainer

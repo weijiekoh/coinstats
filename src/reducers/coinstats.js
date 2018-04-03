@@ -1,5 +1,8 @@
 import { sortParams, sortDirections } from '../lib/shared'
 
+const defaultCoinStart = 0
+const defaultCoinLimit = 20
+
 const initialState = {
   isFetchingCoins: false,
   showFilters: false,
@@ -7,14 +10,33 @@ const initialState = {
   showPriceAboveCent: true,
   minVol: 10000,
   minPrice: 0.01,
-  coinStart: 0,
-  coinLimit: 20,
+  coinStart: defaultCoinStart,
+  coinLimit: defaultCoinLimit,
   sortParam: sortParams.indexOf('market_cap_usd'),
-  sortDirection: sortDirections.DESC
+  sortDirection: sortDirections.DESC,
+  faves: [],
+  coinInfoVisible: false
 }
 
 const coinstats = (state = initialState, action) => {
   switch (action.type) {
+    case 'HIDE_COIN_INFO':
+      return Object.assign({}, state, {
+        coinInfoVisible: false
+      })
+
+    case 'SHOW_COIN_INFO':
+      return Object.assign({}, state, {
+        coinInfoVisible: true,
+        coinToShow: action.coin
+      })
+
+    case 'RESET_PAGINATION':
+      return Object.assign({}, state, {
+        coinStart: defaultCoinStart,
+        coinLimit: defaultCoinLimit
+      })
+
     case 'PRICE_FILTER_CLICK':
       const f = !state.showPriceAboveCent
       return Object.assign({}, state, {

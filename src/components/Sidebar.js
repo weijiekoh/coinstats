@@ -23,16 +23,18 @@ const Sidebar = props => (
           </div>
 
           <div className='logo'>
-            <Link to='/' onClick={props.closeMenu}>
+            {/*<Link to='/' onClick={props.closeMenu}>*/}
+            <a href='/'>
               <img alt='CoinStats' src='../images/logo.png' />
-            </Link>
+            </a>
+            {/*</Link>*/}
           </div>
         </div>
 
         <div className='sidebar-content'>
           <div className='sidebar-section'>
             <Link to='/' onClick={props.closeMenu}>
-              Home
+              Market Stats
             </Link>
           </div>
 
@@ -43,6 +45,11 @@ const Sidebar = props => (
           </div>
 
           <div className='sidebar-section'>
+            {
+              props.faves.map(f => (
+                <p>f.symbol</p>
+              ))
+            }
           </div>
 
         </div>

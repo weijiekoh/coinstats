@@ -12,7 +12,7 @@ const millify = value => {
   return result
 }
 
-const formatPrice = value => {
+const formatPrice = (value, roundDigits = 2) => {
   if (value == null || isNaN(value)) {
     return 'n/a'
   }
@@ -22,7 +22,7 @@ const formatPrice = value => {
     return '< 0.01'
   }
 
-  const result = roundTo(price, 2)
+  const result = roundTo(price, roundDigits)
   return result
 }
 
@@ -40,6 +40,13 @@ const formatMcap = value => {
   return millify(parseFloat(value, 3))
 }
 
+const formatSupply = value => {
+  if (value == null) {
+    return 'n/a'
+  }
+  return millify(parseFloat(value, 3))
+}
+
 const formatPercentChange = value => {
   if (value == null) {
     return 'n/a'
@@ -47,4 +54,4 @@ const formatPercentChange = value => {
   return roundTo(parseFloat(value), 1).toString() + '%'
 }
 
-export { formatPrice, formatMcap, formatVol, formatPercentChange }
+export { formatPrice, formatMcap, formatVol, formatPercentChange, formatSupply }

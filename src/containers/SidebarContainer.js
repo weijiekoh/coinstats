@@ -3,7 +3,9 @@ import { toggle, closeMenu } from '../actions/sidebar'
 import Sidebar from '../components/Sidebar'
 
 const mapStateToProps = (state, ownProps) => {
-  return state.sidebar
+  return Object.assign({}, state.sidebar, {
+    faves: state.coinstats.faves
+  })
 }
 
 const mapDispatchToProps = dispatch => {

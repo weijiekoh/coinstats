@@ -1,3 +1,22 @@
+const hideCoinInfo = coin => {
+  return {
+    type: 'HIDE_COIN_INFO',
+  }
+}
+
+const showCoinInfo = coin => {
+  return {
+    type: 'SHOW_COIN_INFO',
+    coin
+  }
+}
+
+const resetPagination = () => {
+  return {
+    type: 'RESET_PAGINATION'
+  }
+}
+
 const priceFilterClick = () => {
   return {
     type: 'PRICE_FILTER_CLICK'
@@ -59,5 +78,8 @@ export {
   prevArrowClick,
   nextArrowClick,
   priceFilterClick,
-  volFilterClick
+  volFilterClick,
+  resetPagination,
+  showCoinInfo,
+  hideCoinInfo
 }

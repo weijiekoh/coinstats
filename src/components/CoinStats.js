@@ -1,8 +1,14 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { formatPrice, formatMcap, formatVol, formatPercentChange } from '../lib/formatters'
+import {
+  formatPrice,
+  formatMcap,
+  formatVol,
+  formatPercentChange,
+} from '../lib/formatters'
 import { arrowLeft, arrowRight, caretDown, caretUp } from './icons/arrows'
+import SingleCoin from './SingleCoin'
 import Spinner from './Spinner'
 
 class CoinStats extends Component {
@@ -23,7 +29,7 @@ class CoinStats extends Component {
 
     return (
       <div>
-        <table className='table'>
+        <table className='table sortable'>
           <thead className='mini'>
             <tr>
               {makeTh('coin', 'symbol', 'Symbol')}
@@ -46,9 +52,10 @@ class CoinStats extends Component {
           { !this.props.isFetchingCoins && this.props.coins &&
             <tbody>
               {coins.map((d, i) =>
-                <tr key={i}>
-                  <td title={d.name}
-                    className='coin'>
+                <tr className='coinrow'
+                  onClick={() => this.props.showCoinInfo(d)}
+                  key={i}>
+                  <td title={d.name} className='coin'>
                     <span>{d.symbol}</span> <span className='name'>({d.name})</span>
                   </td>
                   <td className='mcap'>{formatMcap(d.market_cap_usd)}</td>
@@ -153,14 +160,20 @@ class CoinStats extends Component {
   render () {
     return (
       <div className='coinstats'>
-        { this.props.totalCoins && this.renderControls(false) }
+        { !this.props.coinInfoVisible && this.props.totalCoins && this.renderControls(false) }
 
-        { this.renderTable(this.props.coins) }
+        { !this.props.coinInfoVisible && this.renderTable(this.props.coins) }
 
-        { !this.props.isFetchingCoins &&
-            this.props.totalCoins &&
-            this.renderControls(true) }
+        { this.props.coinInfoVisible &&
+          <SingleCoin
+            coin={this.props.coinToShow}
+            hideCoinInfo={this.props.hideCoinInfo} />
+        }
 
+        { !this.props.coinInfoVisible &&
+          !this.props.isFetchingCoins &&
+          this.props.totalCoins &&
+          this.renderControls(true) }
       </div>
     )
   }
@@ -168,8 +181,17 @@ class CoinStats extends Component {
 
 CoinStats.propTypes = {
   fetchCoins: PropTypes.func.isRequired,
+  initialFetch: PropTypes.func.isRequired,
+  sortCoinsClick: PropTypes.func.isRequired,
+  showCoinInfo: PropTypes.func.isRequired,
+  showFilters: PropTypes.bool.isRequired,
+  openFilterClick: PropTypes.func.isRequired,
+  closeFilterClick: PropTypes.func.isRequired,
   totalCoins: PropTypes.number,
-  coins: PropTypes.array
+  coinStart: PropTypes.number.isRequired,
+  coinLimit: PropTypes.number.isRequired,
+  coins: PropTypes.array,
+  isFetchingCoins: PropTypes.bool.isRequired
 }
 
 export default CoinStats
