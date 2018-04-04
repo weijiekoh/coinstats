@@ -124,7 +124,6 @@ class Converter extends React.Component {
 }
 
 Converter.propTypes = {
-  //convertAmts: PropTypes.func.isRequired,
   setFromCurrency: PropTypes.func.isRequired,
   setToCurrency: PropTypes.func.isRequired,
   setFromAmt: PropTypes.func.isRequired

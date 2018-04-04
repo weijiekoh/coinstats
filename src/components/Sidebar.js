@@ -20,6 +20,7 @@ class Sidebar extends Component {
     }
   }
 
+
   render () {
     const props = this.props
     return (
@@ -33,22 +34,13 @@ class Sidebar extends Component {
               { props.showMenu ? closeSvg : menuSvg }
             </div>
 
-            <Link to='/' onClick={e => {
-              e.preventDefault()
-              this.props.history.push('/')
-            }}>
+            <Link to='/' onClick={props.closeMenu}>
             <div className='logo'>
               <img alt='CoinStats' src='../images/logo.png' />
             </div>
           </Link>
 
           <div className='sidebar-content'>
-            <div className='sidebar-section'>
-              <Link to='/' onClick={props.closeMenu}>
-                Market Stats
-              </Link>
-            </div>
-
             <div className='sidebar-section'>
               <Link to='/converter' onClick={props.closeMenu}>
                 Currency Converter

@@ -1,6 +1,5 @@
 import { connect } from 'react-redux'
 import { toggle, closeMenu } from '../actions/sidebar'
-import { withRouter } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 
 const mapStateToProps = (state, ownProps) => {
@@ -17,7 +16,7 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default withRouter(connect(
+export default (connect(
   mapStateToProps,
   mapDispatchToProps
 )(Sidebar))
