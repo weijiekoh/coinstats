@@ -185,7 +185,7 @@ class CoinStatsDb {
       })
 
       const totalCoins = await this.Coin.count({
-        col: 'Coin.id',
+        col: 'id',
         where
       })
 

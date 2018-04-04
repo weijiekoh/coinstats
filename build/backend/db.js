@@ -348,7 +348,7 @@ var CoinStatsDb = function () {
                 coins = _context7.sent;
                 _context7.next = 9;
                 return this.Coin.count({
-                  col: 'Coin.id',
+                  col: 'id',
                   where: where
                 });
 
