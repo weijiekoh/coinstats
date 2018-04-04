@@ -20,7 +20,6 @@ class Sidebar extends Component {
     }
   }
 
-
   render () {
     const props = this.props
     return (

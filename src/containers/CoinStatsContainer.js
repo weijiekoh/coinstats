@@ -164,12 +164,6 @@ const handleToggleFave = coin => {
 }
 
 const mapDispatchToProps = dispatch => {
-  window.onkeydown = e => {
-    if (e.keyCode === 27) {
-      dispatch(hideCoinInfo())
-    }
-  }
-
   return {
     sortCoinsClick: (...params) => dispatch(handleSortCoinsClickAsync(...params)),
     nextArrowClick: () => dispatch(handleNextArrowClickAsync()),

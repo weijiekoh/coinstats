@@ -15,6 +15,12 @@ import Spinner from './Spinner'
 
 class CoinStats extends React.Component {
   componentDidMount () {
+    window.onkeydown = e => {
+      if (e.keyCode === 27) {
+        this.props.hideCoinInfo()
+      }
+    }
+
     this.props.hideCoinInfo()
     this.props.initialFetch()
   }
