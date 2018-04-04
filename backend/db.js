@@ -5,7 +5,7 @@ class CoinStatsDb {
     // Set up the database connection
     this.sequelize = new Sequelize(connStr, {
       operatorsAliases: false,
-      logging: () => isProd,
+      logging: console.log,
       define: {
         underscored: true,
         freezeTableName: true
