@@ -1,0 +1,87 @@
+@import './variables.scss';
+@import '../../node_modules/bootstrap/scss/bootstrap-grid.scss';
+
+.converter {
+    .amt_input {
+        font-size: 0.875rem;
+        display: block;
+        width: 100%;
+        height: 2.5rem;
+        min-width: 10rem;
+        padding: 0 1rem;
+        color: $text;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 1px solid transparent;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        box-sizing: border-box;
+        display: inline-flex;
+        width: 100%;
+        font-weight: 300;
+        border-radius: 0;
+        margin-bottom:1em;
+    }
+
+    .Select {
+        font-size: 0.875rem;
+        position: relative;
+        list-style: none;
+        display: block;
+        width: 100%;
+        height: 2.5rem;
+        cursor: pointer;
+        color: $text;
+        border-radius: 0;
+
+        .Select-control {
+            border-radius: 0;
+            background-color: $select-bg;
+            color: $text;
+            //outline-color: $select-outline;
+            border-color:none;
+            outline: 1px solid transparent;
+            box-shadow: 0 -1px 0 0 $select-outline, 1px 0 0 0 $select-outline, 
+                        -1px 0 0 0 $select-outline;
+        }
+
+        .Select-menu-outer {
+            border-radius: 0;
+        }
+
+        input, div, span {
+            background-color: $select-bg !important;
+            border-radius: 1;
+            color: $text !important;
+        }
+    }
+
+    input {
+        margin-bottom:1em;
+    }
+
+    .from {
+        margin-bottom: 2em;
+
+        @include media-breakpoint-down(xs) {
+            margin-top:1em;
+        }
+    }
+
+    .amt {
+        @include media-breakpoint-down(xs) {
+            margin-top:1.5em;
+        }
+    }
+
+    .calculate {
+        margin-top:1em;
+    }
+
+    .results{
+        margin-top:1em;
+        line-height:2em;
+        span, pre {
+            font-size:20px;
+        }
+    }
+}

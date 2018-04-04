@@ -1,3 +1,5 @@
+import 'babel-core/register'
+import 'babel-polyfill'
 const nodeCleanup = require('node-cleanup')
 const path = require('path')
 const logger = require('morgan')
@@ -66,7 +68,10 @@ const start = () => {
   })
 
   // Serve static files from the build/ directory
-  const buildDir = path.join(__dirname, '../', 'build')
+  let buildDir = path.join(__dirname, '../', 'build')
+  if (ISPROD) {
+    buildDir = path.join(__dirname, '../')
+  }
   app.use(express.static(buildDir))
 
   // Set up error handling
@@ -84,7 +89,9 @@ const start = () => {
 
   // Start the server
   app.listen(PORT, () => {
-    if (!ISPROD) {
+    if (ISPROD) {
+      console.log('Running on port ' + PORT.toString())
+    } else {
       console.log('Backend running in dev mode: http://localhost:' +
         PORT.toString())
     }

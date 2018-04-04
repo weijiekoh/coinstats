@@ -1,6 +1,7 @@
 @import '../../node_modules/bootstrap/scss/bootstrap-grid.scss';
 @import 'utils.scss';
 @import 'variables.scss';
+@import 'stars.scss';
 
 .coinstats {
     .spinner{
@@ -129,6 +130,8 @@
     }
 
     table {
+        table-layout:fixed;
+
         &.sortable {
             tr th {
                 @include pointer;
@@ -137,6 +140,7 @@
                 }
             }
         }
+
         tbody {
             animation-name: fadeIn;
             animation-duration: 0.25s;
@@ -146,9 +150,9 @@
             overflow-y: auto;
             overflow-x: hidden;
 
-            tr.coinrow {
+            .coinrow td{
                 @include pointer;
-                &:hover {
+                &:not(.star):hover  {
                     text-decoration:underline;
                 }
             }
@@ -161,8 +165,6 @@
             color: transparent;
         }
 
-        table-layout:fixed;
-
         tr, td, th, thead {
             border:none;
         }
@@ -174,6 +176,18 @@
             @include media-breakpoint-down(xs) {
                 padding:0.5em;
                 font-size: 0.8rem;
+            }
+        }
+
+        .star {
+            max-width:20px;
+            @include pointer;
+            @include media-breakpoint-down(xs) {
+                display:none;
+            }
+            svg {
+                width:15px;
+                height:15px;
             }
         }
 
@@ -233,14 +247,17 @@
         }
 
         .coin {
-            width:300px;
-            left:0;
+            left: 0;
             white-space: nowrap;
-            text-overflow:ellipsis;
+            text-overflow: ellipsis;
             overflow: hidden;
 
+            @include media-breakpoint-down(xl) {
+                width:350px;
+            }
+
             @include media-breakpoint-down(md) {
-                width:250px;
+                width:170px;
             }
 
             @include media-breakpoint-down(xs) {
@@ -248,59 +265,6 @@
                 .name{
                     display:none;
                 }
-            }
-        }
-    }
-
-    .singlecoin {
-        margin-top:1em;
-        animation-name: fadeIn;
-        animation-duration: 0.25s;
-        transition-timing-function: ease-in;
-
-        .close-btn {
-            display:block;
-            text-align:right;
-            position:relative;
-            float:right;
-            svg {
-                height:15px;
-                width:15px;
-                @include icon;
-            }
-        }
-
-        .name {
-            font-size:2em;
-            font-weight:bold;
-
-            .symbol {
-                font-weight:normal;
-            }
-        }
-        
-        .subtitle {
-            font-size:1.5em;
-            font-weight:bold;
-        }
-
-        table {
-            margin-bottom:2em;
-            thead {
-                @include media-breakpoint-down(xs) {
-                    display: table-header-group;
-                }
-            }
-
-            td, th {
-                border-left: 1px solid $table-border-color;
-                &:first-of-type {
-                    border-left:0;
-                }
-            }
-
-            tbody {
-                animation-name: none;
             }
         }
     }

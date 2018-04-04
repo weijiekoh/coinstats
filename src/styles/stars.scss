@@ -1,0 +1,23 @@
+@import 'utils.scss';
+@import 'variables.scss';
+.empty-star svg {
+    @include pointer;
+    @include transition-ease-in;
+    fill:$empty-star-color;
+
+    &:hover {
+        @include transition-ease-in;
+        fill:$full-star-color;
+    }
+}
+
+.full-star svg {
+    @include pointer;
+    @include transition-ease-in;
+    fill:$full-star-color;
+
+    &:hover {
+    @include transition-ease-in;
+        fill:$empty-star-color;
+    }
+}

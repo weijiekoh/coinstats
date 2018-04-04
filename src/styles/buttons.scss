@@ -45,3 +45,8 @@ button.secondary {
         background-color: $button-secondary-hover-bg-color;
     }
 }
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}

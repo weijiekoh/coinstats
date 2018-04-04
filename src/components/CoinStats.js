@@ -5,14 +5,16 @@ import {
   formatPrice,
   formatMcap,
   formatVol,
-  formatPercentChange,
+  formatPercentChange
 } from '../lib/formatters'
 import { arrowLeft, arrowRight, caretDown, caretUp } from './icons/arrows'
+import star from './icons/star'
 import SingleCoin from './SingleCoin'
 import Spinner from './Spinner'
 
 class CoinStats extends Component {
   componentDidMount () {
+    this.props.hideCoinInfo()
     this.props.initialFetch()
   }
 
@@ -25,6 +27,12 @@ class CoinStats extends Component {
       <th className={className} onClick={sort(sortField)}>
         {text}
       </th>
+    )
+
+    const makeStar = (coin, className) => (
+      <span className={'star ' + className}>
+        {star}
+      </span>
     )
 
     return (
@@ -41,6 +49,7 @@ class CoinStats extends Component {
           </thead>
           <thead>
             <tr>
+              <th></th>
               {makeTh('coin', 'symbol', 'Symbol')}
               {makeTh('', 'market_cap_usd', 'Market cap')}
               {makeTh('', 'volume_usd_24h', '24h Volume')}
@@ -52,9 +61,20 @@ class CoinStats extends Component {
           { !this.props.isFetchingCoins && this.props.coins &&
             <tbody>
               {coins.map((d, i) =>
-                <tr className='coinrow'
-                  onClick={() => this.props.showCoinInfo(d)}
-                  key={i}>
+                <tr className='coinrow' key={i}
+                  onClick={() => this.props.showCoinInfo(d)}>
+
+                  <td onClick={e => {
+                      e.stopPropagation()
+                      this.props.toggleFave(d)}}
+                      className='star'>
+
+                    {this.props.faves.has(d.cmc_id) ?
+                      makeStar(d, 'full-star')
+                      :
+                      makeStar(d, 'empty-star')}
+                  </td>
+
                   <td title={d.name} className='coin'>
                     <span>{d.symbol}</span> <span className='name'>({d.name})</span>
                   </td>
@@ -101,31 +121,27 @@ class CoinStats extends Component {
 
           <div className='page-size'>
             {this.props.totalCoins &&
+              <span>
                 <span>
-                  <span>
-                    <span className='range'>{start} - {end}</span> of {this.props.totalCoins}
-                  </span>
-                  {/*
-              <div className='size-chooser'>
-              </div>
-              */}
-            </span>
+                  <span className='range'>{start} - {end}</span> of {this.props.totalCoins}
+                </span>
+              </span>
             }
           </div>
           <div className='nav-arrows'>
             {this.props.coinStart > 0 ?
-                <span onClick={this.props.prevArrowClick} className='arrow'>
-                  {arrowLeft}
-                </span>
-                :
-                <span className='arrow' />
+              <span onClick={this.props.prevArrowClick} className='arrow'>
+                {arrowLeft}
+              </span>
+              :
+              <span className='arrow' />
             }
             {increment > this.props.totalCoins ?
-                <span className='arrow' />
-                :
-                <span onClick={this.props.nextArrowClick} className='arrow'>
-                  {arrowRight}
-                </span>
+              <span className='arrow' />
+              :
+              <span onClick={this.props.nextArrowClick} className='arrow'>
+                {arrowRight}
+              </span>
             }
           </div>
         </div>
@@ -166,6 +182,8 @@ class CoinStats extends Component {
 
         { this.props.coinInfoVisible &&
           <SingleCoin
+            isFave={this.props.faves.has(this.props.coinToShow.cmc_id)}
+            toggleFave={this.props.toggleFave}
             coin={this.props.coinToShow}
             hideCoinInfo={this.props.hideCoinInfo} />
         }

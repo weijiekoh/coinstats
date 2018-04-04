@@ -24,6 +24,16 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+pre {
+    color: $text;
+    display:inline;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+}
+
 a {
     color: $link;
 
@@ -60,7 +70,7 @@ a {
     display:flex;
 }
 
-// Reset max-width imposed by the IBM Plex stylesheet
+// Reset max-width imposed by the IBM Plex font stylesheet
 .ibm, .ibm-type-c {
     max-width: initial;
 }
@@ -73,6 +83,8 @@ a {
 @import './sidebar.scss';
 @import './content.scss';
 @import './coinstats.scss';
+@import './singlecoin.scss';
+@import './converter.scss';
 
 // Bootstrap media query mixins:
 //@include media-breakpoint-up(xs) { }

@@ -1,0 +1,69 @@
+@import '../../node_modules/bootstrap/scss/bootstrap-grid.scss';
+@import 'utils.scss';
+@import 'variables.scss';
+@import 'stars.scss';
+
+.singlecoin {
+    margin-top:1em;
+    animation-name: fadeIn;
+    animation-duration: 0.25s;
+    transition-timing-function: ease-in;
+
+    .star {
+        svg {
+            width:25px;
+            height:25px;
+        }
+    }
+
+    .close-btn {
+        display:block;
+        text-align:right;
+        float:right;
+
+        svg {
+            height:15px;
+            width:15px;
+            @include icon;
+        }
+    }
+
+    .name {
+        .star {
+            margin-right:10px;
+        }
+
+        font-size:2em;
+        font-weight:bold;
+        margin-bottom:1em;
+
+        .symbol {
+            font-weight:normal;
+        }
+    }
+
+    .subtitle {
+        font-size:1.5em;
+        font-weight:bold;
+    }
+
+    table {
+        margin-bottom:2em;
+        thead {
+            @include media-breakpoint-down(xs) {
+                display: table-header-group;
+            }
+        }
+
+        td, th {
+            border-left: 1px solid $table-border-color;
+            &:first-of-type {
+                border-left:0;
+            }
+        }
+
+        tbody {
+            animation-name: none;
+        }
+    }
+}

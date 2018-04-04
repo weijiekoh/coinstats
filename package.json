@@ -19,6 +19,8 @@
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.1",
+    "react-select-fast-filter-options": "^0.2.3",
+    "react-virtualized-select": "^3.1.3",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "round-to": "^2.0.0",
@@ -33,8 +35,7 @@
     "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
     "build-frontend": "npm-run-all -p build-css build-js",
     "build-backend": "rm -rf build/backend && mkdir -p build/backend && babel ./backend/ --out-dir build/backend/ --copy-files",
-    "run-prod": "NODE_ENV=production PORT=8000 node build/backend/server.js",
-
+    "run-prod": "NODE_ENV=production node build/backend/server.js",
     "prod": "run-s build-frontend build-backend run-prod",
     "dev": "nodemon --exec babel-node -- backend/server.js",
     "test": "react-scripts test --env=jsdom",
@@ -42,6 +43,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",

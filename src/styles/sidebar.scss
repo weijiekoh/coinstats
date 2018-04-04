@@ -75,9 +75,50 @@
 
                 &:hover{
                     text-decoration:none;
-                    //color: $link;
                     //@include transition-ease-in;
                 }
+            }
+        }
+
+        .sidebar-title {
+            margin-top: 2em;
+            float: left;
+            p.title {
+                padding-top:0.5em;
+                padding-left:0.5em;
+                padding-right:0.5em;
+            }
+            &:hover {
+                background-color:initial;
+            }
+        }
+
+        .faves {
+            &:hover {
+                background-color:initial;
+            }
+            .fave {
+                //@include pointer;
+                //@include transition-ease-in;
+                float:left;
+                width:100%;
+                padding:0.5em;
+                
+                a {
+                    color: $text;
+                    &:hover {
+                        text-decoration:none;
+                    }
+                }
+
+                .name {
+                    font-weight:bold;
+                }
+                //&:hover {
+                    //@include transition-ease-in;
+                    //background-color:initial;
+                    //background-color:$sidebar-link-bg-hover;
+                //}
             }
         }
     }

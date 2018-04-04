@@ -1,5 +1,6 @@
 import React from 'react'
 import close from './icons/close'
+import star from './icons/star'
 import {
   formatPrice,
   formatMcap,
@@ -10,6 +11,8 @@ import {
 
 const SingleCoin = props => {
   const coin = props.coin
+  const emptyStar = <span className='star empty-star'>{star}</span>
+  const fullStar = <span className='star full-star'>{star}</span>
 
   return (
     <div className='singlecoin'>
@@ -18,7 +21,9 @@ const SingleCoin = props => {
       </div>
 
       <p className='name'>
-        {coin.name} <span className='symbol'>({coin.symbol})</span>
+        <span title='Add to favourites' onClick={() => props.toggleFave(coin)}>
+          {props.isFave ? fullStar : emptyStar }
+        </span>{coin.name} <span className='symbol'>({coin.symbol})</span>
       </p>
 
       <table className='table'>

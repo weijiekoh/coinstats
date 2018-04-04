@@ -14,12 +14,26 @@ const initialState = {
   coinLimit: defaultCoinLimit,
   sortParam: sortParams.indexOf('market_cap_usd'),
   sortDirection: sortDirections.DESC,
-  faves: [],
+  faves: new Map(),
   coinInfoVisible: false
 }
 
 const coinstats = (state = initialState, action) => {
   switch (action.type) {
+    case 'TOGGLE_FAVE':
+      const cmcId = action.coin.cmc_id
+      let m = new Map(state.faves)
+
+      if (state.faves.has(cmcId)) {
+        m.delete(cmcId)
+      } else {
+        m.set(cmcId, action.coin)
+      }
+
+      return Object.assign({}, state, {
+        faves: m
+      })
+
     case 'HIDE_COIN_INFO':
       return Object.assign({}, state, {
         coinInfoVisible: false

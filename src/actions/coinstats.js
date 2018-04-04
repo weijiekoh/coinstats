@@ -1,6 +1,13 @@
-const hideCoinInfo = coin => {
+const toggleFave = coin => {
   return {
-    type: 'HIDE_COIN_INFO',
+    type: 'TOGGLE_FAVE',
+    coin
+  }
+}
+
+const hideCoinInfo = () => {
+  return {
+    type: 'HIDE_COIN_INFO'
   }
 }
 
@@ -81,5 +88,6 @@ export {
   volFilterClick,
   resetPagination,
   showCoinInfo,
-  hideCoinInfo
+  hideCoinInfo,
+  toggleFave
 }

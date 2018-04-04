@@ -1,4 +1,22 @@
-import { sortParams, sortDirections } from '../../src/lib/shared'
+const sortParams = [
+  'symbol',             // 0
+  'name',               // 1
+  'price_usd',          // 2
+  'price_btc',          // 3
+  'market_cap_usd',     // 4
+  'volume_usd_24h',     // 5
+  'available_supply',   // 6
+  'total_supply',       // 7
+  'max_supply',         // 8
+  'percent_change_1h',  // 9
+  'percent_change_24h', // 10
+  'percent_change_7d'   // 11
+]
+
+const sortDirections = {
+  ASC: 1,
+  DESC: 0
+}
 
 const express = require('express')
 
@@ -8,6 +26,14 @@ function makeRouter (db, maxCoinListLen) {
   router.get('/hello', (req, res) => {
     res.type('text/plain')
     res.send('Hello, world')
+  })
+
+  // Return all currency data (name/symbol:USD) pairs
+  // for the currency converter
+  router.get('/currencies/', async (req, res) => {
+    const currencies = await db.getCurrencyData()
+    res.type('text/json')
+    return res.send(currencies)
   })
 
   // Return data for one coin
@@ -23,6 +49,19 @@ function makeRouter (db, maxCoinListLen) {
       res.statusCode = 500
       return res.send(err.message)
     }
+  })
+
+  router.get('/coins_by_ids/:ids', async (req, res) => {
+    const cmcIds = req.params.ids.split(',')
+    if (cmcIds.length === 0) {
+      res.type('text/json')
+      return res.send([])
+    }
+
+    const coins = await db.getCoinsByCmcIds(cmcIds)
+    res.type('text/json')
+    return res.send(coins)
+
   })
 
   // Return a list of coins

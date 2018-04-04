@@ -9,7 +9,7 @@ import thunkMiddleware from 'redux-thunk'
 
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import SidebarContainer from './containers/SidebarContainer'
 import CoinStatsContainer from './containers/CoinStatsContainer'
 import ConverterContainer from './containers/ConverterContainer'
@@ -29,11 +29,14 @@ const Root = ({ store }) => (
       <BrowserRouter>
         <div className="root-flex">
 
-          <Route path='/' component={SidebarContainer} />
+          {/*<Route path='/' component={SidebarContainer} />*/}
+          <SidebarContainer />
 
           <div className='content'>
-            <Route exact path='/' component={CoinStatsContainer} />
-            <Route exact path='/converter' component={ConverterContainer} />
+            <Switch>
+              <Route exact path='/converter' component={ConverterContainer} />
+              <Route exact path='/' component={CoinStatsContainer} />
+            </Switch>
           </div>
 
         </div>

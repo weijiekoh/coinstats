@@ -76,6 +76,20 @@ class CoinStatsDb {
     this.PriceHistory.sync()
   }
 
+  async getCurrencyData () {
+    return this.Coin.findAll({
+      attributes: ['name', 'symbol', 'price_usd'],
+      where: {
+        price_usd: {
+          [Sequelize.Op.gte]: 0
+        }
+      },
+      order: [['name', 'ASC']]
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
   async updateCoins (coins) {
     // Update or insert all coin data in one transaction
     await this.sequelize.transaction(async transaction => {
@@ -113,6 +127,21 @@ class CoinStatsDb {
         }
       }))
       console.log('Updated coin data.')
+    })
+  }
+
+  async getCoinsByCmcIds (ids) {
+    const coins = await this.Coin.findAll({
+      where: {
+        cmc_id: {
+          [Sequelize.Op.in]: ids
+        }
+      }
+    })
+
+    return coins.map(coin => {
+      delete coin.dataValues.id
+      return coin.dataValues
     })
   }
 

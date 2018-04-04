@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 import CoinStats from '../components/CoinStats'
 import { sortParams, sortDirections } from '../lib/shared'
+import { getFaveIds, saveFaveIds } from '../lib/storage'
 import {
   fetchedCoins,
   fetchingCoins,
@@ -12,7 +13,8 @@ import {
   volFilterClick,
   resetPagination,
   showCoinInfo,
-  hideCoinInfo
+  hideCoinInfo,
+  toggleFave
 } from '../actions/coinstats'
 
 const fetchCoinsAsync = (start, limit, sort, direc, minPrice, minVol) => {
@@ -36,10 +38,6 @@ const fetchCoinsAsync = (start, limit, sort, direc, minPrice, minVol) => {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return state.coinstats
-}
-
 const dispatchFetchCoinsAsync = (dispatch, getState) => {
   const state = getState()
   const start = state.coinstats.coinStart
@@ -53,7 +51,20 @@ const dispatchFetchCoinsAsync = (dispatch, getState) => {
 
 const initialFetch = () => {
   return async (dispatch, getState) => {
-    return dispatchFetchCoinsAsync(dispatch, getState)
+    // fetch data for the table
+    await dispatchFetchCoinsAsync(dispatch, getState)
+
+    const faves = getState().coinstats.faves
+
+    if (getFaveIds().length > 0) {
+      const faveIds = getFaveIds().join(',')
+      const coinData = await (await fetch('/api/coins_by_ids/' + faveIds)).json()
+      coinData.forEach(coin => {
+        if (!faves.has(coin.cmc_id)) {
+          dispatch(toggleFave(coin))
+        }
+      })
+    }
   }
 }
 
@@ -113,6 +124,20 @@ const handleResetPaginationAsync = () => {
   }
 }
 
+const handleToggleFave = coin => {
+  return async (dispatch, getState) => {
+    const faves = getState().coinstats.faves
+    let faveIds = []
+    faves.forEach(fave => {
+      faveIds.push(fave.cmc_id)
+    })
+
+    // save to localstorage
+    saveFaveIds(faveIds)
+    return dispatch(toggleFave(coin))
+  }
+}
+
 const mapDispatchToProps = dispatch => {
   window.onkeydown = e => {
     if (e.keyCode === 27) {
@@ -133,8 +158,13 @@ const mapDispatchToProps = dispatch => {
     initialFetch: () => dispatch(initialFetch()),
     resetPagination: () => dispatch(handleResetPaginationAsync()),
     showCoinInfo: coin => dispatch(showCoinInfo(coin)),
-    hideCoinInfo: () => dispatch(hideCoinInfo())
+    hideCoinInfo: () => dispatch(hideCoinInfo()),
+    toggleFave: (...params) => dispatch(handleToggleFave(...params))
   }
+}
+
+const mapStateToProps = (state, ownProps) => {
+  return Object.assign({}, state.coinstats)
 }
 
 const CoinStatsContainer = connect(
