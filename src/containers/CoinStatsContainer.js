@@ -1,4 +1,5 @@
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router'
 import CoinStats from '../components/CoinStats'
 import { sortParams, sortDirections } from '../lib/shared'
 import { getFaveIds, saveFaveIds } from '../lib/storage'
@@ -51,19 +52,43 @@ const dispatchFetchCoinsAsync = (dispatch, getState) => {
 
 const initialFetch = () => {
   return async (dispatch, getState) => {
-    // fetch data for the table
+    // Fetch data for the table
     await dispatchFetchCoinsAsync(dispatch, getState)
 
     const faves = getState().coinstats.faves
 
+    // Fetch data for the coin specified in the URL
+    const cmcId = getState().coinstats.cmcIdToShow
+    if (cmcId) {
+      try {
+        const coin = await (await fetch('/api/coin/' + cmcId)).json()
+        dispatch(showCoinInfo(coin))
+      } catch(err) {
+        console.error("Invalid cmcId")
+      }
+    }
+
     if (getFaveIds().length > 0) {
-      const faveIds = getFaveIds().join(',')
-      const coinData = await (await fetch('/api/coins_by_ids/' + faveIds)).json()
-      coinData.forEach(coin => {
-        if (!faves.has(coin.cmc_id)) {
-          dispatch(toggleFave(coin))
-        }
-      })
+      try {
+        const faveIds = getFaveIds().join(',')
+        const coinData = await (await fetch('/api/coins_by_ids/' + faveIds)).json()
+        coinData.forEach(coin => {
+          if (!faves.has(coin.cmc_id)) {
+            dispatch(toggleFave(coin))
+          }
+        })
+      } catch (err) {
+        console.error('Error fetching favourite coin data')
+      }
+    }
+  }
+}
+
+const fetchAndShowCoinInfoAsync = cmcId => {
+  return async (dispatch, getState) => {
+    if (cmcId) {
+      const coin = await (await fetch('/api/coin/' + cmcId)).json()
+      return dispatch(showCoinInfo(coin))
     }
   }
 }
@@ -158,18 +183,21 @@ const mapDispatchToProps = dispatch => {
     initialFetch: () => dispatch(initialFetch()),
     resetPagination: () => dispatch(handleResetPaginationAsync()),
     showCoinInfo: coin => dispatch(showCoinInfo(coin)),
+    showCoinInfoByCmcId: cmcId => dispatch(fetchAndShowCoinInfoAsync()),
     hideCoinInfo: () => dispatch(hideCoinInfo()),
     toggleFave: (...params) => dispatch(handleToggleFave(...params))
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
-  return Object.assign({}, state.coinstats)
+  return Object.assign(state.coinstats, {}, {
+    cmcIdToShow: ownProps.match.params.cmcId
+  })
 }
 
-const CoinStatsContainer = connect(
+const CoinStatsContainer = withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(CoinStats)
+)(CoinStats))
 
 export default CoinStatsContainer

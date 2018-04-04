@@ -29,13 +29,18 @@
     }
 
     .name {
-        .star {
-            margin-right:10px;
-        }
-
         font-size:2em;
         font-weight:bold;
         margin-bottom:1em;
+
+        @include media-breakpoint-down(sm) {
+            font-size:1.75em;
+            line-height:2em;
+        }
+
+        .star {
+            margin-right:10px;
+        }
 
         .symbol {
             font-weight:normal;

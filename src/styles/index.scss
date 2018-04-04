@@ -78,6 +78,7 @@ a {
 .container-fluid {
     padding:0 !important;
     margin-bottom:0;
+    display:flex;
 }
 
 @import './sidebar.scss';

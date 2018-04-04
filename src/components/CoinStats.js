@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
+import LayoutParent from './LayoutParent'
 
 import {
   formatPrice,
@@ -12,7 +13,7 @@ import star from './icons/star'
 import SingleCoin from './SingleCoin'
 import Spinner from './Spinner'
 
-class CoinStats extends Component {
+class CoinStats extends LayoutParent {
   componentDidMount () {
     this.props.hideCoinInfo()
     this.props.initialFetch()
@@ -49,7 +50,7 @@ class CoinStats extends Component {
           </thead>
           <thead>
             <tr>
-              <th></th>
+              <th className='no-pointer'></th>
               {makeTh('coin', 'symbol', 'Symbol')}
               {makeTh('', 'market_cap_usd', 'Market cap')}
               {makeTh('', 'volume_usd_24h', '24h Volume')}
@@ -174,7 +175,7 @@ class CoinStats extends Component {
   }
 
   render () {
-    return (
+    return this.renderLayout(
       <div className='coinstats'>
         { !this.props.coinInfoVisible && this.props.totalCoins && this.renderControls(false) }
 
@@ -193,7 +194,7 @@ class CoinStats extends Component {
           this.props.totalCoins &&
           this.renderControls(true) }
       </div>
-    )
+      , this.props.showCoinInfoByCmcId)
   }
 }
 

@@ -20,6 +20,12 @@
 .sidebar {
     background-color: $sidebar-bg;
 
+    .sidebar-content{
+        @include media-breakpoint-down(sm) {
+            display:none;
+        }
+    }
+
     &.show{
         box-shadow: 0 20px 30px 2px rgba(0,0,0,.4);
 
@@ -45,10 +51,6 @@
     .sidebar-content{
         float:left;
         width:100%;
-
-        @include media-breakpoint-down(sm) {
-            display:none;
-        }
 
         .sidebar-section{
             @include no-select;
@@ -114,11 +116,6 @@
                 .name {
                     font-weight:bold;
                 }
-                //&:hover {
-                    //@include transition-ease-in;
-                    //background-color:initial;
-                    //background-color:$sidebar-link-bg-hover;
-                //}
             }
         }
     }
@@ -129,6 +126,20 @@
 
         .logo, .menu-icon{
             @include no-select;
+        }
+
+        @include media-breakpoint-down(sm) {
+            &.show {
+                .sidebar-content {
+                    display:block;
+                }
+            }
+
+            &.hide {
+                .sidebar-content {
+                    display:none;
+                }
+            }
         }
 
         .menu-icon {

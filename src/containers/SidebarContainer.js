@@ -11,12 +11,6 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = dispatch => {
-  window.onkeydown = e => {
-    if (e.keyCode === 27) {
-      dispatch(closeMenu())
-    }
-  }
-
   return {
     toggle: () => dispatch(toggle()),
     closeMenu: () => dispatch(closeMenu())

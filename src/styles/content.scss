@@ -5,6 +5,8 @@
     padding-left:20px;
     padding-right:10px;
     padding-top:20px;
+    float:right;
+    width:100%;
     flex-grow:1;
 
     @include media-breakpoint-down(sm) {

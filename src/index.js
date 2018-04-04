@@ -8,9 +8,7 @@ import { createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 
 import { Provider } from 'react-redux'
-import { BrowserRouter } from 'react-router-dom'
-import { Route, Switch } from 'react-router-dom'
-import SidebarContainer from './containers/SidebarContainer'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import CoinStatsContainer from './containers/CoinStatsContainer'
 import ConverterContainer from './containers/ConverterContainer'
 
@@ -24,25 +22,14 @@ const store = createStore(
 )
 
 const Root = ({ store }) => (
-  <div className="ibm ibm-type-c container-fluid">
-    <Provider store={store}>
-      <BrowserRouter>
-        <div className="root-flex">
-
-          {/*<Route path='/' component={SidebarContainer} />*/}
-          <SidebarContainer />
-
-          <div className='content'>
-            <Switch>
-              <Route exact path='/converter' component={ConverterContainer} />
-              <Route exact path='/' component={CoinStatsContainer} />
-            </Switch>
-          </div>
-
-        </div>
-      </BrowserRouter>
-    </Provider>
-  </div>
+  <Provider store={store}>
+    <BrowserRouter>
+      <Switch>
+        <Route exact path='/converter' component={ConverterContainer} />
+        <Route path='/:cmcId?' component={CoinStatsContainer} />
+      </Switch>
+    </BrowserRouter>
+  </Provider>
 )
 
 Root.propTypes = {

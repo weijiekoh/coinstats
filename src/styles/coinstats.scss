@@ -135,8 +135,13 @@
         &.sortable {
             tr th {
                 @include pointer;
+
                 &:hover{
                     text-decoration:underline;
+                }
+
+                &.no-pointer{
+                    cursor:auto;
                 }
             }
         }

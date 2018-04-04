@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
 import createFilterOptions from "react-select-fast-filter-options"
@@ -6,9 +6,10 @@ import Select from "react-virtualized-select"
 import "react-select/dist/react-select.css"
 
 import Spinner from './Spinner'
+import LayoutParent from './LayoutParent'
 
 
-class Converter extends Component {
+class Converter extends LayoutParent {
   componentDidMount () {
     this.props.fetchCurrencyData()
   }
@@ -34,7 +35,7 @@ class Converter extends Component {
 
   render () {
     if (!this.props.currencyData) {
-      return (
+      return this.renderLayout(
         <div className="converter">
           <h4>Currency Converter</h4>
           <Spinner />
@@ -66,10 +67,14 @@ class Converter extends Component {
     }
 
     const filterOptions = createFilterOptions({ options })
-    return (
+
+    return this.renderLayout(
       <div className="converter">
         <h4>Currency Converter</h4>
 
+        <p>
+          Type to search for each currency you want to convert between.
+        </p>
         <div className='row'>
           <div className='col-12 col-sm-6 from'>
             <p>From:</p>

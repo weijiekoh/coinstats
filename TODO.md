@@ -23,9 +23,9 @@ Implements all the above features
 # Bonus
 Uses WebSockets or Socket.IO for APIs
 Uses Recharts, FusionCharts or ReactD3
+End-to-End test cases
 (d) Utilizes HMTL5 storage for storing users favorites
 (d) Uses ES6 features
-End-to-End test cases
 
 # Plan
 
