@@ -296,7 +296,7 @@ var CoinStatsDb = function () {
                 _context6.prev = 8;
                 _context6.t0 = _context6['catch'](0);
 
-                console.error('Could not get coin data');
+                console.error('Could not get coin data:', _context6.t0);
                 throw new UnableFetchCoinException();
 
               case 12:
@@ -325,6 +325,7 @@ var CoinStatsDb = function () {
                 _context7.prev = 0;
                 where = {};
 
+                where[sortParam] = _defineProperty({}, Sequelize.Op.ne, null);
 
                 if (minPriceUsd != null) {
                   where.price_usd = _defineProperty({}, Sequelize.Op.gte, minPriceUsd);
@@ -334,7 +335,7 @@ var CoinStatsDb = function () {
                   where.volume_usd_24h = _defineProperty({}, Sequelize.Op.gte, minVolUsd);
                 }
 
-                _context7.next = 6;
+                _context7.next = 7;
                 return this.Coin.findAll({
                   offset: start,
                   limit: limit,
@@ -342,15 +343,15 @@ var CoinStatsDb = function () {
                   where: where
                 });
 
-              case 6:
+              case 7:
                 coins = _context7.sent;
-                _context7.next = 9;
+                _context7.next = 10;
                 return this.Coin.count({
                   col: 'id',
                   where: where
                 });
 
-              case 9:
+              case 10:
                 totalCoins = _context7.sent;
                 c = coins.map(function (c) {
                   delete c.dataValues.id;
@@ -358,20 +359,20 @@ var CoinStatsDb = function () {
                 });
                 return _context7.abrupt('return', { coins: c, totalCoins: totalCoins });
 
-              case 14:
-                _context7.prev = 14;
+              case 15:
+                _context7.prev = 15;
                 _context7.t0 = _context7['catch'](0);
 
                 console.error('Could not get list of coins');
                 console.error(_context7.t0);
                 throw new UnableFetchCoinsException();
 
-              case 19:
+              case 20:
               case 'end':
                 return _context7.stop();
             }
           }
-        }, _callee7, this, [[0, 14]]);
+        }, _callee7, this, [[0, 15]]);
       }));
 
       function getCoins(_x6, _x7, _x8, _x9, _x10, _x11) {

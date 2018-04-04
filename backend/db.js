@@ -158,9 +158,8 @@ class CoinStatsDb {
       // });
       delete coin.dataValues.id
       return coin.dataValues
-
     } catch (err) {
-      console.error('Could not get coin data')
+      console.error('Could not get coin data:', err)
       throw new UnableFetchCoinException()
     }
   }
@@ -168,6 +167,9 @@ class CoinStatsDb {
   async getCoins (start, limit, sortParam, direction, minPriceUsd, minVolUsd) {
     try {
       let where = {}
+      where[sortParam] = {
+        [Sequelize.Op.ne]: null
+      }
 
       if (minPriceUsd != null) {
         where.price_usd = { [Sequelize.Op.gte]: minPriceUsd }
@@ -180,7 +182,9 @@ class CoinStatsDb {
       const coins = await this.Coin.findAll({
         offset: start,
         limit: limit,
-        order: [[sortParam, direction]],
+        order: [
+          [sortParam, direction]
+        ],
         where
       })
 

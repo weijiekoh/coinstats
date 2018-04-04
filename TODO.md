@@ -1,3 +1,7 @@
+- Refactor Sidebar to inside CoinStats and Converter
+- Price of the cryptocurrencies should be displayed in real-time
+- User can select to see real-time price changes in charts
+
 # Project Description
 (d) Create a app to display cryptocurrencies market stats using Bootstrap 4 and ReactJS
 (d) Use Flux or Redux architecture depending on whichever you are comfortable with
@@ -12,9 +16,9 @@ Price of the cryptocurrencies should be displayed in real-time
 User can select to see real-time price changes in charts
 
 # Acceptance criteria
-Frontend should be responsive
+(d) Frontend should be responsive
+(d) Must be a SPA
 Implements all the above features
-Must be a SPA
 
 # Bonus
 Uses WebSockets or Socket.IO for APIs

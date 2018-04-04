@@ -29,7 +29,7 @@ var POLLCMCINTERVALSECS = process.env.POLL_CMC_INTERVAL_SECS * 1000 || 4 * 60 * 
 // Set up the database
 var dbFilepath = path.join(__dirname, '../', 'db.sqlite3');
 var sqliteConnStr = 'sqlite:' + dbFilepath;
-var connStr = process.env.DATABASE_URL || sqliteConnStr;
+var connStr = process.env.DATABASE_URL ? process.env.DATABASE_URL : sqliteConnStr;
 var db = new CoinStatsDb(connStr, ISPROD);
 
 var start = function start() {

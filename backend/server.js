@@ -27,7 +27,8 @@ const POLLCMCINTERVALSECS =
 // Set up the database
 const dbFilepath = path.join(__dirname, '../', 'db.sqlite3')
 const sqliteConnStr = 'sqlite:' + dbFilepath
-const connStr = process.env.DATABASE_URL || sqliteConnStr
+const connStr = process.env.DATABASE_URL ?
+  process.env.DATABASE_URL : sqliteConnStr
 const db = new CoinStatsDb(connStr, ISPROD)
 
 const start = () => {
@@ -95,8 +96,7 @@ const start = () => {
     if (ISPROD) {
       console.log('Running on port ' + PORT.toString())
     } else {
-      console.log('Backend running in dev mode: http://localhost:' +
-        PORT.toString())
+      console.log('Backend running in dev mode: http://localhost:' + PORT.toString())
     }
   })
 }
