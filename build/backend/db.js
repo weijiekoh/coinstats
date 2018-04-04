@@ -342,7 +342,7 @@ var CoinStatsDb = function () {
                   limit: limit,
                   order: [[sortParam, direction]],
                   where: where
-                });
+                }).on('sql', console.log);
 
               case 6:
                 coins = _context7.sent;

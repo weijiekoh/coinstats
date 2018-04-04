@@ -182,7 +182,7 @@ class CoinStatsDb {
         limit: limit,
         order: [[sortParam, direction]],
         where
-      })
+      }).on('sql', console.log)
 
       const totalCoins = await this.Coin.count({
         col: 'id',
