@@ -18,7 +18,7 @@ var CoinStatsDb = function () {
     this.sequelize = new Sequelize(connStr, {
       operatorsAliases: false,
       logging: function logging() {
-        return !isProd;
+        return isProd;
       },
       define: {
         underscored: true,
@@ -342,7 +342,7 @@ var CoinStatsDb = function () {
                   limit: limit,
                   order: [[sortParam, direction]],
                   where: where
-                }).on('sql', console.log);
+                });
 
               case 6:
                 coins = _context7.sent;

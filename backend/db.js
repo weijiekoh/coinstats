@@ -5,7 +5,7 @@ class CoinStatsDb {
     // Set up the database connection
     this.sequelize = new Sequelize(connStr, {
       operatorsAliases: false,
-      logging: () => !isProd,
+      logging: () => isProd,
       define: {
         underscored: true,
         freezeTableName: true
@@ -182,7 +182,7 @@ class CoinStatsDb {
         limit: limit,
         order: [[sortParam, direction]],
         where
-      }).on('sql', console.log)
+      })
 
       const totalCoins = await this.Coin.count({
         col: 'id',
