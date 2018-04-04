@@ -178,7 +178,7 @@ function makeRouter(db, maxCoinListLen) {
               return _context4.abrupt('return', res.send('Invalid min price param'));
 
             case 10:
-              if (!(!isNaN(minVol) && minVol < 0)) {
+              if (!(!isNaN(mv) && mv < 0)) {
                 _context4.next = 14;
                 break;
               }

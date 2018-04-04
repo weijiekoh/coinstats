@@ -365,9 +365,10 @@ var CoinStatsDb = function () {
                 _context7.t0 = _context7['catch'](0);
 
                 console.error('Could not get list of coins');
+                console.error(_context7.t0);
                 throw new UnableFetchCoinsException();
 
-              case 18:
+              case 19:
               case 'end':
                 return _context7.stop();
             }
