@@ -33,7 +33,12 @@ class Sidebar extends Component {
               { props.showMenu ? closeSvg : menuSvg }
             </div>
 
-            <Link to='/' onClick={props.closeMenu}>
+            <Link to='/' onClick={() => {
+              if (this.props.onLogoClick){
+                this.props.onLogoClick()
+              }
+              props.closeMenu()
+            }}>
             <div className='logo'>
               <img alt='CoinStats' src='../images/logo.png' />
             </div>

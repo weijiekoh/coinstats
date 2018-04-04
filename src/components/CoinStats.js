@@ -183,7 +183,9 @@ class CoinStats extends React.Component {
   render () {
     return (
       <div className="ibm ibm-type-c container-fluid">
-        <SidebarContainer />
+        <SidebarContainer
+          onLogoClick={this.props.hideCoinInfo}
+        />
         <div className="content">
           <div className='coinstats'>
             { !this.props.coinInfoVisible && this.props.totalCoins && this.renderControls(false) }

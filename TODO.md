@@ -1,4 +1,5 @@
-- Refactor Sidebar to inside CoinStats and Converter
+- DB pruning
+
 - Price of the cryptocurrencies should be displayed in real-time
 - User can select to see real-time price changes in charts
 
