@@ -84,7 +84,7 @@ function makeRouter (db, maxCoinListLen) {
       return res.send('Invalid min price param')
     }
 
-    if (!isNaN(minVol) && minVol < 0) {
+    if (!isNaN(mv) && mv < 0) {
       res.type('text/json')
       res.statusCode = 500
       return res.send('Invalid min vol param')
