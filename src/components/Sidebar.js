@@ -62,11 +62,9 @@ class Sidebar extends Component {
             <div className='faves'>
               {props.faves && Array.from(props.faves).map((f, i) => (
                 <div key={i} className='fave'>
-                  <Link to={'/' + f[0]}>
-                    <span className='name'>
-                      {f[1].symbol}
-                    </span> ${formatPrice(f[1].price_usd)}
-                  </Link>
+                  <span className='name'>
+                    {f[1].symbol}
+                  </span> ${formatPrice(f[1].price_usd)}
                 </div>
               ))}
               </div>

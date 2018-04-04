@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import LayoutParent from './LayoutParent'
+import SidebarContainer from '../containers/SidebarContainer'
 
 import {
   formatPrice,
@@ -13,7 +13,7 @@ import star from './icons/star'
 import SingleCoin from './SingleCoin'
 import Spinner from './Spinner'
 
-class CoinStats extends LayoutParent {
+class CoinStats extends React.Component {
   componentDidMount () {
     this.props.hideCoinInfo()
     this.props.initialFetch()
@@ -175,26 +175,31 @@ class CoinStats extends LayoutParent {
   }
 
   render () {
-    return this.renderLayout(
-      <div className='coinstats'>
-        { !this.props.coinInfoVisible && this.props.totalCoins && this.renderControls(false) }
+    return (
+      <div className="ibm ibm-type-c container-fluid">
+        <SidebarContainer />
+        <div className="content">
+          <div className='coinstats'>
+            { !this.props.coinInfoVisible && this.props.totalCoins && this.renderControls(false) }
 
-        { !this.props.coinInfoVisible && this.renderTable(this.props.coins) }
+            { !this.props.coinInfoVisible && this.renderTable(this.props.coins) }
 
-        { this.props.coinInfoVisible &&
-          <SingleCoin
-            isFave={this.props.faves.has(this.props.coinToShow.cmc_id)}
-            toggleFave={this.props.toggleFave}
-            coin={this.props.coinToShow}
-            hideCoinInfo={this.props.hideCoinInfo} />
-        }
+            { this.props.coinInfoVisible &&
+              <SingleCoin
+                isFave={this.props.faves.has(this.props.coinToShow.cmc_id)}
+                toggleFave={this.props.toggleFave}
+                coin={this.props.coinToShow}
+                hideCoinInfo={this.props.hideCoinInfo} />
+            }
 
-        { !this.props.coinInfoVisible &&
-          !this.props.isFetchingCoins &&
-          this.props.totalCoins &&
-          this.renderControls(true) }
+            { !this.props.coinInfoVisible &&
+              !this.props.isFetchingCoins &&
+              this.props.totalCoins &&
+              this.renderControls(true) }
+          </div>
+        </div>
       </div>
-      , this.props.showCoinInfoByCmcId)
+    )
   }
 }
 
