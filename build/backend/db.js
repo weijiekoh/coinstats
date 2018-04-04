@@ -12,12 +12,14 @@ var Sequelize = require('sequelize');
 
 var CoinStatsDb = function () {
   function CoinStatsDb(connStr, isProd) {
+    var debug = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
     _classCallCheck(this, CoinStatsDb);
 
     // Set up the database connection
     this.sequelize = new Sequelize(connStr, {
       operatorsAliases: false,
-      logging: console.log,
+      logging: false,
       define: {
         underscored: true,
         freezeTableName: true
@@ -193,7 +195,7 @@ var CoinStatsDb = function () {
                                 }, _callee2, _this, [[1, 8]]);
                               }));
 
-                              return function (_x3) {
+                              return function (_x4) {
                                 return _ref4.apply(this, arguments);
                               };
                             }()));
@@ -209,7 +211,7 @@ var CoinStatsDb = function () {
                     }, _callee3, _this);
                   }));
 
-                  return function (_x2) {
+                  return function (_x3) {
                     return _ref3.apply(this, arguments);
                   };
                 }());
@@ -222,7 +224,7 @@ var CoinStatsDb = function () {
         }, _callee4, this);
       }));
 
-      function updateCoins(_x) {
+      function updateCoins(_x2) {
         return _ref2.apply(this, arguments);
       }
 
@@ -259,7 +261,7 @@ var CoinStatsDb = function () {
         }, _callee5, this);
       }));
 
-      function getCoinsByCmcIds(_x4) {
+      function getCoinsByCmcIds(_x5) {
         return _ref5.apply(this, arguments);
       }
 
@@ -307,7 +309,7 @@ var CoinStatsDb = function () {
         }, _callee6, this, [[0, 8]]);
       }));
 
-      function getCoin(_x5) {
+      function getCoin(_x6) {
         return _ref6.apply(this, arguments);
       }
 
@@ -375,7 +377,7 @@ var CoinStatsDb = function () {
         }, _callee7, this, [[0, 15]]);
       }));
 
-      function getCoins(_x6, _x7, _x8, _x9, _x10, _x11) {
+      function getCoins(_x7, _x8, _x9, _x10, _x11, _x12) {
         return _ref7.apply(this, arguments);
       }
 
@@ -458,7 +460,7 @@ var CoinStatsDb = function () {
         }, _callee8, this, [[2, 7], [17, 21]]);
       }));
 
-      function getPriceHistory(_x12, _x13) {
+      function getPriceHistory(_x13, _x14) {
         return _ref8.apply(this, arguments);
       }
 

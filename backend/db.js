@@ -1,11 +1,11 @@
 const Sequelize = require('sequelize')
 
 class CoinStatsDb {
-  constructor (connStr, isProd) {
+  constructor (connStr, isProd, debug = false) {
     // Set up the database connection
     this.sequelize = new Sequelize(connStr, {
       operatorsAliases: false,
-      logging: console.log,
+      logging: false,
       define: {
         underscored: true,
         freezeTableName: true
