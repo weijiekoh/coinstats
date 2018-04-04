@@ -149,11 +149,14 @@
             display:none;
             width:15px;
             height:15px;
-            margin:10px;
             margin-right:20px;
             padding-top:5px;
             opacity:1;
             fill: $icon-color;
+
+            svg {
+                padding:10px;
+            }
 
             @include media-breakpoint-down(sm) {
                 display:block;
