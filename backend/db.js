@@ -197,6 +197,7 @@ class CoinStatsDb {
       return { coins: c, totalCoins }
     } catch (err) {
       console.error('Could not get list of coins')
+      console.error(err)
       throw new UnableFetchCoinsException()
     }
   }
