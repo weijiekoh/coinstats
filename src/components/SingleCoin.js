@@ -2,11 +2,8 @@ import React from 'react'
 import close from './icons/close'
 import star from './icons/star'
 import {
-  formatPrice,
-  formatMcap,
-  formatVol,
-  formatPercentChange,
-  formatSupply
+  formatPriceNoRound,
+  formatPercentChange
 } from '../lib/formatters'
 
 const SingleCoin = props => {
@@ -29,14 +26,14 @@ const SingleCoin = props => {
       <table className='table'>
         <thead>
           <tr>
-            <th>Market Captalisation</th>
-            <th>24-hour Volume</th>
+            <th>Market Captalisation (USD)</th>
+            <th>24-hour Volume (USD)</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>{formatMcap(coin.market_cap_usd)}</td>
-            <td>{formatVol(coin.volume_usd_24h)}</td>
+            <td>{formatPriceNoRound(coin.market_cap_usd)}</td>
+            <td>{formatPriceNoRound(coin.volume_usd_24h)}</td>
           </tr>
         </tbody>
       </table>
@@ -51,8 +48,8 @@ const SingleCoin = props => {
         </thead>
         <tbody>
           <tr>
-            <td>{formatPrice(coin.price_usd)}</td>
-            <td>{formatPrice(coin.price_btc, 8)}</td>
+            <td>{formatPriceNoRound(coin.price_usd)}</td>
+            <td>{formatPriceNoRound(coin.price_btc, 8, true)}</td>
           </tr>
         </tbody>
       </table>
@@ -88,9 +85,9 @@ const SingleCoin = props => {
         </thead>
         <tbody>
           <tr>
-            <td>{formatSupply(coin.available_supply)}</td>
-            <td>{formatSupply(coin.total_supply)}</td>
-            <td>{formatSupply(coin.max_supply)}</td>
+            <td>{formatPriceNoRound(coin.available_supply)}</td>
+            <td>{formatPriceNoRound(coin.total_supply)}</td>
+            <td>{formatPriceNoRound(coin.max_supply)}</td>
           </tr>
         </tbody>
       </table>

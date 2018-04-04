@@ -12,13 +12,24 @@ const millify = value => {
   return result
 }
 
-const formatPrice = (value, roundDigits = 2) => {
+const formatPriceNoRound = value => {
+  if (value == null || isNaN(value)) {
+    return 'n/a'
+  }
+  return parseFloat(value).toLocaleString()
+}
+
+const formatPrice = (value, roundDigits = 2, btc = true) => {
   if (value == null || isNaN(value)) {
     return 'n/a'
   }
   const price = parseFloat(value)
 
-  if (price < 0.01) {
+  if (btc && price < 0.00001) {
+    return '< 0.00001'
+  }
+
+  if (!btc && price < 0.01) {
     return '< 0.01'
   }
 
@@ -54,4 +65,4 @@ const formatPercentChange = value => {
   return roundTo(parseFloat(value), 1).toString() + '%'
 }
 
-export { formatPrice, formatMcap, formatVol, formatPercentChange, formatSupply }
+export { formatPrice, formatPriceNoRound, formatMcap, formatVol, formatPercentChange, formatSupply }
