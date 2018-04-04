@@ -48,9 +48,13 @@ const start = () => {
 
   // Set up CoinMarketCap API polling.
   // Don't abuse the CMC API
-  assert(POLLCMCINTERVALSECS > 5000,
-    'Error: the environment variable POLL_CMC_INTERVAL_SECS ' +
-    'must be 5 or greater')
+  if (POLLCMCINTERVALSECS < 5000) {
+    console.log(
+      'Error: the environment variable POLL_CMC_INTERVAL_SECS ' +
+      'must be 5 or greater'
+    )
+    return
+  }
 
   // Query the CMC API once, then schedule to do so every
   // POLL_CMC_INTERVAL_SECS seconds
