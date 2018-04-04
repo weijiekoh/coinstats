@@ -6,7 +6,6 @@ const logger = require('morgan')
 const express = require('express')
 const helmet = require('helmet')
 const compression = require('compression')
-const assert = require('assert').strict
 
 const CoinStatsDb = require('./db')
 const routes = require('./routes')
