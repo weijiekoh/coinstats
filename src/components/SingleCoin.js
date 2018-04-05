@@ -57,7 +57,7 @@ const renderChart = (priceHistory) => {
   )
 }
 
-const SingleCoin = ({ props }) => {
+const SingleCoin = ({ props, refreshChart }) => {
   const isFave = props.faves.has(props.coinToShow.cmc_id)
   const coin = props.coinToShow
   const emptyStar = (<span className='star empty-star'>{star}</span>)
@@ -86,7 +86,8 @@ const SingleCoin = ({ props }) => {
           autorefreshToggle(
             props.isChartAutorefreshing,
             props.toggleChartAutorefresh,
-            props.shouldChartAutorefresh
+            props.shouldChartAutorefresh,
+            () => { refreshChart() }
           )
         }
       </div>

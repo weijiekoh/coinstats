@@ -20,13 +20,11 @@ class CoinStats extends React.Component {
     this.autorefreshInterval = setInterval(
       () => {
         if (this.props.shouldAutorefresh) {
-          this.props.triggerAutorefresh()
-          this.props.fetchFaves()
+          this.refreshTable()
         }
 
         if (this.props.shouldChartAutorefresh) {
-          this.props.triggerChartAutorefresh(this.props.coinToShow.cmc_id)
-          this.props.fetchFaves()
+          this.refreshChart()
         }
       },
       (1000 * 60)
@@ -40,6 +38,16 @@ class CoinStats extends React.Component {
 
     this.props.hideCoinInfo()
     this.props.initialFetch()
+  }
+
+  refreshTable () {
+    this.props.triggerAutorefresh()
+    this.props.fetchFaves()
+  }
+
+  refreshChart () {
+    this.props.triggerChartAutorefresh(this.props.coinToShow.cmc_id)
+    this.props.fetchFaves()
   }
 
   componentWillUnmount () {
@@ -154,7 +162,8 @@ class CoinStats extends React.Component {
             autorefreshToggle(
               this.props.isAutorefreshing,
               this.props.toggleAutorefresh,
-              this.props.shouldAutorefresh
+              this.props.shouldAutorefresh,
+              () => {this.refreshTable()}
             )
           }
 
@@ -234,7 +243,9 @@ class CoinStats extends React.Component {
             }
 
             { this.props.coinInfoVisible &&
-              <SingleCoin props={this.props} />
+                <SingleCoin
+                  refreshChart={() => {this.refreshChart()}}
+                  props={this.props} />
             }
 
             { !this.props.coinInfoVisible &&

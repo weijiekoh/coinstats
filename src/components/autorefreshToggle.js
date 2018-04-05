@@ -1,11 +1,17 @@
 import React from 'react'
 
-const AutorefreshToggle = (isAutorefreshing, toggleAutorefresh, shouldAutorefresh) => {
+const AutorefreshToggle = 
+  (isAutorefreshing, toggleAutorefresh, shouldAutorefresh, callRefresh) => {
   return (
     <div className='autorefresh'>
       <label htmlFor='autorefresh'>
         <input
-          onChange={toggleAutorefresh}
+          onChange={() => {
+            if (!shouldAutorefresh) {
+              callRefresh()
+            }
+            toggleAutorefresh()
+          }}
           id='autorefresh' type='checkbox'
           checked={shouldAutorefresh}
           value={shouldAutorefresh} />
