@@ -15,13 +15,14 @@ import Spinner from './Spinner'
 
 class CoinStats extends React.Component {
   componentDidMount () {
+    // Set up autorefresh interval
     this.autorefreshInterval = setInterval(
       () => {
         if (this.props.shouldAutorefresh) {
           this.props.triggerAutorefresh()
         }
       },
-      5000
+      (1000 * 60)
     )
 
     window.onkeydown = e => {
@@ -32,6 +33,12 @@ class CoinStats extends React.Component {
 
     this.props.hideCoinInfo()
     this.props.initialFetch()
+  }
+
+  componentWillUnmount () {
+    if (this.autorefreshInterval) {
+      clearInterval(this.autorefreshInterval)
+    }
   }
 
   renderTable () {
