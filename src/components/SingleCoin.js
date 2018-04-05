@@ -75,6 +75,10 @@ const SingleCoin = ({ props, refreshChart }) => {
         </span>{coin.name} <span className='symbol'>({coin.symbol})</span>
       </p>
 
+      <p>
+        The price of {coin.name} in USD over the past hour:
+      </p>
+
       {props.priceHistory && renderChart(props.priceHistory) }
 
       <div className='controls'>

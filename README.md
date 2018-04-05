@@ -1,6 +1,6 @@
 # CoinStats
 
-CoinStats displays cryptocurrency market statistics.
+CoinStats displays cryptocurrency market statistics. I built this for a coding test.
 
 ## Building the app
 
@@ -48,3 +48,13 @@ variables set up:
 | `DATABASE_URL` | `postgres://username:password@host:port/database` |
 | `PORT` | `80` |
 | `NODE_ENV` | `production` |
+
+## Limitations
+
+- All data displayed is at most 5 minutes old, as the CoinMarketCap API which
+  the app gets data from only updates every 5 minutes. 
+
+- Price data older than 1 hour will be regularly pruned from the database, so
+  all price charts are limited to an hour's worth of data. For the purposes of
+  the coding test, this limit is meant to conserve database space and thereby
+  save costs on Heroku.
