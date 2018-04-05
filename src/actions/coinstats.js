@@ -1,3 +1,21 @@
+const autorefreshing = () => {
+  return {
+    type: 'AUTOREFRESHING'
+  }
+}
+
+const autorefreshed = () => {
+  return {
+    type: 'AUTOREFRESHED'
+  }
+}
+
+const toggleAutorefresh = () => {
+  return {
+    type: 'TOGGLE_AUTOREFRESH'
+  }
+}
+
 const toggleFave = coin => {
   return {
     type: 'TOGGLE_FAVE',
@@ -89,5 +107,8 @@ export {
   resetPagination,
   showCoinInfo,
   hideCoinInfo,
-  toggleFave
+  toggleFave,
+  autorefreshing,
+  autorefreshed,
+  toggleAutorefresh
 }

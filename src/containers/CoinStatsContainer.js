@@ -15,7 +15,10 @@ import {
   resetPagination,
   showCoinInfo,
   hideCoinInfo,
-  toggleFave
+  toggleFave,
+  autorefreshing,
+  autorefreshed,
+  toggleAutorefresh
 } from '../actions/coinstats'
 
 const fetchCoinsAsync = (start, limit, sort, direc, minPrice, minVol) => {
@@ -171,6 +174,14 @@ const handleToggleFave = coin => {
   }
 }
 
+const handleTriggerAutorefreshAsync = () => {
+  return async (dispatch, getState) => {
+    await dispatch(autorefreshing())
+    await dispatchFetchCoinsAsync(dispatch, getState)
+    return dispatch(autorefreshed())
+  }
+}
+
 const mapDispatchToProps = dispatch => {
   return {
     sortCoinsClick: (...params) => dispatch(handleSortCoinsClickAsync(...params)),
@@ -187,7 +198,9 @@ const mapDispatchToProps = dispatch => {
     showCoinInfo: coin => dispatch(showCoinInfo(coin)),
     showCoinInfoByCmcId: cmcId => dispatch(fetchAndShowCoinInfoAsync()),
     hideCoinInfo: () => dispatch(hideCoinInfo()),
-    toggleFave: (...params) => dispatch(handleToggleFave(...params))
+    toggleFave: (...params) => dispatch(handleToggleFave(...params)),
+    toggleAutorefresh: () => dispatch(toggleAutorefresh()),
+    triggerAutorefresh: () => dispatch(handleTriggerAutorefreshAsync())
   }
 }
 

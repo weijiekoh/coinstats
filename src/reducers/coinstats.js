@@ -15,11 +15,28 @@ const initialState = {
   sortParam: sortParams.indexOf('market_cap_usd'),
   sortDirection: sortDirections.DESC,
   faves: new Map(),
-  coinInfoVisible: false
+  coinInfoVisible: false,
+  shouldAutorefresh: false,
+  isAutorefreshing: false
 }
 
 const coinstats = (state = initialState, action) => {
   switch (action.type) {
+    case 'TOGGLE_AUTOREFRESH':
+      return Object.assign({}, state, {
+        shouldAutorefresh: !state.shouldAutorefresh
+      })
+
+    case 'AUTOREFRESHING':
+      return Object.assign({}, state, {
+        isAutorefreshing: true
+      })
+
+    case 'AUTOREFRESHED':
+      return Object.assign({}, state, {
+        isAutorefreshing: false
+      })
+
     case 'TOGGLE_FAVE':
       const cmcId = action.coin.cmc_id
       let m = new Map(state.faves)

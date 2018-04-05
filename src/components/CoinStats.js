@@ -15,6 +15,15 @@ import Spinner from './Spinner'
 
 class CoinStats extends React.Component {
   componentDidMount () {
+    this.autorefreshInterval = setInterval(
+      () => {
+        if (this.props.shouldAutorefresh) {
+          this.props.triggerAutorefresh()
+        }
+      },
+      5000
+    )
+
     window.onkeydown = e => {
       if (e.keyCode === 27) {
         this.props.hideCoinInfo()
@@ -123,6 +132,27 @@ class CoinStats extends React.Component {
                   <span>Filters{caretDown}</span>
                 </div>
               }
+            </div>
+          }
+
+          {isAtBottom ?
+            <div className='autorefresh' />
+            :
+            <div className='autorefresh'>
+              <label htmlFor='autorefresh'>
+                {this.props.isAutorefreshing ?
+                  <span>Autorefreshing...</span>
+                  :
+                  <div>
+                    <input
+                      onChange={this.props.toggleAutorefresh}
+                      id='autorefresh' type='checkbox'
+                      checked={this.props.shouldAutorefresh}
+                      value={this.props.shouldAutorefresh} />
+                    <span>Autorefresh?</span>
+                  </div>
+                }
+              </label>
             </div>
           }
 

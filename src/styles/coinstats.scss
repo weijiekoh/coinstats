@@ -22,25 +22,34 @@
         text-align: right;
         display:flex;
 
-        .filters {
+        .filters, .autorefresh {
             text-align:left;
             display:inline;
-            flex-grow:3;
             @include pointer;
+            @include no-select;
+        }
 
-            span:hover {
-                text-decoration:underline;
-            }
+        .filters {
+            flex-grow:3;
 
             svg {
                 @include icon;
                 margin-bottom:3px;
                 margin-left:5px;
             }
-            @include media-breakpoint-down(xs) {
-            }
         }
 
+        .autorefresh {
+            flex-grow:4;
+
+            span {
+                @include pointer;
+            }
+
+            input {
+                margin-right:0.5em;
+            }
+        }
 
         .page-size {
             display:inline;
@@ -74,10 +83,10 @@
     .opts {
         width:100%;
         float:left;
-        //display:block;
 
         label {
             @include pointer;
+            @include no-select;
             margin-right:1.5em;
             align-content:center;
         }

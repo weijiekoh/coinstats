@@ -15,6 +15,8 @@ var CoinStatsDb = require('./db');
 var routes = require('./routes');
 var queryCmc = require('./queryCmc');
 
+var CMC_API_URI = 'https://api.coinmarketcap.com/v1/ticker/?limit=0';
+
 // The maximum number of coins that /api/coins will return
 var MAXCOINLISTLEN = 100;
 
@@ -24,7 +26,7 @@ var ISPROD = process.env.NODE_ENV === 'production';
 var PORT = process.env.PORT || 8080;
 
 // Default interval: 4 min
-var POLLCMCINTERVALSECS = process.env.POLL_CMC_INTERVAL_SECS * 1000 || 4 * 60 * 1000;
+var POLLCMCINTERVALSECS = process.env.POLL_CMC_INTERVAL_SECS * 1000 || 4.5 * 60 * 1000;
 
 // Set up the database
 var dbFilepath = path.join(__dirname, '../', 'db.sqlite3');
@@ -56,9 +58,9 @@ var start = function start() {
 
   // Query the CMC API once, then schedule to do so every
   // POLL_CMC_INTERVAL_SECS seconds
-  queryCmc(db);
+  queryCmc(db, CMC_API_URI);
   var pollCmcInterval = setInterval(function () {
-    queryCmc(db);
+    queryCmc(db, CMC_API_URI);
   }, POLLCMCINTERVALSECS);
 
   // Clear the interval when the process exits

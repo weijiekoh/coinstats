@@ -1,8 +1,7 @@
-- DB pruning
-- singlecoin url
-
-- Price of the cryptocurrencies should be displayed in real-time
 - User can select to see real-time price changes in charts
+     - use recharts
+
+- singlecoin url (not necessary)
 
 # Project Description
 (d) Create a app to display cryptocurrencies market stats using Bootstrap 4 and ReactJS
@@ -13,6 +12,7 @@
 (d) Currency conversion calculator
 (d) App functionality should be exposed as Node.js APIs 
 (d) User should be able to select favorite cryptocurrencies and these should be displayed in front always
+(d) - Price of the cryptocurrencies should be displayed in real-time
 
 Price of the cryptocurrencies should be displayed in real-time
 User can select to see real-time price changes in charts

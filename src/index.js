@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import './styles/index.css'
-//import registerServiceWorker from './registerServiceWorker'
+// import registerServiceWorker from './registerServiceWorker'
 
 import { createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'

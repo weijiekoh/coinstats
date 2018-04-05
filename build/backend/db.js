@@ -105,7 +105,8 @@ var CoinStatsDb = function () {
                   },
                   order: [['name', 'ASC']]
                 }).catch(function (err) {
-                  console.error(err);
+                  console.error(err, 'Could not get price  data');
+                  throw new UnableToFetchCurrencyException();
                 }));
 
               case 1:
@@ -231,38 +232,92 @@ var CoinStatsDb = function () {
       return updateCoins;
     }()
   }, {
-    key: 'getCoinsByCmcIds',
+    key: 'deleteOldPrices',
     value: function () {
-      var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(ids) {
-        var coins;
+      var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
+        var oneDayAgo, d;
         return regeneratorRuntime.wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                _context5.next = 2;
+                _context5.prev = 0;
+                oneDayAgo = new Date() - 1000 * 86400;
+                _context5.next = 4;
+                return this.PriceHistory.destroy({
+                  where: {
+                    datetime: _defineProperty({}, Sequelize.Op.lt, oneDayAgo)
+                  },
+                  force: true
+                });
+
+              case 4:
+                d = _context5.sent;
+
+                console.log('Deleted old price history data:', d, 'rows');
+                _context5.next = 11;
+                break;
+
+              case 8:
+                _context5.prev = 8;
+                _context5.t0 = _context5['catch'](0);
+
+                console.error(_context5.t0, 'Could not delete old price data');
+
+              case 11:
+              case 'end':
+                return _context5.stop();
+            }
+          }
+        }, _callee5, this, [[0, 8]]);
+      }));
+
+      function deleteOldPrices() {
+        return _ref5.apply(this, arguments);
+      }
+
+      return deleteOldPrices;
+    }()
+  }, {
+    key: 'getCoinsByCmcIds',
+    value: function () {
+      var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(ids) {
+        var coins;
+        return regeneratorRuntime.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                _context6.prev = 0;
+                _context6.next = 3;
                 return this.Coin.findAll({
                   where: {
                     cmc_id: _defineProperty({}, Sequelize.Op.in, ids)
                   }
                 });
 
-              case 2:
-                coins = _context5.sent;
-                return _context5.abrupt('return', coins.map(function (coin) {
+              case 3:
+                coins = _context6.sent;
+                return _context6.abrupt('return', coins.map(function (coin) {
                   delete coin.dataValues.id;
                   return coin.dataValues;
                 }));
 
-              case 4:
+              case 7:
+                _context6.prev = 7;
+                _context6.t0 = _context6['catch'](0);
+
+                console.log(_context6.t0, 'Could not get coin data given these CMC IDs:', ids);
+                throw new UnableFetchCoinsException();
+
+              case 11:
               case 'end':
-                return _context5.stop();
+                return _context6.stop();
             }
           }
-        }, _callee5, this);
+        }, _callee6, this, [[0, 7]]);
       }));
 
       function getCoinsByCmcIds(_x5) {
-        return _ref5.apply(this, arguments);
+        return _ref6.apply(this, arguments);
       }
 
       return getCoinsByCmcIds;
@@ -270,20 +325,20 @@ var CoinStatsDb = function () {
   }, {
     key: 'getCoin',
     value: function () {
-      var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(cmcId) {
+      var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7(cmcId) {
         var coin;
-        return regeneratorRuntime.wrap(function _callee6$(_context6) {
+        return regeneratorRuntime.wrap(function _callee7$(_context7) {
           while (1) {
-            switch (_context6.prev = _context6.next) {
+            switch (_context7.prev = _context7.next) {
               case 0:
-                _context6.prev = 0;
-                _context6.next = 3;
+                _context7.prev = 0;
+                _context7.next = 3;
                 return this.Coin.findOne({
                   where: { cmc_id: cmcId }
                 });
 
               case 3:
-                coin = _context6.sent;
+                coin = _context7.sent;
 
 
                 // This doesn't work in spite of what the docs say, so delete each id
@@ -292,25 +347,25 @@ var CoinStatsDb = function () {
                 //   attributes: { exclude: ['id'] }
                 // });
                 delete coin.dataValues.id;
-                return _context6.abrupt('return', coin.dataValues);
+                return _context7.abrupt('return', coin.dataValues);
 
               case 8:
-                _context6.prev = 8;
-                _context6.t0 = _context6['catch'](0);
+                _context7.prev = 8;
+                _context7.t0 = _context7['catch'](0);
 
-                console.error('Could not get coin data:', _context6.t0);
+                console.error('Could not get coin data:', _context7.t0);
                 throw new UnableFetchCoinException();
 
               case 12:
               case 'end':
-                return _context6.stop();
+                return _context7.stop();
             }
           }
-        }, _callee6, this, [[0, 8]]);
+        }, _callee7, this, [[0, 8]]);
       }));
 
       function getCoin(_x6) {
-        return _ref6.apply(this, arguments);
+        return _ref7.apply(this, arguments);
       }
 
       return getCoin;
@@ -318,13 +373,13 @@ var CoinStatsDb = function () {
   }, {
     key: 'getCoins',
     value: function () {
-      var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7(start, limit, sortParam, direction, minPriceUsd, minVolUsd) {
-        var where, coins, totalCoins, c;
-        return regeneratorRuntime.wrap(function _callee7$(_context7) {
+      var _ref8 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8(start, limit, sortParam, direction, minPriceUsd, minVolUsd) {
+        var where, coins, c;
+        return regeneratorRuntime.wrap(function _callee8$(_context8) {
           while (1) {
-            switch (_context7.prev = _context7.next) {
+            switch (_context8.prev = _context8.next) {
               case 0:
-                _context7.prev = 0;
+                _context8.prev = 0;
                 where = {};
 
                 where[sortParam] = _defineProperty({}, Sequelize.Op.ne, null);
@@ -337,8 +392,8 @@ var CoinStatsDb = function () {
                   where.volume_usd_24h = _defineProperty({}, Sequelize.Op.gte, minVolUsd);
                 }
 
-                _context7.next = 7;
-                return this.Coin.findAll({
+                _context8.next = 7;
+                return this.Coin.findAndCountAll({
                   offset: start,
                   limit: limit,
                   order: [[sortParam, direction]],
@@ -346,39 +401,30 @@ var CoinStatsDb = function () {
                 });
 
               case 7:
-                coins = _context7.sent;
-                _context7.next = 10;
-                return this.Coin.count({
-                  col: 'id',
-                  where: where
-                });
-
-              case 10:
-                totalCoins = _context7.sent;
-                c = coins.map(function (c) {
+                coins = _context8.sent;
+                c = coins.rows.map(function (c) {
                   delete c.dataValues.id;
                   return c.dataValues;
                 });
-                return _context7.abrupt('return', { coins: c, totalCoins: totalCoins });
+                return _context8.abrupt('return', { coins: c, totalCoins: coins.count });
 
-              case 15:
-                _context7.prev = 15;
-                _context7.t0 = _context7['catch'](0);
+              case 12:
+                _context8.prev = 12;
+                _context8.t0 = _context8['catch'](0);
 
-                console.error('Could not get list of coins');
-                console.error(_context7.t0);
+                console.error(_context8.t0, 'Could not get list of coins');
                 throw new UnableFetchCoinsException();
 
-              case 20:
+              case 16:
               case 'end':
-                return _context7.stop();
+                return _context8.stop();
             }
           }
-        }, _callee7, this, [[0, 15]]);
+        }, _callee8, this, [[0, 12]]);
       }));
 
       function getCoins(_x7, _x8, _x9, _x10, _x11, _x12) {
-        return _ref7.apply(this, arguments);
+        return _ref8.apply(this, arguments);
       }
 
       return getCoins;
@@ -386,55 +432,56 @@ var CoinStatsDb = function () {
   }, {
     key: 'getPriceHistory',
     value: function () {
-      var _ref8 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8(cmcId, earliestTimestamp) {
+      var _ref9 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9(cmcId, earliestTimestamp) {
         var where, datetime, coinExists;
-        return regeneratorRuntime.wrap(function _callee8$(_context8) {
+        return regeneratorRuntime.wrap(function _callee9$(_context9) {
           while (1) {
-            switch (_context8.prev = _context8.next) {
+            switch (_context9.prev = _context9.next) {
               case 0:
+                // Get a list of price_usd and timestamps for the given coin
                 where = {
                   cmc_id: cmcId
                 };
 
                 if (!(typeof earliestTimestamp !== 'undefined')) {
-                  _context8.next = 11;
+                  _context9.next = 11;
                   break;
                 }
 
-                _context8.prev = 2;
+                _context9.prev = 2;
                 datetime = new Date(earliestTimestamp * 1000);
 
                 where.datetime = _defineProperty({}, Sequelize.Op.gte, datetime);
-                _context8.next = 11;
+                _context9.next = 11;
                 break;
 
               case 7:
-                _context8.prev = 7;
-                _context8.t0 = _context8['catch'](2);
+                _context9.prev = 7;
+                _context9.t0 = _context9['catch'](2);
 
                 console.error('Invalid timestamp provided');
                 throw new InvalidTimestampException();
 
               case 11:
-                _context8.next = 13;
+                _context9.next = 13;
                 return this.Coin.findOne({
                   where: { cmc_id: cmcId }
                 });
 
               case 13:
-                _context8.t1 = _context8.sent;
-                coinExists = _context8.t1 != null;
+                _context9.t1 = _context9.sent;
+                coinExists = _context9.t1 != null;
 
                 if (coinExists) {
-                  _context8.next = 17;
+                  _context9.next = 17;
                   break;
                 }
 
                 throw new UnableFetchCoinException();
 
               case 17:
-                _context8.prev = 17;
-                return _context8.abrupt('return', this.PriceHistory.findAll({
+                _context9.prev = 17;
+                return _context9.abrupt('return', this.PriceHistory.findAll({
                   where: where,
                   order: [['datetime', 'ASC']]
                 }).then(function (priceHistory) {
@@ -446,22 +493,22 @@ var CoinStatsDb = function () {
                 }));
 
               case 21:
-                _context8.prev = 21;
-                _context8.t2 = _context8['catch'](17);
+                _context9.prev = 21;
+                _context9.t2 = _context9['catch'](17);
 
-                console.error('Could not fetch price history');
+                console.error(_context9.t2, 'Could not fetch price history');
                 throw new UnableFetchCoinException();
 
               case 25:
               case 'end':
-                return _context8.stop();
+                return _context9.stop();
             }
           }
-        }, _callee8, this, [[2, 7], [17, 21]]);
+        }, _callee9, this, [[2, 7], [17, 21]]);
       }));
 
       function getPriceHistory(_x13, _x14) {
-        return _ref8.apply(this, arguments);
+        return _ref9.apply(this, arguments);
       }
 
       return getPriceHistory;
@@ -486,7 +533,7 @@ function UnableFetchCoinsException(message) {
   this.name = 'UnableFetchCoinsException';
 }
 
-function UnableToCountCoinsException(message) {
+function UnableToFetchCurrencyException(message) {
   this.message = message || 'Error counting coins';
   this.name = 'UnableToCountCoinsException';
 }
