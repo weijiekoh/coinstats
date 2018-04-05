@@ -11,11 +11,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var Sequelize = require('sequelize');
 
 var CoinStatsDb = function () {
-  function CoinStatsDb(connStr, isProd) {
-    var debug = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+  function CoinStatsDb(connStr, isProd, priceHistoryRangeSecs) {
+    var debug = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
 
     _classCallCheck(this, CoinStatsDb);
 
+    this.priceHistoryRangeSecs = priceHistoryRangeSecs;
     // Set up the database connection
     this.sequelize = new Sequelize(connStr, {
       operatorsAliases: false,
@@ -235,17 +236,17 @@ var CoinStatsDb = function () {
     key: 'deleteOldPrices',
     value: function () {
       var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
-        var oneDayAgo, d;
+        var earliestTimestamp, d;
         return regeneratorRuntime.wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
                 _context5.prev = 0;
-                oneDayAgo = new Date() - 1000 * 86400;
+                earliestTimestamp = new Date() - 1000 * this.priceHistoryRangeSecs;
                 _context5.next = 4;
                 return this.PriceHistory.destroy({
                   where: {
-                    datetime: _defineProperty({}, Sequelize.Op.lt, oneDayAgo)
+                    datetime: _defineProperty({}, Sequelize.Op.lt, earliestTimestamp)
                   },
                   force: true
                 });
@@ -487,7 +488,7 @@ var CoinStatsDb = function () {
                 }).then(function (priceHistory) {
                   return priceHistory.map(function (ph) {
                     delete ph.dataValues.id;
-                    delete ph.dataValues.id;
+                    delete ph.dataValues.cmc_id;
                     return ph.dataValues;
                   });
                 }));

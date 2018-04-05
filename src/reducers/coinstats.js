@@ -17,11 +17,47 @@ const initialState = {
   faves: new Map(),
   coinInfoVisible: false,
   shouldAutorefresh: false,
-  isAutorefreshing: false
+  isAutorefreshing: false,
+  shouldChartAutorefresh: false,
+  isChartAutorefreshing: false,
+  chartPollFailed: false,
+  tablePollFailed: false
 }
 
 const coinstats = (state = initialState, action) => {
   switch (action.type) {
+    case 'CHART_POLL_FAILED':
+      return Object.assign({}, state, {
+        chartPollFailed: true,
+        isChartAutorefreshing: false
+      })
+
+    case 'TABLE_POLL_FAILED':
+      return Object.assign({}, state, {
+        tablePollFailed: true,
+        isFetchingCoins: false
+      })
+
+    case 'UPDATE_PRICE_HISTORY':
+      return Object.assign({}, state, {
+        priceHistory: action.priceHistory
+      })
+    case 'TOGGLE_CHART_AUTOREFRESH':
+      return Object.assign({}, state, {
+        shouldChartAutorefresh: !state.shouldChartAutorefresh
+      })
+
+    case 'CHART_AUTOREFRESHING':
+      return Object.assign({}, state, {
+        isChartAutorefreshing: true
+      })
+
+    case 'CHART_AUTOREFRESHED':
+      return Object.assign({}, state, {
+        isChartAutorefreshing: false,
+        chartPollFailed: false
+      })
+
     case 'TOGGLE_AUTOREFRESH':
       return Object.assign({}, state, {
         shouldAutorefresh: !state.shouldAutorefresh
@@ -34,7 +70,8 @@ const coinstats = (state = initialState, action) => {
 
     case 'AUTOREFRESHED':
       return Object.assign({}, state, {
-        isAutorefreshing: false
+        isAutorefreshing: false,
+        tablePollFailed: false
       })
 
     case 'TOGGLE_FAVE':
@@ -49,6 +86,11 @@ const coinstats = (state = initialState, action) => {
 
       return Object.assign({}, state, {
         faves: m
+      })
+
+    case 'SET_FAVES':
+      return Object.assign({}, state, {
+        faves: action.faves
       })
 
     case 'HIDE_COIN_INFO':
@@ -74,12 +116,14 @@ const coinstats = (state = initialState, action) => {
         showPriceAboveCent: f,
         minPrice: f ? 0.01 : null
       })
+
     case 'VOL_FILTER_CLICK':
       const v = !state.showHighVolume
       return Object.assign({}, state, {
         showHighVolume: !state.showHighVolume,
         minVol: v ? 10000 : null
       })
+
     case 'OPEN_FILTER_CLICK':
       return Object.assign({}, state, {
         showFilters: true

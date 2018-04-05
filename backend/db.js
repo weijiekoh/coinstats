@@ -1,7 +1,8 @@
 const Sequelize = require('sequelize')
 
 class CoinStatsDb {
-  constructor (connStr, isProd, debug = false) {
+  constructor (connStr, isProd, priceHistoryRangeSecs, debug = false) {
+    this.priceHistoryRangeSecs = priceHistoryRangeSecs
     // Set up the database connection
     this.sequelize = new Sequelize(connStr, {
       operatorsAliases: false,
@@ -136,13 +137,14 @@ class CoinStatsDb {
   }
 
   async deleteOldPrices () {
-    // Delete all entries in PriceHistory which are older than a day
+    // Delete all entries in PriceHistory which are older than
+    // this.priceHistoryRangeSecs
     try {
-      const oneDayAgo = new Date() - (1000 * 86400)
+      const earliestTimestamp = new Date() - (1000 * this.priceHistoryRangeSecs)
       const d = await this.PriceHistory.destroy({
         where: {
           datetime: {
-            [Sequelize.Op.lt]: oneDayAgo
+            [Sequelize.Op.lt]: earliestTimestamp
           }
         },
         force: true
@@ -196,7 +198,7 @@ class CoinStatsDb {
   }
 
   async getCoins (start, limit, sortParam, direction, minPriceUsd, minVolUsd) {
-    // @start: the start from this row 
+    // @start: the start from this row
     // @limit: max number of items to return
     // @limit: sortParam: index of sortParams, which is the field to sort on
     // @direction: sort direction: ASC or DESC

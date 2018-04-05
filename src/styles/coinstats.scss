@@ -41,6 +41,12 @@
 
         .autorefresh {
             flex-grow:4;
+            label {
+                span {
+                    width: 90px;
+                    display:inline-block;
+                }
+            }
 
             span {
                 @include pointer;

@@ -4,7 +4,7 @@ import Sidebar from '../components/Sidebar'
 
 const mapStateToProps = (state, ownProps) => {
   const result = Object.assign({}, state.sidebar, {
-    faves: state.coinstats.faves
+    faves: ownProps.faves
   })
   return result
 }

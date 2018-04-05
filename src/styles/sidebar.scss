@@ -92,6 +92,19 @@
                 padding-left:0.5em;
                 padding-right:0.5em;
             }
+
+            .click-star {
+                @include media-breakpoint-down(sm) {
+                    display:none;
+                }
+            }
+
+            .mobile-star {
+                @include media-breakpoint-up(md) {
+                    display:none;
+                }
+            }
+
             &:hover {
                 background-color:initial;
             }

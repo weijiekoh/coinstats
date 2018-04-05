@@ -273,58 +273,40 @@ function makeRouter(db, maxCoinListLen) {
   // @id: the cmc_id of the coin
   router.get('/coin/prices/:id', function () {
     var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(req, res) {
-      var cmcId, earliest, validTimestamp, datetime, priceHistory;
+      var cmcId, earliest, priceHistory;
       return regeneratorRuntime.wrap(function _callee5$(_context5) {
         while (1) {
           switch (_context5.prev = _context5.next) {
             case 0:
               cmcId = req.params.id;
-              earliest = req.query.earliest;
 
-              if (!(typeof earliest !== 'undefined')) {
-                _context5.next = 10;
-                break;
-              }
+              // limit of 1 day
 
-              validTimestamp = earliest != null && isFinite(earliest) && earliest >= 0;
-              datetime = new Date(earliest * 1000);
-
-              validTimestamp &= datetime.toString() !== 'Invalid Date';
-
-              if (validTimestamp) {
-                _context5.next = 10;
-                break;
-              }
-
-              res.type('text/plain');
-              res.statusCode = 500;
-              return _context5.abrupt('return', res.send('Invalid timestamp'));
-
-            case 10:
-              _context5.prev = 10;
-              _context5.next = 13;
+              earliest = Date.now() / 1000 - 3600;
+              _context5.prev = 2;
+              _context5.next = 5;
               return db.getPriceHistory(cmcId, earliest);
 
-            case 13:
+            case 5:
               priceHistory = _context5.sent;
 
               res.type('text/json');
               return _context5.abrupt('return', res.send(priceHistory));
 
-            case 18:
-              _context5.prev = 18;
-              _context5.t0 = _context5['catch'](10);
+            case 10:
+              _context5.prev = 10;
+              _context5.t0 = _context5['catch'](2);
 
               res.type('text/plain');
               res.statusCode = 500;
               res.send(_context5.t0.message);
 
-            case 23:
+            case 15:
             case 'end':
               return _context5.stop();
           }
         }
-      }, _callee5, _this, [[10, 18]]);
+      }, _callee5, _this, [[2, 10]]);
     }));
 
     return function (_x9, _x10) {

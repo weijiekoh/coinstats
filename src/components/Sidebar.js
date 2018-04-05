@@ -53,10 +53,20 @@ class Sidebar extends Component {
               </div>
 
               <div className='sidebar-title'>
+                {faveArray.length === 0 &&
+                  <p className='title mobile-star'>
+                    To add a coin to your favourites, select on it from the
+                    table and then select the star icon.
+                  </p>
+                }
                 {faveArray.length === 0 ?
-                  <p className='title'>Click on a star to favourite a coin.</p>
+                  <p className='title click-star'>
+                    Click on a star to favourite a coin.
+                  </p>
                   :
-                  <p className='title'>Your favourites:</p>
+                  <p className='title'>
+                    Your favourites:
+                  </p>
                 }
               </div>
 

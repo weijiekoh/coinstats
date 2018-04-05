@@ -1,3 +1,21 @@
+const chartPollFailed = () => {
+  return {
+    type: 'CHART_POLL_FAILED'
+  }
+}
+
+const tablePollFailed = () => {
+  return {
+    type: 'TABLE_POLL_FAILED'
+  }
+}
+
+const updatePriceHistory = priceHistory => {
+  return {
+    type: 'UPDATE_PRICE_HISTORY',
+    priceHistory
+  }
+}
 const chartAutorefreshed = () => {
   return {
     type: 'CHART_AUTOREFRESHED'
@@ -31,6 +49,13 @@ const autorefreshed = () => {
 const toggleAutorefresh = () => {
   return {
     type: 'TOGGLE_AUTOREFRESH'
+  }
+}
+
+const setFaves = faves => {
+  return {
+    type: 'SET_FAVES',
+    faves
   }
 }
 
@@ -126,10 +151,14 @@ export {
   showCoinInfo,
   hideCoinInfo,
   toggleFave,
+  setFaves,
   autorefreshing,
   autorefreshed,
   toggleAutorefresh,
   chartAutorefreshed,
   chartAutorefreshing,
-  toggleChartAutorefresh
+  toggleChartAutorefresh,
+  updatePriceHistory,
+  chartPollFailed,
+  tablePollFailed
 }

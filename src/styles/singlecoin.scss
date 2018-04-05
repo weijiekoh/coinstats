@@ -52,6 +52,16 @@
         font-weight:bold;
     }
 
+    .controls {
+        width:100%;
+        text-align:right;
+
+        .autorefresh {
+            text-align:right;
+            float:right;
+        }
+    }
+
     table {
         margin-bottom:2em;
         thead {

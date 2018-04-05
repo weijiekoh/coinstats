@@ -1,16 +1,16 @@
 const sortParams = [
-  'symbol',             // 0
-  'name',               // 1
-  'price_usd',          // 2
-  'price_btc',          // 3
-  'market_cap_usd',     // 4
-  'volume_usd_24h',     // 5
-  'available_supply',   // 6
-  'total_supply',       // 7
-  'max_supply',         // 8
-  'percent_change_1h',  // 9
+  'symbol', // 0
+  'name', // 1
+  'price_usd', // 2
+  'price_btc', // 3
+  'market_cap_usd', // 4
+  'volume_usd_24h', // 5
+  'available_supply', // 6
+  'total_supply', // 7
+  'max_supply', // 8
+  'percent_change_1h', // 9
   'percent_change_24h', // 10
-  'percent_change_7d'   // 11
+  'percent_change_7d' // 11
 ]
 
 const sortDirections = {
@@ -61,7 +61,6 @@ function makeRouter (db, maxCoinListLen) {
     const coins = await db.getCoinsByCmcIds(cmcIds)
     res.type('text/json')
     return res.send(coins)
-
   })
 
   // Return a list of coins
@@ -146,23 +145,9 @@ function makeRouter (db, maxCoinListLen) {
   // @id: the cmc_id of the coin
   router.get('/coin/prices/:id', async (req, res) => {
     const cmcId = req.params.id
-    const earliest = req.query.earliest
 
-    if (typeof earliest !== 'undefined') {
-      let validTimestamp =
-        earliest != null &&
-        isFinite(earliest) &&
-        earliest >= 0
-
-      let datetime = new Date(earliest * 1000)
-      validTimestamp &= datetime.toString() !== 'Invalid Date'
-
-      if (!validTimestamp) {
-        res.type('text/plain')
-        res.statusCode = 500
-        return res.send('Invalid timestamp')
-      }
-    }
+    // limit of 1 day
+    const earliest = Date.now() / 1000 - 3600
 
     try {
       const priceHistory = await db.getPriceHistory(cmcId, earliest)

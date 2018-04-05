@@ -6,19 +6,34 @@ import { getFaveIds, saveFaveIds } from '../lib/storage'
 import {
   fetchedCoins,
   fetchingCoins,
+
   prevArrowClick,
   nextArrowClick,
+
   openFilterClick,
   closeFilterClick,
+
   priceFilterClick,
   volFilterClick,
+
   resetPagination,
+
   showCoinInfo,
   hideCoinInfo,
   toggleFave,
+  setFaves,
+
   autorefreshing,
   autorefreshed,
-  toggleAutorefresh
+  toggleAutorefresh,
+
+  toggleChartAutorefresh,
+  chartAutorefreshed,
+  chartAutorefreshing,
+  updatePriceHistory,
+
+  chartPollFailed,
+  tablePollFailed
 } from '../actions/coinstats'
 
 const fetchCoinsAsync = (start, limit, sort, direc, minPrice, minVol) => {
@@ -37,8 +52,12 @@ const fetchCoinsAsync = (start, limit, sort, direc, minPrice, minVol) => {
 
     await dispatch(fetchingCoins())
 
-    const data = await (await fetch(url)).json()
-    return dispatch(fetchedCoins(data, sort, direc, minPrice, minVol))
+    try {
+      const data = await (await fetch(url)).json()
+      return dispatch(fetchedCoins(data, sort, direc, minPrice, minVol))
+    } catch (err) {
+      return dispatch(tablePollFailed())
+    }
   }
 }
 
@@ -56,30 +75,42 @@ const dispatchFetchCoinsAsync = (dispatch, getState) => {
 const initialFetch = () => {
   return async (dispatch, getState) => {
     // Fetch data for the table
-    await dispatchFetchCoinsAsync(dispatch, getState)
-
-    const faves = getState().coinstats.faves
+    try {
+      await dispatchFetchCoinsAsync(dispatch, getState)
+    } catch (err) {
+      return dispatch(tablePollFailed())
+    }
 
     // Fetch data for the coin specified in the URL
     const cmcId = getState().coinstats.cmcIdToShow
     if (cmcId) {
       try {
         const coin = await (await fetch('/api/coin/' + cmcId)).json()
+        const priceHistory = await (await (fetch('/api/coin/prices/' + cmcId))).json()
+        dispatch(updatePriceHistory(priceHistory))
         dispatch(showCoinInfo(coin))
-      } catch(err) {
-        console.error("Invalid cmcId")
+      } catch (err) {
+        console.error('Invalid cmcId')
       }
     }
 
+    return dispatch(handleFetchFaves())
+  }
+}
+
+const handleFetchFaves = () => {
+  return async (dispatch, getState) => {
     if (getFaveIds().length > 0) {
       try {
         const faveIds = getFaveIds().join(',')
         const coinData = await (await fetch('/api/coins_by_ids/' + faveIds)).json()
+
+        let newFaves = new Map()
         coinData.forEach(coin => {
-          if (!faves.has(coin.cmc_id)) {
-            dispatch(toggleFave(coin))
-          }
+          newFaves.set(coin.cmc_id, coin)
         })
+
+        return dispatch(setFaves(newFaves))
       } catch (err) {
         console.error('Error fetching favourite coin data')
       }
@@ -87,12 +118,12 @@ const initialFetch = () => {
   }
 }
 
-const fetchAndShowCoinInfoAsync = cmcId => {
+const handleCoinRowClickedAsync = cmcId => {
   return async (dispatch, getState) => {
-    if (cmcId) {
-      const coin = await (await fetch('/api/coin/' + cmcId)).json()
-      return dispatch(showCoinInfo(coin))
-    }
+    const coin = await (await fetch('/api/coin/' + cmcId)).json()
+    const priceHistory = await (await (fetch('/api/coin/prices/' + cmcId))).json()
+    await dispatch(updatePriceHistory(priceHistory))
+    return dispatch(showCoinInfo(coin))
   }
 }
 
@@ -177,8 +208,25 @@ const handleToggleFave = coin => {
 const handleTriggerAutorefreshAsync = () => {
   return async (dispatch, getState) => {
     await dispatch(autorefreshing())
-    await dispatchFetchCoinsAsync(dispatch, getState)
-    return dispatch(autorefreshed())
+    try {
+      await dispatchFetchCoinsAsync(dispatch, getState)
+      return dispatch(autorefreshed())
+    } catch (err) {
+      return dispatch(tablePollFailed)
+    }
+  }
+}
+
+const handleTriggerChartAutorefreshAsync = cmcId => {
+  return async (dispatch, getState) => {
+    await dispatch(chartAutorefreshing())
+
+    try {
+      await dispatch(handleCoinRowClickedAsync(cmcId))
+      return dispatch(chartAutorefreshed())
+    } catch (err) {
+      await dispatch(chartPollFailed())
+    }
   }
 }
 
@@ -187,20 +235,33 @@ const mapDispatchToProps = dispatch => {
     sortCoinsClick: (...params) => dispatch(handleSortCoinsClickAsync(...params)),
     nextArrowClick: () => dispatch(handleNextArrowClickAsync()),
     prevArrowClick: () => dispatch(handlePrevArrowClickAsync()),
+
     fetchCoins: (...params) => dispatch(fetchCoinsAsync(...params)),
     fetchedCoins: (...params) => dispatch(fetchedCoins(...params)),
+
     openFilterClick: () => dispatch(openFilterClick()),
     closeFilterClick: () => dispatch(closeFilterClick()),
+
     priceFilterClick: () => dispatch(handlePriceFilterClickAsync()),
     volFilterClick: () => dispatch(handleVolFilterClickAsync()),
+
     initialFetch: () => dispatch(initialFetch()),
     resetPagination: () => dispatch(handleResetPaginationAsync()),
+
+    coinRowClicked: cmcId => dispatch(handleCoinRowClickedAsync(cmcId)),
+
     showCoinInfo: coin => dispatch(showCoinInfo(coin)),
-    showCoinInfoByCmcId: cmcId => dispatch(fetchAndShowCoinInfoAsync()),
     hideCoinInfo: () => dispatch(hideCoinInfo()),
+
     toggleFave: (...params) => dispatch(handleToggleFave(...params)),
+
     toggleAutorefresh: () => dispatch(toggleAutorefresh()),
-    triggerAutorefresh: () => dispatch(handleTriggerAutorefreshAsync())
+    triggerAutorefresh: () => dispatch(handleTriggerAutorefreshAsync()),
+
+    toggleChartAutorefresh: () => dispatch(toggleChartAutorefresh()),
+    triggerChartAutorefresh: cmcId => dispatch(handleTriggerChartAutorefreshAsync(cmcId)),
+
+    fetchFaves: () => dispatch(handleFetchFaves())
   }
 }
 

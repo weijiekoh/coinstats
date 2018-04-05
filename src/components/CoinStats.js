@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import SidebarContainer from '../containers/SidebarContainer'
+import autorefreshToggle from './autorefreshToggle'
 
 import {
   formatPrice,
@@ -15,11 +16,17 @@ import Spinner from './Spinner'
 
 class CoinStats extends React.Component {
   componentDidMount () {
-    // Set up autorefresh interval
+    // Set up autorefresh intervals
     this.autorefreshInterval = setInterval(
       () => {
         if (this.props.shouldAutorefresh) {
           this.props.triggerAutorefresh()
+          this.props.fetchFaves()
+        }
+
+        if (this.props.shouldChartAutorefresh) {
+          this.props.triggerChartAutorefresh(this.props.coinToShow.cmc_id)
+          this.props.fetchFaves()
         }
       },
       (1000 * 60)
@@ -79,7 +86,7 @@ class CoinStats extends React.Component {
             <tbody>
               {this.props.coins.map((d, i) =>
                 <tr className='coinrow' key={i}
-                  onClick={() => this.props.showCoinInfo(d)}>
+                  onClick={() => this.props.coinRowClicked(d.cmc_id)}>
 
                   <td onClick={e => {
                       this.props.toggleFave(d)
@@ -142,25 +149,13 @@ class CoinStats extends React.Component {
             </div>
           }
 
-          {isAtBottom ?
-            <div className='autorefresh' />
-            :
-            <div className='autorefresh'>
-              <label htmlFor='autorefresh'>
-                {this.props.isAutorefreshing ?
-                  <span>Autorefreshing...</span>
-                  :
-                  <div>
-                    <input
-                      onChange={this.props.toggleAutorefresh}
-                      id='autorefresh' type='checkbox'
-                      checked={this.props.shouldAutorefresh}
-                      value={this.props.shouldAutorefresh} />
-                    <span>Autorefresh?</span>
-                  </div>
-                }
-              </label>
-            </div>
+          {isAtBottom && <div className='autorefresh' />}
+          {!isAtBottom && !this.props.tablePollFailed &&
+            autorefreshToggle(
+              this.props.isAutorefreshing,
+              this.props.toggleAutorefresh,
+              this.props.shouldAutorefresh
+            )
           }
 
           <div className='page-size'>
@@ -221,20 +216,25 @@ class CoinStats extends React.Component {
     return (
       <div className="ibm ibm-type-c container-fluid">
         <SidebarContainer
+          faves={this.props.faves}
           onLogoClick={this.props.hideCoinInfo}
         />
         <div className="content">
           <div className='coinstats'>
             { !this.props.coinInfoVisible && this.props.totalCoins && this.renderControls(false) }
 
-            { !this.props.coinInfoVisible && this.renderTable() }
+            { !this.props.tablePollFailed &&
+              !this.props.coinInfoVisible &&
+              this.renderTable() }
+
+            { this.props.tablePollFailed &&
+                <p>
+                  Could not download coin statistics. Please check your connection.
+                </p>
+            }
 
             { this.props.coinInfoVisible &&
-              <SingleCoin
-                isFave={this.props.faves.has(this.props.coinToShow.cmc_id)}
-                toggleFave={this.props.toggleFave}
-                coin={this.props.coinToShow}
-                hideCoinInfo={this.props.hideCoinInfo} />
+              <SingleCoin props={this.props} />
             }
 
             { !this.props.coinInfoVisible &&
