@@ -36,9 +36,14 @@ class Converter extends React.Component {
   render () {
     if (!this.props.currencyData) {
       return (
-        <div className="converter">
-          <h4>Currency Converter</h4>
-          <Spinner />
+        <div className="ibm ibm-type-c container-fluid">
+          <SidebarContainer />
+          <div className="content">
+            <div className="converter">
+              <h4>Currency Converter</h4>
+              <Spinner />
+            </div>
+          </div>
         </div>
       )
     }

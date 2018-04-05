@@ -22,6 +22,7 @@ class Sidebar extends Component {
 
   render () {
     const props = this.props
+    const faveArray = Array.from(props.faves || [])
     return (
       <div>
         { props.showMenu && <div className='overlay' onClick={props.closeMenu} /> }
@@ -52,11 +53,15 @@ class Sidebar extends Component {
             </div>
 
             <div className='sidebar-title'>
-              <p className='title'>Your favourites:</p>
+              {faveArray.length === 0 ?
+                <p className='title'>Click on a star to favourite a coin.</p>
+                  :
+                <p className='title'>Your favourites:</p>
+              }
             </div>
 
             <div className='faves'>
-              {props.faves && Array.from(props.faves).map((f, i) => (
+              {props.faves && faveArray.map((f, i) => (
                 <div key={i} className='fave'>
                   <span className='name'>
                     {f[1].symbol}

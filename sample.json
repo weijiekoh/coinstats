@@ -865,5 +865,22 @@
         "percent_change_24h": null, 
         "percent_change_7d": null, 
         "last_updated": "1520655560"
+    },
+    {
+        "id": "stronghands",
+        "name": "StrongHands",
+        "symbol": "SHND",
+        "rank": "878",
+        "price_usd": "0.0000002719",
+        "price_btc": "0.00000000004",
+        "24h_volume_usd": "22603.3",
+        "market_cap_usd": "146135.0",
+        "available_supply": "537505773562",
+        "total_supply": "18984246847200",
+        "max_supply": null,
+        "percent_change_1h": "-0.47",
+        "percent_change_24h": "-9.03",
+        "percent_change_7d": "-13.83",
+        "last_updated": "1522891745"
     }
 ]

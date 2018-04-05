@@ -19,7 +19,7 @@ const formatPriceNoRound = value => {
   return parseFloat(value).toLocaleString()
 }
 
-const formatPrice = (value, roundDigits = 2, btc = true) => {
+const formatPrice = (value, roundDigits = 2, btc = false) => {
   if (value == null || isNaN(value)) {
     return 'n/a'
   }
