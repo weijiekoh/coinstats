@@ -1,4 +1,5 @@
 - DB pruning
+- singlecoin url
 
 - Price of the cryptocurrencies should be displayed in real-time
 - User can select to see real-time price changes in charts

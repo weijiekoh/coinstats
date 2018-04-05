@@ -151,11 +151,19 @@ const handleResetPaginationAsync = () => {
 
 const handleToggleFave = coin => {
   return async (dispatch, getState) => {
+    // get the IDs of the existing faves
     const faves = getState().coinstats.faves
     let faveIds = []
     faves.forEach(fave => {
       faveIds.push(fave.cmc_id)
     })
+
+    // if coin.cmc_id is in faveIds, remove it. otherwise, add it.
+    if (faveIds.indexOf(coin.cmc_id) > -1) {
+      faveIds = faveIds.filter(f => f !== coin.cmc_id)
+    } else {
+      faveIds.push(coin.cmc_id)
+    }
 
     // save to localstorage
     saveFaveIds(faveIds)

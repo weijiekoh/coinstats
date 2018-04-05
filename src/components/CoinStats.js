@@ -25,7 +25,7 @@ class CoinStats extends React.Component {
     this.props.initialFetch()
   }
 
-  renderTable (coins) {
+  renderTable () {
     const sort = sortParam => {
       return () => this.props.sortCoinsClick(sortParam)
     }
@@ -34,12 +34,6 @@ class CoinStats extends React.Component {
       <th className={className} onClick={sort(sortField)}>
         {text}
       </th>
-    )
-
-    const makeStar = (coin, className) => (
-      <span className={'star ' + className}>
-        {star}
-      </span>
     )
 
     return (
@@ -67,19 +61,25 @@ class CoinStats extends React.Component {
 
           { !this.props.isFetchingCoins && this.props.coins &&
             <tbody>
-              {coins.map((d, i) =>
+              {this.props.coins.map((d, i) =>
                 <tr className='coinrow' key={i}
                   onClick={() => this.props.showCoinInfo(d)}>
 
                   <td onClick={e => {
+                      this.props.toggleFave(d)
                       e.stopPropagation()
-                      this.props.toggleFave(d)}}
+                    }}
                       className='star'>
 
                     {this.props.faves.has(d.cmc_id) ?
-                      makeStar(d, 'full-star')
+                      <span className='star full-star'>
+                        {star}
+                      </span>
                       :
-                      makeStar(d, 'empty-star')}
+                      <span className='star empty-star'>
+                        {star}
+                      </span>
+                    }
                   </td>
 
                   <td title={d.name} className='coin'>
@@ -190,7 +190,7 @@ class CoinStats extends React.Component {
           <div className='coinstats'>
             { !this.props.coinInfoVisible && this.props.totalCoins && this.renderControls(false) }
 
-            { !this.props.coinInfoVisible && this.renderTable(this.props.coins) }
+            { !this.props.coinInfoVisible && this.renderTable() }
 
             { this.props.coinInfoVisible &&
               <SingleCoin
