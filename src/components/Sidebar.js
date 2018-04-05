@@ -40,35 +40,36 @@ class Sidebar extends Component {
               }
               props.closeMenu()
             }}>
-            <div className='logo'>
-              <img alt='CoinStats' src='../images/logo.png' />
-            </div>
-          </Link>
-
-          <div className='sidebar-content'>
-            <div className='sidebar-section'>
-              <Link to='/converter' onClick={props.closeMenu}>
-                Currency Converter
-              </Link>
-            </div>
-
-            <div className='sidebar-title'>
-              {faveArray.length === 0 ?
-                <p className='title'>Click on a star to favourite a coin.</p>
-                  :
-                <p className='title'>Your favourites:</p>
-              }
-            </div>
-
-            <div className='faves'>
-              {props.faves && faveArray.map((f, i) => (
-                <div key={i} className='fave'>
-                  <span className='name'>
-                    {f[1].symbol}
-                  </span> ${formatPrice(f[1].price_usd)}
-                </div>
-              ))}
+              <div className='logo'>
+                <img alt='CoinStats' src='../images/logo.png' />
               </div>
+            </Link>
+
+            <div className='sidebar-content'>
+              <div className='sidebar-section'>
+                <Link to='/converter' onClick={props.closeMenu}>
+                  Currency Converter
+                </Link>
+              </div>
+
+              <div className='sidebar-title'>
+                {faveArray.length === 0 ?
+                  <p className='title'>Click on a star to favourite a coin.</p>
+                  :
+                  <p className='title'>Your favourites:</p>
+                }
+              </div>
+
+              <div className='faves'>
+                {props.faves && faveArray.map((f, i) => (
+                  <div key={i} className='fave'>
+                    <span className='name'>
+                      {f[1].symbol}
+                    </span> ${formatPrice(f[1].price_usd)}
+                  </div>
+                ))}
+              </div>
+
             </div>
           </div>
         </div>
