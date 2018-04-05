@@ -77,6 +77,7 @@ class CoinStatsDb {
   }
 
   async getCurrencyData () {
+    // Return a list of each coin and their USD price
     return this.Coin.findAll({
       attributes: ['name', 'symbol', 'price_usd'],
       where: {
@@ -86,18 +87,21 @@ class CoinStatsDb {
       },
       order: [['name', 'ASC']]
     }).catch(err => {
-      console.error(err)
+      console.error(err, 'Could not get price  data')
+      throw new UnableToFetchCurrencyException()
     })
   }
 
   async updateCoins (coins) {
     // Update or insert all coin data in one transaction
     await this.sequelize.transaction(async transaction => {
+      // For each coin:
       await Promise.all(coins.map(async coin => {
         const lastUpdatedDate =
           coin.last_updated ? new Date(coin.last_updated * 1000) : null
 
         try {
+          // Insert the coin
           await this.Coin.upsert({
             cmc_id: coin.id,
             cmc_rank: coin.rank,
@@ -116,6 +120,7 @@ class CoinStatsDb {
             last_updated: lastUpdatedDate
           }, { transaction })
 
+          // Update price history
           await this.PriceHistory.create({
             cmc_id: coin.id,
             price_usd: coin.price_usd,
@@ -130,22 +135,48 @@ class CoinStatsDb {
     })
   }
 
-  async getCoinsByCmcIds (ids) {
-    const coins = await this.Coin.findAll({
-      where: {
-        cmc_id: {
-          [Sequelize.Op.in]: ids
-        }
-      }
-    })
+  async deleteOldPrices () {
+    // Delete all entries in PriceHistory which are older than a day
+    try {
+      const oneDayAgo = new Date() - (1000 * 86400)
+      const d = await this.PriceHistory.destroy({
+        where: {
+          datetime: {
+            [Sequelize.Op.lt]: oneDayAgo
+          }
+        },
+        force: true
+      })
+      console.log('Deleted old price history data:', d, 'rows')
+    } catch (err) {
+      console.error(err, 'Could not delete old price data')
+    }
+  }
 
-    return coins.map(coin => {
-      delete coin.dataValues.id
-      return coin.dataValues
-    })
+  async getCoinsByCmcIds (ids) {
+    // @ids is a list of coin IDs as per the CMC API
+    // Returns a list of coin data (sans native ID)
+    try {
+      const coins = await this.Coin.findAll({
+        where: {
+          cmc_id: {
+            [Sequelize.Op.in]: ids
+          }
+        }
+      })
+
+      return coins.map(coin => {
+        delete coin.dataValues.id
+        return coin.dataValues
+      })
+    } catch (err) {
+      console.log(err, 'Could not get coin data given these CMC IDs:', ids)
+      throw new UnableFetchCoinsException()
+    }
   }
 
   async getCoin (cmcId) {
+    // Returns data for one coin (sans native ID)
     try {
       const coin = await this.Coin.findOne({
         where: { cmc_id: cmcId }
@@ -165,6 +196,12 @@ class CoinStatsDb {
   }
 
   async getCoins (start, limit, sortParam, direction, minPriceUsd, minVolUsd) {
+    // @start: the start from this row 
+    // @limit: max number of items to return
+    // @limit: sortParam: index of sortParams, which is the field to sort on
+    // @direction: sort direction: ASC or DESC
+    // @minPriceUsd: minimum price_usd
+    // @minVolUsd: minimum volume_usd_24h
     try {
       let where = {}
       where[sortParam] = {
@@ -179,7 +216,7 @@ class CoinStatsDb {
         where.volume_usd_24h = { [Sequelize.Op.gte]: minVolUsd }
       }
 
-      const coins = await this.Coin.findAll({
+      const coins = await this.Coin.findAndCountAll({
         offset: start,
         limit: limit,
         order: [
@@ -188,25 +225,20 @@ class CoinStatsDb {
         where
       })
 
-      const totalCoins = await this.Coin.count({
-        col: 'id',
-        where
-      })
-
-      const c = coins.map(c => {
+      const c = coins.rows.map(c => {
         delete c.dataValues.id
         return c.dataValues
       })
 
-      return { coins: c, totalCoins }
+      return { coins: c, totalCoins: coins.count }
     } catch (err) {
-      console.error('Could not get list of coins')
-      console.error(err)
+      console.error(err, 'Could not get list of coins')
       throw new UnableFetchCoinsException()
     }
   }
 
   async getPriceHistory (cmcId, earliestTimestamp) {
+    // Get a list of price_usd and timestamps for the given coin
     let where = {
       cmc_id: cmcId
     }
@@ -243,7 +275,7 @@ class CoinStatsDb {
         })
       })
     } catch (err) {
-      console.error('Could not fetch price history')
+      console.error(err, 'Could not fetch price history')
       throw new UnableFetchCoinException()
     }
   }
@@ -264,7 +296,7 @@ function UnableFetchCoinsException (message) {
   this.name = 'UnableFetchCoinsException'
 }
 
-function UnableToCountCoinsException (message) {
+function UnableToFetchCurrencyException (message) {
   this.message = message || 'Error counting coins'
   this.name = 'UnableToCountCoinsException'
 }

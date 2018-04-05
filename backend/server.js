@@ -11,6 +11,8 @@ const CoinStatsDb = require('./db')
 const routes = require('./routes')
 const queryCmc = require('./queryCmc')
 
+const CMC_API_URI = 'https://api.coinmarketcap.com/v1/ticker/?limit=0'
+
 // The maximum number of coins that /api/coins will return
 const MAXCOINLISTLEN = 100
 
@@ -22,7 +24,7 @@ const PORT = process.env.PORT || 8080
 // Default interval: 4 min
 const POLLCMCINTERVALSECS =
   (process.env.POLL_CMC_INTERVAL_SECS * 1000) ||
-  (4 * 60 * 1000)
+  (4.5 * 60 * 1000)
 
 // Set up the database
 const dbFilepath = path.join(__dirname, '../', 'db.sqlite3')
@@ -58,9 +60,9 @@ const start = () => {
 
   // Query the CMC API once, then schedule to do so every
   // POLL_CMC_INTERVAL_SECS seconds
-  queryCmc(db)
+  queryCmc(db, CMC_API_URI)
   const pollCmcInterval = setInterval(() => {
-    queryCmc(db)
+    queryCmc(db, CMC_API_URI)
   }, POLLCMCINTERVALSECS)
 
   // Clear the interval when the process exits
