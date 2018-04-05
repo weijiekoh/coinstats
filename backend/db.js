@@ -270,7 +270,7 @@ class CoinStatsDb {
       }).then(priceHistory => {
         return priceHistory.map(ph => {
           delete ph.dataValues.id
-          delete ph.dataValues.id
+          delete ph.dataValues.cmc_id
           return ph.dataValues
         })
       })

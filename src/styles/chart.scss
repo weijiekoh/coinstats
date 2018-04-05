@@ -1,0 +1,38 @@
+@import './variables.scss';
+
+.chart {
+    margin-bottom:20px;
+    clear:both;
+    overflow:hidden;
+
+    .recharts-wrapper {
+        float:left;
+        display:inline;
+        height:50px;
+    }
+
+    .recharts-line path {
+        stroke: $chart-line-color;
+    }
+
+    .recharts-cartesian-axis {
+        line, text {
+            stroke: $chart-axis-color;
+        }
+
+        text {
+            font-size: 0.75em;
+            font-weight: normal;
+        }
+    }
+
+    .recharts-xAxis {
+        .recharts-label > text{
+        }
+    }
+}
+.recharts-layer.recharts-cartesian-axis.recharts-yAxis.yAxis > text {
+}
+
+.recharts-layer.recharts-cartesian-axis.recharts-xAxis > text {
+}

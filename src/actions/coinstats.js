@@ -1,3 +1,21 @@
+const chartAutorefreshed = () => {
+  return {
+    type: 'CHART_AUTOREFRESHED'
+  }
+}
+
+const chartAutorefreshing = () => {
+  return {
+    type: 'CHART_AUTOREFRESHING'
+  }
+}
+
+const toggleChartAutorefresh = () => {
+  return {
+    type: 'TOGGLE_CHART_AUTOREFRESH'
+  }
+}
+
 const autorefreshing = () => {
   return {
     type: 'AUTOREFRESHING'
@@ -110,5 +128,8 @@ export {
   toggleFave,
   autorefreshing,
   autorefreshed,
-  toggleAutorefresh
+  toggleAutorefresh,
+  chartAutorefreshed,
+  chartAutorefreshing,
+  toggleChartAutorefresh
 }
