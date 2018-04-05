@@ -46,7 +46,8 @@ const renderChart = (priceHistory) => {
           </XAxis>
 
           <YAxis type='number' dataKey='price_usd'
-            padding={{bottom: 30, top: 30}}
+                 padding={{bottom: 30, top: 30}}
+                 domain = {['auto', 'auto']}
                  interval={'preserveStartEnd'}>
             <Label position='left' value='Price (USD)'
                    offset={0} angle={-90}/>
