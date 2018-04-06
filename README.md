@@ -46,6 +46,13 @@ An ideal development environment requires two terminals. You may choose to use
 DATABASE_URL=<your database connection string> yarn dev
 ```
 
+You may choose to use this convenience script to commit all changes and deploy
+the app to Heroku:
+
+```bash
+./build_and_deploy.sh '<commit message>'
+```
+
 # Building the app
 
 Assuming that you have NodeJS, the [`yarn`](https://yarnpkg.com) package
@@ -96,6 +103,19 @@ variables set up:
 | `NODE_ENV` | `production` | |
 | `PRICE_HISTORY_RANGE_SECS` | `3600` | `3600` |
 | `CMC_MAX_COINS` | `100` | `100` |
+
+Once you have created a Heroku app, make sure that you configure a `git` remote
+for it:
+
+```bash
+heroku git:remote -a <app name>
+```
+
+To deploy the app, run:
+
+```bash
+git push heroku master
+```
 
 # Limitations
 

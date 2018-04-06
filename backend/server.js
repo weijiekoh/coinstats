@@ -45,7 +45,6 @@ const dbFilepath = path.join(__dirname, '../', 'db.sqlite3')
 const sqliteConnStr = 'sqlite:' + dbFilepath
 
 const connStr = process.env.DATABASE_URL ? process.env.DATABASE_URL : sqliteConnStr
-console.log(connStr)
 const db = new CoinStatsDb(connStr, IS_PROD, PRICE_HISTORY_RANGE_SECS)
 
 // Running start() will launch the app
