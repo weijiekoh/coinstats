@@ -44,10 +44,6 @@ if (POLL_CMC_INTERVAL < DEFAULT_POLL_INTERVAL && !process.env.FORCE_POLL) {
 const dbFilepath = path.join(__dirname, '../', 'db.sqlite3')
 const sqliteConnStr = 'sqlite:' + dbFilepath
 
-if (IS_PROD && !process.env.DATABASE_URL) {
-  throw new Error('No DATABASE_URL environment variable provided')
-}
-
 const connStr = process.env.DATABASE_URL ? process.env.DATABASE_URL
   : sqliteConnStr
 const db = new CoinStatsDb(connStr, IS_PROD, PRICE_HISTORY_RANGE_SECS)
