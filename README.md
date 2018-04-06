@@ -105,20 +105,17 @@ variables set up:
 | `CMC_MAX_COINS` | `100` | `100` |
 
 
+Run the following commands to create a Heroku instance and deploy this app:
+
 ```bash
+heroku create && \
 heroku config:set PORT=80 NODE_ENV=production
-```
-
-Once you have created a Heroku app, make sure that you configure a `git` remote
-for it:
-
-```bash
-heroku git:remote -a <app name>
 ```
 
 Provision the Postgres add-on. Note that the following will incur a monthly
 cost, but is necessary if you accept the default `PRICE_HISTORY_RANGE_SECS` and
-`CMC_MAX_COINS` `configuration variables (see the Limitations section for more information).
+`CMC_MAX_COINS` `configuration variables (see the Limitations section for more
+information).
 
 ```bash
 heroku addons:create heroku-postgresql:hobby-basic

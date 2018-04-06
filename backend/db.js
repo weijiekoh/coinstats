@@ -22,11 +22,11 @@ class CoinStatsDb {
         ['created_at', 'updated_at', 'deleted_at']
     })
 
-    // Create and sync models
-    this.setupModels()
+    //// Create and sync models
+    //this.setupModels()
   }
 
-  setupModels () {
+  async setupModels () {
     // Each Coin is a single, unqiue cryptocurrency or token
     // Note: these model definitions don't use camelCase to be consistent with
     // the CMC API, and CMC's API uses '24h_volume_usd' which is invalid as a
@@ -58,8 +58,6 @@ class CoinStatsDb {
       last_updated: Sequelize.DATE
     })
 
-    this.Coin.sync()
-
     // Tracks the price of a coin over time
     this.PriceHistory = this.sequelize.define('priceHistory', {
       cmc_id: {
@@ -74,7 +72,8 @@ class CoinStatsDb {
       price_btc: Sequelize.DOUBLE
     })
 
-    this.PriceHistory.sync()
+    await this.Coin.sync()
+    await this.PriceHistory.sync()
   }
 
   async getCurrencyData () {

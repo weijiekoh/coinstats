@@ -113,7 +113,7 @@ const start = () => {
 // been synced
 db.sequelize.authenticate()
   .then(() => {
-    db.sequelize.sync().then(start)
+    db.setupModels().then(start)
   }).catch(err => {
     console.error('Unable to connect to the database.\n', err)
   })
