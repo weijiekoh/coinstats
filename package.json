@@ -31,7 +31,7 @@
   },
   "scripts": {
     "start-js": "react-scripts start",
-        "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
+    "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
     "start": "npm-run-all -p watch-css start-js",
     "build-js": "react-scripts build",
     "build-css": "node-sass-chokidar --quiet --include-path ./src --include-path ./node_modules src/ -o src/",
@@ -41,21 +41,27 @@
     "build": "run-s build-frontend build-backend",
     "prod": "run-s build-frontend build-backend run-prod",
     "dev": "nodemon --exec babel-node -- backend/server.js",
-    "test": "react-scripts test --env=jsdom",
+    "test-frontend": "mocha --bail --require babel-core/register test/test_frontend.js",
+    "test-backend": "mocha --bail --require babel-core/register test/test_backend.js",
+    "test": "run-s test-frontend test-backend",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "chai": "^4.1.2",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.0.1",
+    "mocha": "^5.0.5",
     "nodemon": "^1.17.2",
+    "puppeteer": "^1.2.0",
     "redux-devtools": "^3.4.1",
+    "request": "^2.85.0",
     "sqlite3": "^4.0.0",
     "standard": "^11.0.1"
   }

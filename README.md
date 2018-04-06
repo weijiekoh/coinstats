@@ -53,6 +53,23 @@ the app to Heroku:
 ./build_and_deploy.sh '<commit message>'
 ```
 
+# Tests
+
+To run `mocha` tests for the backend and frontend, first run this in a separate terminal:
+
+```bash
+yarn prod
+```
+
+Then run this to test both the frontend and backend:
+
+```bash
+yarn test
+```
+
+To test the frontend or backend separately, run `yarn test-frontend` or `yarn
+test-backend` respectively.
+
 # Building the app
 
 Assuming that you have NodeJS, the [`yarn`](https://yarnpkg.com) package
