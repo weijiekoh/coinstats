@@ -60,7 +60,7 @@ const renderChart = (priceHistory) => {
 
           <Area dot={false} animationDuration={0}
                 name='Price (USD)'
-                type="monotone" dataKey='price_usd' />
+                type="linear" dataKey='price_usd' />
 
         </AreaChart>
       </ResponsiveContainer>
