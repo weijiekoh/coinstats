@@ -4,11 +4,14 @@ import star from './icons/star'
 import format from 'date-fns/format'
 import autorefreshToggle from './autorefreshToggle'
 import {
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
+  //LineChart,
+  //Line,
   XAxis,
   YAxis,
   Label,
+  Tooltip,
   ResponsiveContainer
 } from 'recharts'
 import {
@@ -34,29 +37,32 @@ const renderChart = (priceHistory) => {
   return (
     <div className='chart'>
       <ResponsiveContainer width='100%' aspect={3.0/1}>
-        <LineChart margin={{right: 25, left: 5, top: 10, bottom: 10}}
+        <AreaChart margin={{right: 25, left: 5, top: 10, bottom: 10}}
                    data={data}>
 
           <XAxis type='number' dataKey='datetime'
-                 tickFormatter={formatTime}
-                 domain = {['auto', 'auto']}
-                 minTickGap={60} scale='time' interval={'preserveStartEnd'}>
-            <Label position='bottom' value='Time'
-                   offset={-6} />
+            tickFormatter={formatTime}
+            domain={['auto', 'auto']} minTickGap={60} scale='time'
+            interval={'preserveStartEnd'}>
+
+            <Label name='Time' position='bottom' value='Time' offset={-6} />
           </XAxis>
 
           <YAxis type='number' dataKey='price_usd'
-                 padding={{bottom: 30, top: 30}}
-                 domain = {['auto', 'auto']}
-                 interval={'preserveStartEnd'}>
-            <Label position='left' value='Price (USD)'
-                   offset={0} angle={-90}/>
+            padding={{bottom: 0, top: 0}}
+            domain={['auto', 'auto']}
+            interval={'preserveStartEnd'}>
+
+            <Label position='left' value='Price (USD)' offset={0} angle={-90} />
           </YAxis>
 
-          <Line dot={false} animationDuration={0}
+          <Tooltip />
+
+          <Area dot={false} animationDuration={0}
+                name='Price (USD)'
                 type="monotone" dataKey='price_usd' />
 
-        </LineChart>
+        </AreaChart>
       </ResponsiveContainer>
 
     </div>
