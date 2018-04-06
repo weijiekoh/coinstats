@@ -135,8 +135,8 @@ heroku apps:destroy
 
 # Limitations
 
-- All data displayed is at most 5 minutes old, as the CoinMarketCap API which
-  the app gets data from only updates every 5 minutes. 
+- The CoinMarketCap API updates every 5 minutes. As such, the data shown on
+  CoinStats will be at most 5 minutes old.
 - At the time of writing, the CoinMarketCap API provides data for about 1500
   cryptocurrencies. If the backend were to download and store data for every
   cryptocurrency every 5 minutes, the database would grow at a maximum rate of
