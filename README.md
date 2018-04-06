@@ -138,10 +138,10 @@ To deploy the app, run:
 - For demonstration purposes, the following strategy helps to rein in this
   growth rate:
     - By default, price data older than 1 hour will be regularly pruned from the
-      database, so all price charts are limited to an hour's worth of data.
+      database, so all price charts are limited to 1 hour's worth of data.
     - By default, only the top 100 coins (ranked by CoinMarketCap) will be fetched
       from the API.
-- To change the data growth rate, you can modify two environment variables:
+- To change the data growth rate, you can modify these environment variables:
     - `PRICE_HISTORY_RANGE_SECS`: the maximum age of price history data, in seconds
     - `CMC_MAX_COINS`: only fetch the X highest ranked cryptocurrencies from
       CoinMarketCap. A value of 0 will make the backend fetch *all*

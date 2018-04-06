@@ -16,7 +16,8 @@ const MAX_COIN_LIST_LEN = 100
 
 // The maximum number of coins to fetch from CMC every poll. 0 = no lmit
 const CMC_MAX_COINS = process.env.CMC_MAX_COINS || 100
-const CMC_API_URI = 'https://api.coinmarketcap.com/v1/ticker/?limit=' + CMC_MAX_COINS.toString()
+const CMC_API_URI =
+  'https://api.coinmarketcap.com/v1/ticker/?limit=' + CMC_MAX_COINS.toString()
 
 // The max range of the price history stored in the DB
 const PRICE_HISTORY_RANGE_SECS = process.env.PRICE_HISTORY_RANGE_SECS || (60 * 60)
