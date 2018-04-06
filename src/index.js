@@ -26,6 +26,7 @@ const Root = ({ store }) => (
     <BrowserRouter>
       <Switch>
         <Route exact path='/converter' component={ConverterContainer} />
+        <Route path='/' component={CoinStatsContainer} />
         <Route path='/:cmcId?' component={CoinStatsContainer} />
       </Switch>
     </BrowserRouter>

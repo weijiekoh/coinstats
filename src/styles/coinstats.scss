@@ -25,8 +25,12 @@
         .filters, .autorefresh {
             text-align:left;
             display:inline;
-            @include pointer;
             @include no-select;
+        }
+
+        .filters,
+        .autorefresh label {
+            @include pointer;
         }
 
         .filters {
@@ -146,6 +150,7 @@
 
     table {
         table-layout:fixed;
+        @include no-select;
 
         &.sortable {
             tr th {

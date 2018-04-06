@@ -23,11 +23,6 @@ const express = require('express')
 function makeRouter (db, maxCoinListLen) {
   const router = express.Router()
 
-  router.get('/hello', (req, res) => {
-    res.type('text/plain')
-    res.send('Hello, world')
-  })
-
   // Return all currency data (name/symbol:USD) pairs
   // for the currency converter
   router.get('/currencies/', async (req, res) => {

@@ -11,13 +11,15 @@ const routes = require('./routes')
 const CoinStatsDb = require('./db')
 const queryCmc = require('./queryCmc')
 
-const CMC_API_URI = 'https://api.coinmarketcap.com/v1/ticker/?limit=0'
-
 // The maximum number of coins that /api/coins will return
-const MAXCOINLISTLEN = 100
+const MAX_COIN_LIST_LEN = 100
+
+// The maximum number of coins to fetch from CMC every poll. 0 = no lmit
+const CMC_MAX_COINS = process.env.CMC_MAX_COINS || 100
+const CMC_API_URI = 'https://api.coinmarketcap.com/v1/ticker/?limit=' + CMC_MAX_COINS.toString()
 
 // The max range of the price history stored in the DB
-const PRICE_HISTORY_RANGE_SECS = 60 * 60
+const PRICE_HISTORY_RANGE_SECS = process.env.PRICE_HISTORY_RANGE_SECS || (60 * 60)
 
 // Whether the app is in production
 const IS_PROD = process.env.NODE_ENV === 'production'
@@ -41,6 +43,11 @@ if (POLL_CMC_INTERVAL < DEFAULT_POLL_INTERVAL && !process.env.FORCE_POLL) {
 // Set up the database
 const dbFilepath = path.join(__dirname, '../', 'db.sqlite3')
 const sqliteConnStr = 'sqlite:' + dbFilepath
+
+if (IS_PROD && !process.env.DATABASE_URL) {
+  throw new Error('No DATABASE_URL environment variable provided')
+}
+
 const connStr = process.env.DATABASE_URL ? process.env.DATABASE_URL
   : sqliteConnStr
 const db = new CoinStatsDb(connStr, IS_PROD, PRICE_HISTORY_RANGE_SECS)
@@ -60,7 +67,7 @@ const start = () => {
   }
 
   // Set up URL routing. See ./route.js
-  app.use('/api', routes(db, MAXCOINLISTLEN))
+  app.use('/api', routes(db, MAX_COIN_LIST_LEN))
 
   // Query the CMC API once, then schedule to do so every
   // POLL_CMC_INTERVAL_SECS seconds
