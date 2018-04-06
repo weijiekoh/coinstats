@@ -23,12 +23,8 @@ const formatTime = timestamp => {
   return format(timestamp, 'HH:mm')
 }
 
-//const sampleData = [
-  //{ "datetime": "2018-04-05T21:52:25.516Z", "price_usd": 6747.07, "price_btc": 1 }, { "datetime": "2018-04-05T21:57:26.109Z", "price_usd": 6748.96, "price_btc": 1 }, { "datetime": "2018-04-05T22:02:27.356Z", "price_usd": 6740.08, "price_btc": 1 }, { "datetime": "2018-04-05T22:07:26.672Z", "price_usd": 6756.84, "price_btc": 1 }, { "datetime": "2018-04-05T22:12:25.829Z", "price_usd": 6751.05, "price_btc": 1 }, { "datetime": "2018-04-05T22:17:25.674Z", "price_usd": 6787.75, "price_btc": 1 }, { "datetime": "2018-04-05T22:22:26.035Z", "price_usd": 6784.89, "price_btc": 1 }, { "datetime": "2018-04-05T22:27:27.248Z", "price_usd": 6790.66, "price_btc": 1 }, { "datetime": "2018-04-05T22:32:25.873Z", "price_usd": 6786.85, "price_btc": 1 }, { "datetime": "2018-04-05T22:37:25.798Z", "price_usd": 6799.91, "price_btc": 1 }, { "datetime": "2018-04-05T22:42:26.398Z", "price_usd": 6814.99, "price_btc": 1 }, { "datetime": "2018-04-05T22:47:26.712Z", "price_usd": 6813.38, "price_btc": 1 }]
-
 // styles for this are in chart.scss
 const renderChart = (priceHistory) => {
-  //const data = sampleData.map(p => ({
   const data = priceHistory.map(p => ({
     price_usd: p.price_usd,
     datetime: (new Date(p.datetime)).getTime()
@@ -36,9 +32,9 @@ const renderChart = (priceHistory) => {
 
   return (
     <div className='chart'>
-      <ResponsiveContainer width='100%' aspect={3.0/1}>
+      <ResponsiveContainer aspect={4.0/1}>
         <AreaChart margin={{right: 25, left: 5, top: 10, bottom: 10}}
-                   data={data}>
+          data={data}>
 
           <XAxis type='number' dataKey='datetime'
             tickFormatter={formatTime}
@@ -59,8 +55,8 @@ const renderChart = (priceHistory) => {
           <Tooltip />
 
           <Area dot={false} animationDuration={0}
-                name='Price (USD)'
-                type="linear" dataKey='price_usd' />
+            name='Price (USD)'
+            type="linear" dataKey='price_usd' />
 
         </AreaChart>
       </ResponsiveContainer>
