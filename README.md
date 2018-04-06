@@ -1,8 +1,8 @@
-Use it here: https://coinstatswj.herokuapp.com
-
 CoinStats displays cryptocurrency market statistics fetched from the
 [CoinMarketCap API](https://coinmarketcap.com/api/) via a responsive and
 mobile-friendly single-page app.
+
+Use it here: https://coinstatswj.herokuapp.com
 
 It also includes a simple cryptocurrency converter which allows you to calculate
 the value of any amount of a particular cryptocurrency in the denomination of
