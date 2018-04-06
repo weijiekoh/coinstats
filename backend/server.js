@@ -111,9 +111,13 @@ const start = () => {
 
 // Start the server once the database connection is alive and the tables have
 // been synced
+console.log('Authenticating...')
 db.sequelize.authenticate()
   .then(() => {
-    db.setupModels().then(start)
+    console.log('Setting up models...')
+    db.setupModels().then(start).catch(err => {
+      console.log(err, 'Error setting up models\n')
+    })
   }).catch(err => {
     console.error('Unable to connect to the database.\n', err)
   })

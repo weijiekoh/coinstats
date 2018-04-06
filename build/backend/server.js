@@ -45,7 +45,6 @@ var dbFilepath = path.join(__dirname, '../', 'db.sqlite3');
 var sqliteConnStr = 'sqlite:' + dbFilepath;
 
 var connStr = process.env.DATABASE_URL ? process.env.DATABASE_URL : sqliteConnStr;
-console.log(connStr);
 var db = new CoinStatsDb(connStr, IS_PROD, PRICE_HISTORY_RANGE_SECS);
 
 // Running start() will launch the app
@@ -112,8 +111,12 @@ var start = function start() {
 
 // Start the server once the database connection is alive and the tables have
 // been synced
+console.log('Authenticating...');
 db.sequelize.authenticate().then(function () {
-  db.sequelize.sync().then(start);
+  console.log('Setting up models...');
+  db.setupModels().then(start).catch(function (err) {
+    console.log(err, 'Error setting up models\n');
+  });
 }).catch(function (err) {
   console.error('Unable to connect to the database.\n', err);
 });
