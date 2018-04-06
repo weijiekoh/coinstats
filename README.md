@@ -48,13 +48,6 @@ An ideal development environment requires two terminals. You may choose to use
 DATABASE_URL=<your database connection string> yarn dev
 ```
 
-You may choose to use this convenience script to commit all changes and deploy
-the app to Heroku:
-
-```bash
-./build_and_deploy.sh '<commit message>'
-```
-
 # Tests
 
 To run `mocha` tests for the backend and frontend, first run this in a separate terminal:
