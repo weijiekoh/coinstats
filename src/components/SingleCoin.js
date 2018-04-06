@@ -32,7 +32,7 @@ const renderChart = (priceHistory) => {
 
   return (
     <div className='chart'>
-      <ResponsiveContainer aspect={4.0/1}>
+      <ResponsiveContainer aspect={4}>
         <AreaChart margin={{right: 25, left: 5, top: 10, bottom: 10}}
           data={data}>
 
@@ -54,7 +54,8 @@ const renderChart = (priceHistory) => {
 
           <Tooltip />
 
-          <Area dot={false} animationDuration={0}
+          <Area 
+            dot={false} animationDuration={0}
             name='Price (USD)'
             type="linear" dataKey='price_usd' />
 

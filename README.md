@@ -127,6 +127,12 @@ To deploy the app, run:
 ./build_and_deploy.sh 'Deploy to Heroku'
 ```
 
+Delete the dyno when you're done, to minimise costs:
+
+```bash
+heroku apps:destroy
+```
+
 # Limitations
 
 - All data displayed is at most 5 minutes old, as the CoinMarketCap API which
