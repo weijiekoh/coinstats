@@ -21,10 +21,11 @@ Carbon Design](http://carbondesignsystem.com/). Price charts use the
 
 # Development
 
-Download the source code via:
+Download the source code and install dependencies via:
 
 ```bash
-git clone https://github.com/weijiekoh/coinstats.git
+git clone https://github.com/weijiekoh/coinstats.git && \
+yarn install
 ```
 
 An ideal development environment requires two terminals. You may choose to use
