@@ -28,11 +28,6 @@ function makeRouter(db, maxCoinListLen) {
 
   var router = express.Router();
 
-  router.get('/hello', function (req, res) {
-    res.type('text/plain');
-    res.send('Hello, world');
-  });
-
   // Return all currency data (name/symbol:USD) pairs
   // for the currency converter
   router.get('/currencies/', function () {

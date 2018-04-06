@@ -58,6 +58,8 @@
 
             input {
                 margin-right:0.5em;
+                position:relative;
+                top:1px;
             }
         }
 
@@ -100,8 +102,11 @@
             margin-right:1.5em;
             align-content:center;
         }
+
         input {
             margin-right:0.5em;
+            position:relative;
+            top:1px;
         }
 
         @keyframes slideDown {
