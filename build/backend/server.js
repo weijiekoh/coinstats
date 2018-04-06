@@ -45,6 +45,7 @@ var dbFilepath = path.join(__dirname, '../', 'db.sqlite3');
 var sqliteConnStr = 'sqlite:' + dbFilepath;
 
 var connStr = process.env.DATABASE_URL ? process.env.DATABASE_URL : sqliteConnStr;
+console.log(connStr);
 var db = new CoinStatsDb(connStr, IS_PROD, PRICE_HISTORY_RANGE_SECS);
 
 // Running start() will launch the app
