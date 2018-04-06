@@ -25,17 +25,18 @@ Download the source code and install dependencies via:
 
 ```bash
 git clone https://github.com/weijiekoh/coinstats.git && \
+cd coinstats && \
 yarn install
 ```
 
 An ideal development environment requires two terminals. You may choose to use
 `tmux` or `screen` with split panes for your convenience.
 
-1. On the first, run `yarn start`.
+1. In the first terminal, run `yarn start`.
     - This launches a `create-react-app` server on http://localhost:3000/.
       Launch this to access the frontend. Changes made to the code will trigger
       a recompile and hot reload.
-2. On the second, run `yarn dev`.
+2. In the second terminal, run `yarn dev`.
     - This launches the backend server in development mode. By default, it
       will run an Sqlite3 database (`./db.sqlite3`)
     - No configuration is needed. To change the default settings (see the
